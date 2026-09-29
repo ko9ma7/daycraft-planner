@@ -130,8 +130,8 @@
           </div>
 
           <div class="control-section clock-options" id="clockOptions">
-            <div class="section-title"><span>원형 시계 상세</span><small>비율 자동 대응</small></div>
-            <p class="control-hint">캔버스 비율에 맞춰 원형과 범례가 자동 재배치됩니다. 아래 값은 자동 계산된 크기에 추가로 적용됩니다.</p>
+            <div class="section-title"><span>원형 시계</span><small>24시간 = 360°</small></div>
+            <p class="control-hint">각 일정은 시작·종료 시간을 각도로 환산해 자기 구간 안에서만 표시됩니다. <strong>내측 원 크기</strong>를 바꿔도 바깥 원과 시간 각도는 그대로 유지됩니다.</p>
             <div class="smart-layout-hint" id="clockSmartHint"></div>
             <div class="clock-profile-picker" id="clockProfilePicker" aria-label="원형 구성 빠른 설정">
               <button type="button" data-clock-profile="balanced"><strong>균형</strong><small>범례 + 원 안 라벨</small></button>
@@ -141,19 +141,19 @@
             </div>
             <div class="clock-range-grid">
               <label class="range-control"><span class="range-head"><span class="field-label">원형 크기</span><output id="clockScaleValue">100%</output></span><input id="clockScale" type="range" min="70" max="108" step="1" /></label>
-              <label class="range-control"><span class="range-head"><span class="field-label">내측 원 크기</span><output id="clockHoleValue">58%</output></span><input id="clockHole" type="range" min="28" max="76" step="1" /></label>
+              <label class="range-control"><span class="range-head"><span class="field-label">안쪽 빈 원</span><output id="clockHoleValue">58%</output></span><input id="clockHole" type="range" min="28" max="76" step="1" /><small class="range-note">바깥 지름은 고정 · 안쪽 경계만 이동</small></label>
               <label class="range-control"><span class="range-head"><span class="field-label">세로 위치</span><output id="clockOffsetYValue">0%</output></span><input id="clockOffsetY" type="range" min="-18" max="18" step="1" /></label>
               <label class="range-control"><span class="range-head"><span class="field-label">조각 간격</span><output id="clockGapValue">1.2°</output></span><input id="clockGap" type="range" min="0" max="5" step="0.2" /></label>
             </div>
             <div class="clock-select-grid">
-              <label><span class="field-label">원 안 라벨 내용</span><select class="select-input" id="clockLabelContent"><option value="title">활동 이름</option><option value="titleTime">활동 이름 + 시간</option><option value="iconTitle">아이콘 + 활동 이름</option></select></label>
-              <label><span class="field-label">라벨 방향</span><select class="select-input" id="clockLabelOrientation"><option value="auto">호를 따라 자동</option><option value="horizontal">항상 수평</option></select></label>
+              <label><span class="field-label">원 안 글 내용</span><select class="select-input" id="clockLabelContent"><option value="title">활동 이름</option><option value="titleTime">활동 이름 + 시간</option><option value="iconTitle">아이콘 + 활동 이름</option></select></label>
+              <label><span class="field-label">원 안 글 방향</span><select class="select-input" id="clockLabelOrientation"><option value="auto">호를 따라 자동</option><option value="horizontal">항상 수평</option></select></label>
               <label><span class="field-label">범례 위치</span><select class="select-input" id="legendPosition"><option value="auto">자동</option><option value="bottom">아래</option><option value="right">오른쪽</option></select></label>
               <label><span class="field-label">중앙 내용</span><select class="select-input" id="clockCenterMode"><option value="summary">요일 + 계획 시간</option><option value="count">요일 + 일정 개수</option><option value="none">비우기</option></select></label>
             </div>
-            <label class="range-control full-range"><span class="range-head"><span class="field-label">짧은 일정 라벨 자동 생략</span><output id="clockLabelMinValue">45분 미만</output></span><input id="clockLabelMin" type="range" min="0" max="180" step="5" /></label>
+            <div class="clock-text-controls"><label class="range-control"><span class="range-head"><span class="field-label">원 안 글자 크기</span><output id="clockLabelSizeValue">18px</output></span><input id="clockLabelSize" type="range" min="12" max="26" step="1" /><small class="range-note">띠 두께와 별개 · 공간이 부족할 때만 자동 축소</small></label><label class="range-control"><span class="range-head"><span class="field-label">짧은 일정 자동 생략</span><output id="clockLabelMinValue">45분 미만</output></span><input id="clockLabelMin" type="range" min="0" max="180" step="5" /></label></div>
             <div class="switch-list compact-switches">
-              <label class="switch-row"><span><strong>원 안 일정 라벨</strong><small>색상 조각 안에 활동명·시간을 표시</small></span><input id="clockShowLabels" type="checkbox" /><i></i></label>
+              <label class="switch-row"><span><strong>원 안 글 표시</strong><small>체크하면 각 일정의 시간 각도 안에만 표시</small></span><input id="clockShowLabels" type="checkbox" /><i></i></label>
               <label class="switch-row"><span><strong>빈 시간 바탕</strong><small>일정이 없는 시간도 원형 트랙으로 표시</small></span><input id="clockShowTrack" type="checkbox" /><i></i></label>
             </div>
           </div>

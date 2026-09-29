@@ -77,7 +77,7 @@ function defaultState() {
     ],
     stickers: [],
     customIcons: [],
-    design: {preset:'playful', layout:'clock', size:'square', accent:'#5b67f1', showHours:true, showDetails:true, showLegend:true, legendPosition:'auto', clockScale:100, clockHole:58, clockOffsetY:0, clockGap:1.2, clockShowLabels:true, clockLabelMinMinutes:45, clockLabelContent:'titleTime', clockLabelOrientation:'auto', clockShowTrack:true, clockCenterMode:'summary'},
+    design: {preset:'playful', layout:'clock', size:'square', accent:'#5b67f1', showHours:true, showDetails:true, showLegend:true, legendPosition:'auto', clockScale:100, clockHole:58, clockOffsetY:0, clockGap:1.2, clockShowLabels:true, clockLabelMinMinutes:45, clockLabelSize:18, clockLabelContent:'titleTime', clockLabelOrientation:'auto', clockShowTrack:true, clockCenterMode:'summary'},
     ui: {selectedDay:'all', theme:'system'}
   };
 }
@@ -126,6 +126,7 @@ function normalizeState(raw) {
       clockGap:clamp(Number(r.design?.clockGap ?? base.design.clockGap),0,5),
       clockShowLabels:r.design?.clockShowLabels !== false,
       clockLabelMinMinutes:clamp(Number(r.design?.clockLabelMinMinutes ?? base.design.clockLabelMinMinutes),0,180),
+      clockLabelSize:clamp(Number(r.design?.clockLabelSize ?? base.design.clockLabelSize),12,26),
       clockLabelContent:['title','titleTime','iconTitle'].includes(r.design?.clockLabelContent) ? r.design.clockLabelContent : base.design.clockLabelContent,
       clockLabelOrientation:['auto','horizontal'].includes(r.design?.clockLabelOrientation) ? r.design.clockLabelOrientation : base.design.clockLabelOrientation,
       clockShowTrack:r.design?.clockShowTrack !== false,
@@ -214,7 +215,7 @@ function cacheRefs() {
   const ids = [
     'undoBtn','redoBtn','saveStatus','themeBtn','shareBtn','exportBtn','mobileExportBtn','previewCanvas','previewStage',
     'scheduleList','scheduleSummary','dayPicker','addScheduleBtn','presetGrid','layoutPicker','docTitle','docSubtitle','canvasSize',
-    'accentColor','accentColorText','showHours','showDetails','showLegend','shuffleStyleBtn','clockOptions','clockSmartHint','clockProfilePicker','clockScale','clockScaleValue','clockHole','clockHoleValue','clockOffsetY','clockOffsetYValue','clockGap','clockGapValue','clockShowLabels','clockLabelMin','clockLabelMinValue','clockLabelContent','clockLabelOrientation','clockShowTrack','clockCenterMode','legendPosition','iconGrid','iconSearch','svgFileInput','svgPaste','addPastedSvgBtn',
+    'accentColor','accentColorText','showHours','showDetails','showLegend','shuffleStyleBtn','clockOptions','clockSmartHint','clockProfilePicker','clockScale','clockScaleValue','clockHole','clockHoleValue','clockOffsetY','clockOffsetYValue','clockGap','clockGapValue','clockShowLabels','clockLabelMin','clockLabelMinValue','clockLabelSize','clockLabelSizeValue','clockLabelContent','clockLabelOrientation','clockShowTrack','clockCenterMode','legendPosition','iconGrid','iconSearch','svgFileInput','svgPaste','addPastedSvgBtn',
     'stickerInspector','stickerSize','stickerSizeValue','stickerRotation','stickerRotationValue','stickerColor','stickerActions','deleteStickerBtn','exportJsonBtn','importJsonInput','exportCsvBtn','importCsvInput','resetBtn',
     'zoomOutBtn','zoomInBtn','fitBtn','zoomLabel','scheduleDialog','scheduleForm','scheduleDialogTitle','quickActivity','formDayChecks','startTime','endTime',
     'scheduleTitle','scheduleDetail','scheduleColor','scheduleIconButton','scheduleIconPreview','scheduleIconName','scheduleHideClockLabel','scheduleError','saveScheduleBtn','cancelScheduleBtn',
@@ -273,6 +274,7 @@ function bindEvents() {
   bindDesignRange(refs.clockOffsetY,'clockOffsetY');
   bindDesignRange(refs.clockGap,'clockGap');
   bindDesignRange(refs.clockLabelMin,'clockLabelMinMinutes');
+  bindDesignRange(refs.clockLabelSize,'clockLabelSize');
   bindLiveField(refs.docTitle, (s,v)=>s.document.title=v, () => state.document.title);
   bindLiveField(refs.docSubtitle, (s,v)=>s.document.subtitle=v, () => state.document.subtitle);
   bindLiveField(refs.accentColor, (s,v)=>s.design.accent=safeColor(v,s.design.accent), () => state.design.accent);
@@ -330,9 +332,13 @@ function bindEvents() {
   });
 }
 
+function syncActivePanel() {
+  $$('.panel-tab').forEach(b => { const active=b.dataset.panel===activePanelId; b.classList.toggle('is-active',active); b.setAttribute('aria-selected',String(active)); });
+  $$('.panel-content').forEach(p => { const active=p.id===activePanelId; p.hidden=!active; p.classList.toggle('is-active',active); });
+}
 function openPanel(id, mobileOpen=false) {
-  $$('.panel-tab').forEach(b => { const active=b.dataset.panel===id; b.classList.toggle('is-active',active); b.setAttribute('aria-selected',String(active)); });
-  $$('.panel-content').forEach(p => { const active=p.id===id; p.hidden=!active; p.classList.toggle('is-active',active); });
+  activePanelId=id;
+  syncActivePanel();
   if (mobileOpen || window.innerWidth<=760) $('.tool-panel').classList.add('is-mobile-open');
 }
 
@@ -388,7 +394,7 @@ function persistNow() {
 }
 
 function renderAll() {
-  applyUiTheme(); renderScheduleList(); syncDesignControls(); renderIconGrid(); renderPreview(); updateStickerInspector(); updateHistoryButtons();
+  syncActivePanel(); applyUiTheme(); renderScheduleList(); syncDesignControls(); renderIconGrid(); renderPreview(); updateStickerInspector(); updateHistoryButtons();
   requestAnimationFrame(fitPreview);
 }
 
@@ -496,10 +502,10 @@ function updateScheduleIconButton() { const icon=getIcon(scheduleIconId,state.cu
 
 function applyClockProfile(profile) {
   const profiles={
-    balanced:{clockScale:100,clockHole:58,clockOffsetY:0,clockGap:1.2,clockShowLabels:true,clockLabelMinMinutes:45,clockLabelContent:'titleTime',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:true,legendPosition:'auto'},
-    inside:{clockScale:100,clockHole:38,clockOffsetY:0,clockGap:1.4,clockShowLabels:true,clockLabelMinMinutes:60,clockLabelContent:'titleTime',clockLabelOrientation:'horizontal',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'},
-    minimal:{clockScale:94,clockHole:72,clockOffsetY:0,clockGap:1,clockShowLabels:false,clockLabelMinMinutes:60,clockLabelContent:'title',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'count',showLegend:true,legendPosition:'auto'},
-    poster:{clockScale:108,clockHole:52,clockOffsetY:0,clockGap:2,clockShowLabels:true,clockLabelMinMinutes:75,clockLabelContent:'title',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'}
+    balanced:{clockScale:100,clockHole:58,clockOffsetY:0,clockGap:1.2,clockShowLabels:true,clockLabelMinMinutes:45,clockLabelSize:18,clockLabelContent:'titleTime',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:true,legendPosition:'auto'},
+    inside:{clockScale:100,clockHole:38,clockOffsetY:0,clockGap:1.4,clockShowLabels:true,clockLabelMinMinutes:60,clockLabelSize:18,clockLabelContent:'titleTime',clockLabelOrientation:'horizontal',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'},
+    minimal:{clockScale:94,clockHole:72,clockOffsetY:0,clockGap:1,clockShowLabels:false,clockLabelMinMinutes:60,clockLabelSize:16,clockLabelContent:'title',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'count',showLegend:true,legendPosition:'auto'},
+    poster:{clockScale:108,clockHole:52,clockOffsetY:0,clockGap:2,clockShowLabels:true,clockLabelMinMinutes:75,clockLabelSize:19,clockLabelContent:'title',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'}
   };
   const next=profiles[profile]; if(!next)return;
   mutate(s=>Object.assign(s.design,next));
@@ -518,14 +524,15 @@ function syncDesignControls() {
   refs.clockShowLabels.checked=state.design.clockShowLabels;
   refs.clockShowTrack.checked=state.design.clockShowTrack;
   refs.clockLabelMin.value=state.design.clockLabelMinMinutes; refs.clockLabelMinValue.textContent=state.design.clockLabelMinMinutes===0?'모두 표시':`${Math.round(state.design.clockLabelMinMinutes)}분 미만`;
+  refs.clockLabelSize.value=state.design.clockLabelSize; refs.clockLabelSizeValue.textContent=`${Math.round(state.design.clockLabelSize)}px`; 
   refs.clockLabelContent.value=state.design.clockLabelContent; refs.clockLabelOrientation.value=state.design.clockLabelOrientation;
   refs.clockCenterMode.value=state.design.clockCenterMode; refs.legendPosition.value=state.design.legendPosition;
   if(refs.clockSmartHint) {
     const visible=getVisibleSchedules();
     const shortCount=visible.filter(s=>durationMin(s.start,s.end)<state.design.clockLabelMinMinutes || s.hideClockLabel).length;
     const sizeName=CANVAS_SIZES[state.design.size]?.label || '현재 비율';
-    let note=`${sizeName}에 맞춰 원형 위치·크기·범례를 자동 계산합니다.`;
-    if(state.design.clockShowLabels && state.design.clockHole>68) note+=' 내측 원이 커서 라벨 공간이 좁아질 수 있어요.';
+    let note=`${sizeName}: 24시간을 360°로 나눠 각 일정이 자기 시간 각도 안에서만 표시됩니다. 바깥 원은 고정되고 내측 원만 조절됩니다.`;
+    if(state.design.clockShowLabels && state.design.clockHole>68) note+=' 내측 원이 커지면 띠가 얇아져 라벨은 자동 축소·생략될 수 있어요.';
     if(state.design.clockShowLabels && shortCount) note+=` 현재 ${shortCount}개 일정 라벨은 짧은 시간/개별 설정으로 숨겨집니다.`;
     refs.clockSmartHint.textContent=note;
   }
@@ -796,46 +803,79 @@ function getClockLegendPlacement(w,h,p,schedules) {
   return {position:'bottom',opt:{x:margin,y,width,maxRows:maxItems},circleBounds:{left:margin,right:w-margin,top:headerBottom,bottom:y-margin*.45}};
 }
 
-function renderClockLabels(cx,cy,outerR,holeR,p,schedules) {
+function polarPoint(cx,cy,r,deg) {
+  const a=deg*Math.PI/180;
+  return {x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r};
+}
+
+function annularSectorPath(cx,cy,outerR,innerR,startDeg,endDeg) {
+  let sweep=endDeg-startDeg;
+  if(sweep<=0) return '';
+  if(sweep>=359.999) return fullAnnulusPath(cx,cy,outerR,innerR);
+  const large=sweep>180?1:0;
+  const os=polarPoint(cx,cy,outerR,startDeg), oe=polarPoint(cx,cy,outerR,endDeg);
+  const ie=polarPoint(cx,cy,innerR,endDeg), is=polarPoint(cx,cy,innerR,startDeg);
+  return `M ${os.x} ${os.y} A ${outerR} ${outerR} 0 ${large} 1 ${oe.x} ${oe.y} L ${ie.x} ${ie.y} A ${innerR} ${innerR} 0 ${large} 0 ${is.x} ${is.y} Z`;
+}
+
+function fullAnnulusPath(cx,cy,outerR,innerR) {
+  return `M ${cx-outerR} ${cy} A ${outerR} ${outerR} 0 1 0 ${cx+outerR} ${cy} A ${outerR} ${outerR} 0 1 0 ${cx-outerR} ${cy} Z M ${cx-innerR} ${cy} A ${innerR} ${innerR} 0 1 1 ${cx+innerR} ${cy} A ${innerR} ${innerR} 0 1 1 ${cx-innerR} ${cy} Z`;
+}
+
+function clockSegmentGeometry(s,gapDeg=0) {
+  const startMin=timeToMin(s.start), dur=durationMin(s.start,s.end);
+  const start=startMin/1440*360-90;
+  const sweep=dur/1440*360;
+  const safeGap=Math.min(Math.max(0,gapDeg),Math.max(0,sweep*.38));
+  return {dur,start,end:start+sweep,drawStart:start+safeGap/2,drawEnd:start+sweep-safeGap/2,sweep};
+}
+
+function renderClockLabels(cx,cy,outerR,holeR,p,schedules,w,h) {
   const d=state.design;
   if(!d.clockShowLabels) return '';
   const band=outerR-holeR;
-  const labelRadius=(outerR+holeR)/2;
-  let out='';
+  const labelRadius=holeR+band*.52;
+  const canvasScale=Math.min(w,h)/1200;
+  const requested=clamp(d.clockLabelSize*canvasScale,10,26);
+  let defs='', out='';
   schedules.forEach((s,i)=>{
-    const dur=durationMin(s.start,s.end);
-    if(s.hideClockLabel || dur<d.clockLabelMinMinutes) return;
-    const mid=(timeToMin(s.start)+dur/2)%1440;
-    const angle=mid/1440*360-90;
-    const a=angle*Math.PI/180;
+    const geo=clockSegmentGeometry(s,d.clockGap);
+    if(s.hideClockLabel || geo.dur<d.clockLabelMinMinutes) return;
+    const mid=(geo.start+geo.end)/2;
+    const a=mid*Math.PI/180;
     const x=cx+Math.cos(a)*labelRadius, y=cy+Math.sin(a)*labelRadius;
-    const arcLen=Math.max(0,2*Math.PI*labelRadius*dur/1440-labelRadius*(d.clockGap*Math.PI/180));
+    const availableArc=Math.max(0,labelRadius*(geo.drawEnd-geo.drawStart)*Math.PI/180);
     const rawTitle=String(s.title||'');
-    const targetChars=Math.min(Math.max(rawTitle.length,3),18);
-    const font=clamp(Math.min(band*.16,22,arcLen/Math.max(3,targetChars*.78)),9,22);
-    const maxChars=Math.min(20,Math.floor(arcLen/Math.max(7,font*.76)));
-    if(maxChars<3 || band<44) return;
+    const lines=d.clockLabelContent==='titleTime'?2:1;
+    const radialFit=band/(lines===2?2.55:1.55);
+    const titleFit=availableArc/Math.max(3,Math.min(rawTitle.length,18)*.72);
+    const font=Math.min(requested,radialFit,titleFit);
+    if(font<9.5 || availableArc<28 || band<24) return;
+    const maxChars=Math.max(3,Math.min(22,Math.floor(availableArc/Math.max(6.5,font*.72))));
     const title=escapeXml(truncate(s.title,maxChars));
     const c=scheduleColor(s,i,p), textColor=readableOn(c);
     let rot=0;
     if(d.clockLabelOrientation==='auto') {
-      rot=angle+90;
+      rot=mid+90;
       const nr=((rot%360)+360)%360;
       if(nr>90 && nr<270) rot+=180;
     }
+    const clipId=`clockLabelClip${i}`;
+    const clipPath=annularSectorPath(cx,cy,Math.max(holeR+2,outerR-4),Math.min(outerR-2,holeR+4),geo.drawStart,geo.drawEnd);
+    defs+=`<clipPath id="${clipId}"><path d="${clipPath}" fill-rule="evenodd"/></clipPath>`;
     let body='';
-    if(d.clockLabelContent==='iconTitle' && band>=72) {
+    if(d.clockLabelContent==='iconTitle' && band>=font*2.4) {
       const icon=getIcon(s.icon,state.customIcons);
-      const iconSize=clamp(font*1.05,12,21);
-      body=`<svg x="${-iconSize/2}" y="${-font*1.55}" width="${iconSize}" height="${iconSize}" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" stroke="${textColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg><text y="${font*.65}" text-anchor="middle" font-size="${font}" font-weight="850" fill="${textColor}">${title}</text>`;
-    } else if(d.clockLabelContent==='titleTime' && band>=76 && arcLen>font*5.2) {
-      body=`<text y="${-font*.16}" text-anchor="middle" font-size="${font}" font-weight="850" fill="${textColor}">${title}</text><text y="${font*.92}" text-anchor="middle" font-size="${Math.max(9,font*.66)}" font-weight="750" fill="${textColor}" opacity=".92">${s.start}–${s.end}</text>`;
+      const iconSize=Math.min(font*1.05,20*canvasScale+4);
+      body=`<svg x="${-iconSize/2}" y="${-font*1.45}" width="${iconSize}" height="${iconSize}" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" stroke="${textColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg><text y="${font*.68}" text-anchor="middle" font-size="${font}" font-weight="850" fill="${textColor}">${title}</text>`;
+    } else if(d.clockLabelContent==='titleTime' && band>=font*2.25 && availableArc>font*4.7) {
+      body=`<text y="${-font*.15}" text-anchor="middle" font-size="${font}" font-weight="850" fill="${textColor}">${title}</text><text y="${font*.92}" text-anchor="middle" font-size="${Math.max(8.5,font*.64)}" font-weight="750" fill="${textColor}" opacity=".92">${s.start}–${s.end}</text>`;
     } else {
       body=`<text y="${font*.34}" text-anchor="middle" font-size="${font}" font-weight="850" fill="${textColor}">${title}</text>`;
     }
-    out+=`<g transform="translate(${x} ${y}) rotate(${rot})" font-family="${posterFont(p)}" pointer-events="none">${body}</g>`;
+    out+=`<g clip-path="url(#${clipId})"><g transform="translate(${x} ${y}) rotate(${rot})" font-family="${posterFont(p)}" pointer-events="none">${body}</g></g>`;
   });
-  return out;
+  return defs||out ? `<defs>${defs}</defs>${out}` : '';
 }
 
 function renderClockLayout(w,h,p,schedules) {
@@ -849,30 +889,25 @@ function renderClockLayout(w,h,p,schedules) {
   const tickPad=d.showHours?clamp(Math.min(w,h)*.045,38,62):18;
   const maxOuter=Math.max(86,Math.min(bw/2,bh/2)-tickPad);
   const outerR=Math.max(72,Math.min(maxOuter*d.clockScale/100,maxOuter+tickPad*.35));
+  // Geometry rule: changing the inner circle NEVER changes the outer radius or schedule angles.
   const holeR=clamp(outerR*d.clockHole/100,outerR*.24,outerR*.80);
-  const stroke=Math.max(18,outerR-holeR);
-  const r=(outerR+holeR)/2;
+  const band=outerR-holeR;
   let cx=(bounds.left+bounds.right)/2;
   const tallBottomLayout=(h/w>1.35 && placement.position==='bottom');
   const autoCy=tallBottomLayout ? bounds.top+outerR+tickPad*.55+Math.min(54,h*.025) : (bounds.top+bounds.bottom)/2;
   let cy=autoCy+(bounds.bottom-bounds.top)*(d.clockOffsetY/100);
   const minCy=bounds.top+outerR+tickPad*.45, maxCy=bounds.bottom-outerR-tickPad*.45;
-  if(minCy<=maxCy) cy=clamp(cy,minCy,maxCy);
-  else cy=(bounds.top+bounds.bottom)/2;
+  if(minCy<=maxCy) cy=clamp(cy,minCy,maxCy); else cy=(bounds.top+bounds.bottom)/2;
 
-  const circumference=2*Math.PI*r, cap=p.ringCap||'butt';
   const filter=(p.shadow==='glow')?' filter="url(#glow)"':'';
   const thin=['editorial','minimal','blueprint'].includes(p.pattern);
   let ring='';
-  if(d.clockShowTrack) ring+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.line}" stroke-opacity="${thin?.65:.48}" stroke-width="${stroke}"/>`;
-  const gapMinutes=d.clockGap*4;
+  if(d.clockShowTrack) ring+=`<path d="${fullAnnulusPath(cx,cy,outerR,holeR)}" fill="${p.line}" fill-opacity="${thin?.40:.28}" fill-rule="evenodd"/>`;
   schedules.forEach((s,i)=>{
-    const c=scheduleColor(s,i,p), dur=durationMin(s.start,s.end);
-    const drawDur=Math.max(0,dur-gapMinutes);
-    if(drawDur<=0) return;
-    const len=circumference*drawDur/1440;
-    const rot=((timeToMin(s.start)+gapMinutes/2)/1440*360)-90;
-    ring+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${c}" stroke-width="${stroke}" stroke-linecap="${cap}" stroke-dasharray="${len} ${Math.max(0,circumference-len)}" transform="rotate(${rot} ${cx} ${cy})"${filter}/>`;
+    const geo=clockSegmentGeometry(s,d.clockGap);
+    if(geo.drawEnd<=geo.drawStart) return;
+    const c=scheduleColor(s,i,p);
+    ring+=`<path d="${annularSectorPath(cx,cy,outerR,holeR,geo.drawStart,geo.drawEnd)}" fill="${c}" fill-rule="evenodd"${filter}/>`;
   });
   if(['comic','brutal','pixel'].includes(p.pattern)) ring+=`<circle cx="${cx}" cy="${cy}" r="${outerR}" fill="none" stroke="${p.text}" stroke-width="${p.pattern==='pixel'?5:7}"/><circle cx="${cx}" cy="${cy}" r="${holeR}" fill="none" stroke="${p.text}" stroke-width="${p.pattern==='pixel'?5:7}"/>`;
 
@@ -894,11 +929,15 @@ function renderClockLayout(w,h,p,schedules) {
   let centerShape=`<circle cx="${cx}" cy="${cy}" r="${centerRadius}" fill="${centerFill}" ${centerFilter?`filter="${centerFilter}"`:''} stroke="${['comic','brutal','pixel'].includes(p.pattern)?p.text:p.line}" stroke-opacity="${['comic','brutal','pixel'].includes(p.pattern)?1:.32}" stroke-width="${['comic','brutal','pixel'].includes(p.pattern)?4:1}"/>`;
   if(p.pattern==='brutal') centerShape=`<rect x="${cx-centerRadius*.69}" y="${cy-centerRadius*.45}" width="${centerRadius*1.38}" height="${centerRadius*.90}" fill="${p.surface}" stroke="${p.text}" stroke-width="5" filter="url(#hardShadow)"/>`;
   if(p.pattern==='pixel') centerShape=`<rect x="${cx-centerRadius*.70}" y="${cy-centerRadius*.47}" width="${centerRadius*1.40}" height="${centerRadius*.94}" fill="${p.surface}" stroke="${p.accent}" stroke-width="5"/>`;
+  const minDim=Math.min(w,h);
+  const centerTitleBase=clamp(minDim*.030,24,38), centerSubBase=clamp(minDim*.014,12,18);
+  const centerTitleSize=Math.min(centerTitleBase,Math.max(14,holeR*.26));
+  const centerSubSize=Math.min(centerSubBase,Math.max(9,holeR*.11));
   let centerText='';
-  if(d.clockCenterMode==='summary') centerText=`<text x="${cx}" y="${cy-10}" font-family="${posterTitleFont(p)}" font-size="${clamp(holeR*.17,22,43)}" font-weight="850" fill="${p.text}">${DAY_NAME[state.ui.selectedDay]}</text><text x="${cx}" y="${cy+28}" font-size="${clamp(holeR*.082,12,20)}" font-weight="650" fill="${p.muted}">계획 ${escapeXml(durationText(planned))}</text>`;
-  else if(d.clockCenterMode==='count') centerText=`<text x="${cx}" y="${cy-10}" font-family="${posterTitleFont(p)}" font-size="${clamp(holeR*.17,22,43)}" font-weight="850" fill="${p.text}">${DAY_NAME[state.ui.selectedDay]}</text><text x="${cx}" y="${cy+28}" font-size="${clamp(holeR*.082,12,20)}" font-weight="650" fill="${p.muted}">일정 ${schedules.length}개</text>`;
+  if(d.clockCenterMode==='summary') centerText=`<text x="${cx}" y="${cy-10}" font-family="${posterTitleFont(p)}" font-size="${centerTitleSize}" font-weight="850" fill="${p.text}">${DAY_NAME[state.ui.selectedDay]}</text><text x="${cx}" y="${cy+28}" font-size="${centerSubSize}" font-weight="650" fill="${p.muted}">계획 ${escapeXml(durationText(planned))}</text>`;
+  else if(d.clockCenterMode==='count') centerText=`<text x="${cx}" y="${cy-10}" font-family="${posterTitleFont(p)}" font-size="${centerTitleSize}" font-weight="850" fill="${p.text}">${DAY_NAME[state.ui.selectedDay]}</text><text x="${cx}" y="${cy+28}" font-size="${centerSubSize}" font-weight="650" fill="${p.muted}">일정 ${schedules.length}개</text>`;
   const center=`<g font-family="${posterFont(p)}" text-anchor="middle">${centerShape}${centerText}</g>`;
-  const labels=renderClockLabels(cx,cy,outerR,holeR,p,schedules);
+  const labels=renderClockLabels(cx,cy,outerR,holeR,p,schedules,w,h);
   const legend=placement.opt?renderLegend(w,h,p,schedules,placement.opt):'';
   return `${header}<g font-family="${posterFont(p)}">${ring}${ticks}${labels}${center}${legend}</g>`;
 }

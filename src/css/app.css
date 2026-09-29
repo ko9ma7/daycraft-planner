@@ -435,3 +435,8 @@ textarea { resize: vertical; }
 .clock-profile-picker strong, .clock-profile-picker small { display:block; }
 .clock-profile-picker strong { font-size:10px; }
 .clock-profile-picker small { margin-top:2px; color:var(--muted); font-size:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* v2.3 clock geometry controls */
+.range-note { display:block; margin-top:5px; color:var(--muted); font-size:9px; line-height:1.45; }
+.clock-text-controls { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+@media (max-width: 420px) { .clock-text-controls { grid-template-columns:1fr; } }
