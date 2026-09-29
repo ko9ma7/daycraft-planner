@@ -1,0 +1,14 @@
+{
+  "name": "DayCraft 생활계획표 스튜디오",
+  "short_name": "DayCraft",
+  "description": "아이들이 직접 일정과 디자인을 편집하고 이미지·PDF로 저장하거나 링크로 공유하는 생활계획표 편집기",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eef1f7",
+  "theme_color": "#5b67f1",
+  "icons": [
+    {"src":"./assets/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"./assets/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}
