@@ -1,4 +1,4 @@
-import { BUILTIN_ICONS, getIcon, iconSvgMarkup } from './icons.js';
+import { BUILTIN_ICONS, getIcon, iconSvgMarkup } from './icons.js?v=2.6.0';
 
 const STORAGE_KEY = 'daycraft.planner.v2';
 const LEGACY_KEY = 'summerVacationSchedules';
@@ -184,6 +184,9 @@ let fitWidth = 760;
 let saveTimer = null;
 let fieldSnapshot = null;
 let dragInfo = null;
+let activePanelId = 'schedulePanel';
+const panelScrollTop = new Map();
+const VALID_PANEL_IDS = new Set(['schedulePanel','designPanel','iconPanel','filePanel']);
 
 const refs = {};
 
@@ -237,7 +240,7 @@ function buildStaticUi() {
 function bindEvents() {
   $$('.panel-tab').forEach(btn => btn.addEventListener('click', () => openPanel(btn.dataset.panel)));
   $$('.mobile-quickbar [data-open-panel]').forEach(btn => btn.addEventListener('click', () => openPanel(btn.dataset.openPanel, true)));
-  refs.previewStage.addEventListener('pointerdown', e => { if (window.innerWidth <= 760 && !e.target.closest('[data-sticker-id]')) $('.tool-panel').classList.remove('is-mobile-open'); });
+  refs.previewStage.addEventListener('pointerdown', e => { const toolPanel=$('.tool-panel'); if (toolPanel && window.innerWidth <= 760 && !e.target.closest('[data-sticker-id]')) toolPanel.classList.remove('is-mobile-open'); });
 
   refs.undoBtn.addEventListener('click', undo);
   refs.redoBtn.addEventListener('click', redo);
@@ -255,6 +258,7 @@ function bindEvents() {
     mutate(s => { s.ui.selectedDay=b.dataset.day; }, {history:false});
   });
   refs.scheduleList.addEventListener('click', onScheduleListClick);
+  refs.scheduleList.addEventListener('keydown', e => { const edit=e.target.closest?.('[data-edit]'); if(edit && (e.key==='Enter'||e.key===' ')) { e.preventDefault(); activePanelId='schedulePanel'; openScheduleDialog(edit.dataset.edit); } });
 
   refs.layoutPicker.addEventListener('click', e => { const b=e.target.closest('button[data-layout]'); if(b) mutate(s=>s.design.layout=b.dataset.layout); });
   refs.presetGrid.addEventListener('click', e => { const b=e.target.closest('[data-preset]'); if(b) mutate(s=>{ s.design.preset=b.dataset.preset; s.design.accent=PRESETS[b.dataset.preset].accent; s.design.clockCorner=PRESETS[b.dataset.preset].corner ?? s.design.clockCorner; }); });
@@ -304,7 +308,7 @@ function bindEvents() {
   refs.zoomOutBtn.addEventListener('click', () => setZoom(currentZoom-.1));
   refs.zoomInBtn.addEventListener('click', () => setZoom(currentZoom+.1));
   refs.fitBtn.addEventListener('click', fitPreview);
-  window.addEventListener('resize', fitPreview);
+  window.addEventListener('resize', () => { fitPreview(); ensurePanelIntegrity(); });
 
   refs.quickActivity.addEventListener('click', e => {
     const b=e.target.closest('[data-quick]'); if(!b) return;
@@ -312,6 +316,8 @@ function bindEvents() {
   });
   refs.scheduleForm.addEventListener('submit', saveScheduleFromDialog);
   refs.cancelScheduleBtn.addEventListener('click', () => refs.scheduleDialog.close());
+  refs.scheduleDialog.addEventListener('close', () => ensurePanelIntegrity());
+  refs.iconChoiceDialog.addEventListener('close', () => ensurePanelIntegrity());
   refs.scheduleIconButton.addEventListener('click', () => { renderScheduleIconGrid(); refs.iconChoiceDialog.showModal(); refs.scheduleIconSearch.focus(); });
   refs.scheduleIconSearch.addEventListener('input', renderScheduleIconGrid);
   refs.scheduleIconGrid.addEventListener('click', e => { const b=e.target.closest('[data-icon-id]'); if(!b) return; scheduleIconId=b.dataset.iconId; updateScheduleIconButton(); refs.iconChoiceDialog.close(); });
@@ -329,19 +335,52 @@ function bindEvents() {
     const mod=e.ctrlKey||e.metaKey;
     if(mod && e.key.toLowerCase()==='z') { e.preventDefault(); e.shiftKey ? redo() : undo(); }
     else if(mod && e.key.toLowerCase()==='y') { e.preventDefault(); redo(); }
-    else if(e.key==='Escape' && window.innerWidth<=760) $('.tool-panel').classList.remove('is-mobile-open');
+    else if(e.key==='Escape' && window.innerWidth<=760) $('.tool-panel')?.classList.remove('is-mobile-open');
     else if((e.key==='Delete'||e.key==='Backspace') && selectedStickerId && !['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)) { e.preventDefault(); deleteSelectedSticker(); }
   });
 }
 
-function syncActivePanel() {
-  $$('.panel-tab').forEach(b => { const active=b.dataset.panel===activePanelId; b.classList.toggle('is-active',active); b.setAttribute('aria-selected',String(active)); });
-  $$('.panel-content').forEach(p => { const active=p.id===activePanelId; p.hidden=!active; p.classList.toggle('is-active',active); });
+function rememberPanelScroll(id=activePanelId) {
+  if(!VALID_PANEL_IDS.has(id)) return;
+  const panel=document.getElementById(id);
+  if(panel) panelScrollTop.set(id, panel.scrollTop);
+}
+function syncActivePanel({restoreScroll=false}={}) {
+  if(!VALID_PANEL_IDS.has(activePanelId) || !document.getElementById(activePanelId)) activePanelId='schedulePanel';
+  $$('.panel-tab').forEach(b => {
+    const active=b.dataset.panel===activePanelId;
+    b.classList.toggle('is-active',active);
+    b.setAttribute('aria-selected',String(active));
+    b.tabIndex=active?0:-1;
+  });
+  $$('.panel-content').forEach(p => {
+    const active=p.id===activePanelId;
+    p.hidden=!active;
+    p.classList.toggle('is-active',active);
+  });
+  if(restoreScroll) requestAnimationFrame(()=>{
+    const panel=document.getElementById(activePanelId);
+    if(panel) panel.scrollTop=panelScrollTop.get(activePanelId) || 0;
+  });
 }
 function openPanel(id, mobileOpen=false) {
+  if(!VALID_PANEL_IDS.has(id)) return;
+  rememberPanelScroll();
   activePanelId=id;
-  syncActivePanel();
-  if (mobileOpen || window.innerWidth<=760) $('.tool-panel').classList.add('is-mobile-open');
+  syncActivePanel({restoreScroll:true});
+  const toolPanel=$('.tool-panel');
+  if (toolPanel && (mobileOpen || window.innerWidth<=760)) toolPanel.classList.add('is-mobile-open');
+}
+function ensurePanelIntegrity() {
+  const toolPanel=$('.tool-panel');
+  const tabs=$('.panel-tabs');
+  if(!toolPanel || !tabs) return;
+  toolPanel.hidden=false;
+  tabs.hidden=false;
+  if(!VALID_PANEL_IDS.has(activePanelId)) activePanelId='schedulePanel';
+  const visible=$$('.panel-content').filter(p=>!p.hidden && p.classList.contains('is-active'));
+  const active=document.getElementById(activePanelId);
+  if(visible.length!==1 || visible[0]!==active) syncActivePanel({restoreScroll:true});
 }
 
 function mutate(mutator, {history=true, render=true}={}) {
@@ -396,7 +435,16 @@ function persistNow() {
 }
 
 function renderAll() {
-  syncActivePanel(); applyUiTheme(); renderScheduleList(); syncDesignControls(); renderIconGrid(); renderPreview(); updateStickerInspector(); updateHistoryButtons();
+  rememberPanelScroll();
+  applyUiTheme();
+  renderScheduleList();
+  syncDesignControls();
+  renderIconGrid();
+  renderPreview();
+  updateStickerInspector();
+  updateHistoryButtons();
+  syncActivePanel({restoreScroll:true});
+  ensurePanelIntegrity();
   requestAnimationFrame(fitPreview);
 }
 
@@ -440,12 +488,12 @@ function renderScheduleList() {
 }
 
 function onScheduleListClick(e) {
-  if(e.target.closest('[data-empty-add]')) return openScheduleDialog();
+  if(e.target.closest('[data-empty-add]')) { activePanelId='schedulePanel'; return openScheduleDialog(); }
   const del=e.target.closest('[data-delete]');
   if(del) { if(confirm('이 일정을 삭제할까요?')) mutate(s=>s.schedules=s.schedules.filter(x=>x.id!==del.dataset.delete)); return; }
   const dup=e.target.closest('[data-duplicate]');
   if(dup) { const src=state.schedules.find(x=>x.id===dup.dataset.duplicate); if(src) mutate(s=>s.schedules.push({...deepClone(src),id:uid('s'),title:`${src.title} 복사본`})); return; }
-  const edit=e.target.closest('[data-edit]'); if(edit) openScheduleDialog(edit.dataset.edit);
+  const edit=e.target.closest('[data-edit]'); if(edit) { activePanelId='schedulePanel'; openScheduleDialog(edit.dataset.edit); }
 }
 
 function openScheduleDialog(id=null) {
@@ -1165,6 +1213,11 @@ function downloadBlob(blob,name){ const url=URL.createObjectURL(blob); const a=d
 
 function toast(message,error=false){ if(!refs.toastRegion)return; const el=document.createElement('div'); el.className=`toast${error?' is-error':''}`; el.textContent=message; refs.toastRegion.appendChild(el); setTimeout(()=>el.remove(),3200); }
 
-function registerServiceWorker(){ if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
+function registerServiceWorker(){
+  if(!('serviceWorker' in navigator) || !location.protocol.startsWith('http')) return;
+  navigator.serviceWorker.register('./sw.js?v=2.6.0').then(reg=>{
+    reg.update().catch(()=>{});
+  }).catch(()=>{});
+}
 
 init();
