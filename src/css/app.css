@@ -407,3 +407,31 @@ textarea { resize: vertical; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
 }
+
+/* v2.2 adaptive clock composer */
+.clock-options[hidden] { display:none !important; }
+.clock-range-grid, .clock-select-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px 10px; }
+.clock-range-grid { margin-top:12px; }
+.clock-select-grid { margin-top:14px; }
+.range-control { display:block; min-width:0; }
+.range-control input[type="range"] { width:100%; accent-color:var(--primary); }
+.range-control output { color:var(--text); font-size:10px; font-weight:800; font-variant-numeric:tabular-nums; }
+.full-range { margin-top:14px; }
+.compact-switches { margin-top:14px; }
+.schedule-label-option { display:flex !important; align-items:flex-start; gap:9px; padding:11px 12px; border:1px solid var(--line); border-radius:12px; background:var(--surface-2); cursor:pointer; }
+.schedule-label-option input { margin-top:2px; width:16px; height:16px; accent-color:var(--primary); flex:none; }
+.schedule-label-option > span { margin:0 !important; color:var(--text) !important; }
+.schedule-label-option strong, .schedule-label-option small { display:block; }
+.schedule-label-option strong { font-size:11px; }
+.schedule-label-option small { color:var(--muted); font-size:9px; line-height:1.45; margin-top:2px; font-weight:500; }
+
+@media (max-width: 430px) {
+  .clock-range-grid, .clock-select-grid { grid-template-columns:1fr; }
+}
+.smart-layout-hint { margin:0 0 12px; padding:9px 10px; border-radius:10px; background:var(--primary-soft); color:var(--primary-strong); font-size:9px; line-height:1.5; border:1px solid color-mix(in srgb,var(--primary) 18%,var(--line)); }
+.clock-profile-picker { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin:0 0 14px; }
+.clock-profile-picker button { min-width:0; text-align:left; padding:9px 10px; border:1px solid var(--line); border-radius:11px; background:var(--surface); color:var(--text); }
+.clock-profile-picker button:hover { border-color:var(--primary); background:var(--primary-soft); color:var(--primary-strong); }
+.clock-profile-picker strong, .clock-profile-picker small { display:block; }
+.clock-profile-picker strong { font-size:10px; }
+.clock-profile-picker small { margin-top:2px; color:var(--muted); font-size:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }

@@ -128,6 +128,35 @@
             <label class="switch-row"><span><strong>세부 설명</strong><small>일정의 작은 설명 표시</small></span><input id="showDetails" type="checkbox" /><i></i></label>
             <label class="switch-row"><span><strong>범례</strong><small>일정 목록을 함께 표시</small></span><input id="showLegend" type="checkbox" /><i></i></label>
           </div>
+
+          <div class="control-section clock-options" id="clockOptions">
+            <div class="section-title"><span>원형 시계 상세</span><small>비율 자동 대응</small></div>
+            <p class="control-hint">캔버스 비율에 맞춰 원형과 범례가 자동 재배치됩니다. 아래 값은 자동 계산된 크기에 추가로 적용됩니다.</p>
+            <div class="smart-layout-hint" id="clockSmartHint"></div>
+            <div class="clock-profile-picker" id="clockProfilePicker" aria-label="원형 구성 빠른 설정">
+              <button type="button" data-clock-profile="balanced"><strong>균형</strong><small>범례 + 원 안 라벨</small></button>
+              <button type="button" data-clock-profile="inside"><strong>원 안 텍스트</strong><small>두꺼운 링 + 수평 라벨</small></button>
+              <button type="button" data-clock-profile="minimal"><strong>미니멀</strong><small>얇은 링 + 범례 중심</small></button>
+              <button type="button" data-clock-profile="poster"><strong>원형 강조</strong><small>큰 원 + 범례 숨김</small></button>
+            </div>
+            <div class="clock-range-grid">
+              <label class="range-control"><span class="range-head"><span class="field-label">원형 크기</span><output id="clockScaleValue">100%</output></span><input id="clockScale" type="range" min="70" max="108" step="1" /></label>
+              <label class="range-control"><span class="range-head"><span class="field-label">내측 원 크기</span><output id="clockHoleValue">58%</output></span><input id="clockHole" type="range" min="28" max="76" step="1" /></label>
+              <label class="range-control"><span class="range-head"><span class="field-label">세로 위치</span><output id="clockOffsetYValue">0%</output></span><input id="clockOffsetY" type="range" min="-18" max="18" step="1" /></label>
+              <label class="range-control"><span class="range-head"><span class="field-label">조각 간격</span><output id="clockGapValue">1.2°</output></span><input id="clockGap" type="range" min="0" max="5" step="0.2" /></label>
+            </div>
+            <div class="clock-select-grid">
+              <label><span class="field-label">원 안 라벨 내용</span><select class="select-input" id="clockLabelContent"><option value="title">활동 이름</option><option value="titleTime">활동 이름 + 시간</option><option value="iconTitle">아이콘 + 활동 이름</option></select></label>
+              <label><span class="field-label">라벨 방향</span><select class="select-input" id="clockLabelOrientation"><option value="auto">호를 따라 자동</option><option value="horizontal">항상 수평</option></select></label>
+              <label><span class="field-label">범례 위치</span><select class="select-input" id="legendPosition"><option value="auto">자동</option><option value="bottom">아래</option><option value="right">오른쪽</option></select></label>
+              <label><span class="field-label">중앙 내용</span><select class="select-input" id="clockCenterMode"><option value="summary">요일 + 계획 시간</option><option value="count">요일 + 일정 개수</option><option value="none">비우기</option></select></label>
+            </div>
+            <label class="range-control full-range"><span class="range-head"><span class="field-label">짧은 일정 라벨 자동 생략</span><output id="clockLabelMinValue">45분 미만</output></span><input id="clockLabelMin" type="range" min="0" max="180" step="5" /></label>
+            <div class="switch-list compact-switches">
+              <label class="switch-row"><span><strong>원 안 일정 라벨</strong><small>색상 조각 안에 활동명·시간을 표시</small></span><input id="clockShowLabels" type="checkbox" /><i></i></label>
+              <label class="switch-row"><span><strong>빈 시간 바탕</strong><small>일정이 없는 시간도 원형 트랙으로 표시</small></span><input id="clockShowTrack" type="checkbox" /><i></i></label>
+            </div>
+          </div>
         </section>
 
         <section class="panel-content" id="iconPanel" role="tabpanel" aria-labelledby="iconTab" hidden>
@@ -207,6 +236,7 @@
         <label class="full"><span>설명 <em>선택</em></span><textarea id="scheduleDetail" name="detail" rows="2" maxlength="90" placeholder="예: 문제집 20~24쪽"></textarea></label>
         <label><span>색상</span><input id="scheduleColor" type="color" /></label>
         <label><span>아이콘</span><button class="icon-choice-btn" id="scheduleIconButton" type="button"><span id="scheduleIconPreview"></span><span id="scheduleIconName">해 / 기상</span></button></label>
+        <label class="schedule-label-option full"><input id="scheduleHideClockLabel" type="checkbox" /><span><strong>이 일정의 원형 라벨 숨기기</strong><small>짧은 일정이거나 원 안이 복잡할 때 개별적으로 숨길 수 있어요.</small></span></label>
       </div>
       <div class="form-error" id="scheduleError" role="alert" hidden></div>
       <div class="modal-actions"><button class="secondary-btn" value="cancel" type="button" id="cancelScheduleBtn">취소</button><button class="primary-btn" type="submit" id="saveScheduleBtn">추가하기</button></div>

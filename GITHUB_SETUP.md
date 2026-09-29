@@ -37,3 +37,9 @@
 `src/assets/social-preview.png`
 
 GitHub Repository 자체의 Social Preview 이미지는 GitHub 웹 UI에서 `Settings → General → Social preview`에 위 파일을 한 번 업로드하면 됩니다. 이 항목은 GitHub CLI에 공식 편집 옵션이 없어 자동 스크립트에서는 변경하지 않습니다.
+
+## 기존 저장소에 다시 배포할 때
+
+`배포하기.cmd`는 원격 `main`에 기존 DayCraft 커밋이 있으면 먼저 `origin/main` 이력을 연결하고 현재 폴더의 파일을 새 커밋으로 올립니다. 강제 push는 사용하지 않습니다.
+
+또한 `.gitattributes`가 포함되어 Windows에서도 웹 소스의 LF/CRLF 경고를 최소화합니다.

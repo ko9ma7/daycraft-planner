@@ -77,7 +77,7 @@ function defaultState() {
     ],
     stickers: [],
     customIcons: [],
-    design: {preset:'playful', layout:'clock', size:'square', accent:'#5b67f1', showHours:true, showDetails:true, showLegend:true},
+    design: {preset:'playful', layout:'clock', size:'square', accent:'#5b67f1', showHours:true, showDetails:true, showLegend:true, legendPosition:'auto', clockScale:100, clockHole:58, clockOffsetY:0, clockGap:1.2, clockShowLabels:true, clockLabelMinMinutes:45, clockLabelContent:'titleTime', clockLabelOrientation:'auto', clockShowTrack:true, clockCenterMode:'summary'},
     ui: {selectedDay:'all', theme:'system'}
   };
 }
@@ -99,7 +99,8 @@ function normalizeState(raw) {
       title:String(s.title || '새 일정').slice(0,60),
       detail:String(s.detail || '').slice(0,200),
       icon:String(s.icon || 'star'),
-      color:safeColor(s.color, '#5b67f1')
+      color:safeColor(s.color, '#5b67f1'),
+      hideClockLabel:s.hideClockLabel === true
     })) : base.schedules,
     stickers:Array.isArray(r.stickers) ? r.stickers.slice(0,60).map(st => ({
       id:String(st.id || uid('st')),
@@ -117,7 +118,18 @@ function normalizeState(raw) {
       accent:safeColor(r.design?.accent, base.design.accent),
       showHours:r.design?.showHours !== false,
       showDetails:r.design?.showDetails !== false,
-      showLegend:r.design?.showLegend !== false
+      showLegend:r.design?.showLegend !== false,
+      legendPosition:['auto','bottom','right'].includes(r.design?.legendPosition) ? r.design.legendPosition : base.design.legendPosition,
+      clockScale:clamp(Number(r.design?.clockScale ?? base.design.clockScale),70,108),
+      clockHole:clamp(Number(r.design?.clockHole ?? base.design.clockHole),28,76),
+      clockOffsetY:clamp(Number(r.design?.clockOffsetY ?? base.design.clockOffsetY),-18,18),
+      clockGap:clamp(Number(r.design?.clockGap ?? base.design.clockGap),0,5),
+      clockShowLabels:r.design?.clockShowLabels !== false,
+      clockLabelMinMinutes:clamp(Number(r.design?.clockLabelMinMinutes ?? base.design.clockLabelMinMinutes),0,180),
+      clockLabelContent:['title','titleTime','iconTitle'].includes(r.design?.clockLabelContent) ? r.design.clockLabelContent : base.design.clockLabelContent,
+      clockLabelOrientation:['auto','horizontal'].includes(r.design?.clockLabelOrientation) ? r.design.clockLabelOrientation : base.design.clockLabelOrientation,
+      clockShowTrack:r.design?.clockShowTrack !== false,
+      clockCenterMode:['summary','count','none'].includes(r.design?.clockCenterMode) ? r.design.clockCenterMode : base.design.clockCenterMode
     },
     ui:{
       selectedDay:DAY_ORDER.includes(r.ui?.selectedDay) ? r.ui.selectedDay : 'all',
@@ -202,10 +214,10 @@ function cacheRefs() {
   const ids = [
     'undoBtn','redoBtn','saveStatus','themeBtn','shareBtn','exportBtn','mobileExportBtn','previewCanvas','previewStage',
     'scheduleList','scheduleSummary','dayPicker','addScheduleBtn','presetGrid','layoutPicker','docTitle','docSubtitle','canvasSize',
-    'accentColor','accentColorText','showHours','showDetails','showLegend','shuffleStyleBtn','iconGrid','iconSearch','svgFileInput','svgPaste','addPastedSvgBtn',
+    'accentColor','accentColorText','showHours','showDetails','showLegend','shuffleStyleBtn','clockOptions','clockSmartHint','clockProfilePicker','clockScale','clockScaleValue','clockHole','clockHoleValue','clockOffsetY','clockOffsetYValue','clockGap','clockGapValue','clockShowLabels','clockLabelMin','clockLabelMinValue','clockLabelContent','clockLabelOrientation','clockShowTrack','clockCenterMode','legendPosition','iconGrid','iconSearch','svgFileInput','svgPaste','addPastedSvgBtn',
     'stickerInspector','stickerSize','stickerSizeValue','stickerRotation','stickerRotationValue','stickerColor','stickerActions','deleteStickerBtn','exportJsonBtn','importJsonInput','exportCsvBtn','importCsvInput','resetBtn',
     'zoomOutBtn','zoomInBtn','fitBtn','zoomLabel','scheduleDialog','scheduleForm','scheduleDialogTitle','quickActivity','formDayChecks','startTime','endTime',
-    'scheduleTitle','scheduleDetail','scheduleColor','scheduleIconButton','scheduleIconPreview','scheduleIconName','scheduleError','saveScheduleBtn','cancelScheduleBtn',
+    'scheduleTitle','scheduleDetail','scheduleColor','scheduleIconButton','scheduleIconPreview','scheduleIconName','scheduleHideClockLabel','scheduleError','saveScheduleBtn','cancelScheduleBtn',
     'iconChoiceDialog','scheduleIconSearch','scheduleIconGrid','closeIconChoice','shareDialog','shareLink','shareWarning','copyShareBtn','nativeShareBtn','closeShareBtn',
     'exportDialog','closeExportBtn','exportScale','exportName','toastRegion'
   ];
@@ -249,6 +261,18 @@ function bindEvents() {
   refs.showHours.addEventListener('change', () => mutate(s=>s.design.showHours=refs.showHours.checked));
   refs.showDetails.addEventListener('change', () => mutate(s=>s.design.showDetails=refs.showDetails.checked));
   refs.showLegend.addEventListener('change', () => mutate(s=>s.design.showLegend=refs.showLegend.checked));
+  refs.clockShowLabels.addEventListener('change', () => mutate(s=>s.design.clockShowLabels=refs.clockShowLabels.checked));
+  refs.clockShowTrack.addEventListener('change', () => mutate(s=>s.design.clockShowTrack=refs.clockShowTrack.checked));
+  refs.clockLabelContent.addEventListener('change', () => mutate(s=>s.design.clockLabelContent=refs.clockLabelContent.value));
+  refs.clockLabelOrientation.addEventListener('change', () => mutate(s=>s.design.clockLabelOrientation=refs.clockLabelOrientation.value));
+  refs.clockCenterMode.addEventListener('change', () => mutate(s=>s.design.clockCenterMode=refs.clockCenterMode.value));
+  refs.legendPosition.addEventListener('change', () => mutate(s=>s.design.legendPosition=refs.legendPosition.value));
+  refs.clockProfilePicker.addEventListener('click', e => { const b=e.target.closest('[data-clock-profile]'); if(b) applyClockProfile(b.dataset.clockProfile); });
+  bindDesignRange(refs.clockScale,'clockScale');
+  bindDesignRange(refs.clockHole,'clockHole');
+  bindDesignRange(refs.clockOffsetY,'clockOffsetY');
+  bindDesignRange(refs.clockGap,'clockGap');
+  bindDesignRange(refs.clockLabelMin,'clockLabelMinMinutes');
   bindLiveField(refs.docTitle, (s,v)=>s.document.title=v, () => state.document.title);
   bindLiveField(refs.docSubtitle, (s,v)=>s.document.subtitle=v, () => state.document.subtitle);
   bindLiveField(refs.accentColor, (s,v)=>s.design.accent=safeColor(v,s.design.accent), () => state.design.accent);
@@ -328,6 +352,15 @@ function bindLiveField(el, setter, getter) {
   el.addEventListener('focus', () => { fieldSnapshot=JSON.stringify(state); });
   el.addEventListener('input', () => { setter(state, el.value); state=normalizeState(state); renderPreview(); syncDesignControls(); schedulePersist(); });
   el.addEventListener('change', () => { if(fieldSnapshot && fieldSnapshot!==JSON.stringify(state)) { historyPast.push(fieldSnapshot); if(historyPast.length>MAX_HISTORY) historyPast.shift(); historyFuture=[]; updateHistoryButtons(); } fieldSnapshot=null; });
+}
+
+function bindDesignRange(el,key) {
+  el.addEventListener('pointerdown', () => { fieldSnapshot=JSON.stringify(state); });
+  el.addEventListener('input', () => { state.design[key]=Number(el.value); state=normalizeState(state); renderPreview(); syncDesignControls(); schedulePersist(); });
+  el.addEventListener('change', () => {
+    if(fieldSnapshot && fieldSnapshot!==JSON.stringify(state)) { historyPast.push(fieldSnapshot); if(historyPast.length>MAX_HISTORY) historyPast.shift(); historyFuture=[]; updateHistoryButtons(); }
+    fieldSnapshot=null;
+  });
 }
 
 function undo() {
@@ -421,6 +454,7 @@ function openScheduleDialog(id=null) {
   refs.scheduleTitle.value=s?.title || '';
   refs.scheduleDetail.value=s?.detail || '';
   refs.scheduleColor.value=s?.color || '#5b9df9';
+  refs.scheduleHideClockLabel.checked=s?.hideClockLabel === true;
   scheduleIconId=s?.icon || 'sun'; updateScheduleIconButton();
   refs.scheduleDialog.showModal();
   setTimeout(()=>refs.scheduleTitle.focus(),30);
@@ -440,7 +474,7 @@ function saveScheduleFromDialog(e) {
   const start=refs.startTime.value, end=refs.endTime.value, title=refs.scheduleTitle.value.trim(), detail=refs.scheduleDetail.value.trim();
   if(!days.length || !start || !end || !title) return showScheduleError('요일, 시작/종료 시간, 활동 이름을 모두 입력해주세요.');
   if(start===end) return showScheduleError('시작 시간과 종료 시간은 달라야 해요.');
-  const candidate={id:editingScheduleId||uid('s'),days,start,end,title,detail,icon:scheduleIconId,color:refs.scheduleColor.value};
+  const candidate={id:editingScheduleId||uid('s'),days,start,end,title,detail,icon:scheduleIconId,color:refs.scheduleColor.value,hideClockLabel:refs.scheduleHideClockLabel.checked};
   const conflict=findConflict(candidate,editingScheduleId);
   if(conflict) return showScheduleError(`“${conflict.title}” 일정과 시간이 겹쳐요. 시간을 조금 바꿔주세요.`);
   mutate(s=>{
@@ -460,10 +494,41 @@ function findConflict(candidate, excludeId=null) {
 }
 function updateScheduleIconButton() { const icon=getIcon(scheduleIconId,state.customIcons); refs.scheduleIconPreview.innerHTML=iconSvgMarkup(icon,{size:22}); refs.scheduleIconName.textContent=icon?.name || '아이콘'; }
 
+function applyClockProfile(profile) {
+  const profiles={
+    balanced:{clockScale:100,clockHole:58,clockOffsetY:0,clockGap:1.2,clockShowLabels:true,clockLabelMinMinutes:45,clockLabelContent:'titleTime',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:true,legendPosition:'auto'},
+    inside:{clockScale:100,clockHole:38,clockOffsetY:0,clockGap:1.4,clockShowLabels:true,clockLabelMinMinutes:60,clockLabelContent:'titleTime',clockLabelOrientation:'horizontal',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'},
+    minimal:{clockScale:94,clockHole:72,clockOffsetY:0,clockGap:1,clockShowLabels:false,clockLabelMinMinutes:60,clockLabelContent:'title',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'count',showLegend:true,legendPosition:'auto'},
+    poster:{clockScale:108,clockHole:52,clockOffsetY:0,clockGap:2,clockShowLabels:true,clockLabelMinMinutes:75,clockLabelContent:'title',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'}
+  };
+  const next=profiles[profile]; if(!next)return;
+  mutate(s=>Object.assign(s.design,next));
+  toast({balanced:'균형형 원형 구성',inside:'원 안 텍스트 구성',minimal:'미니멀 원형 구성',poster:'원형 강조 구성'}[profile]+'을 적용했습니다.');
+}
+
 function syncDesignControls() {
   refs.docTitle.value=state.document.title; refs.docSubtitle.value=state.document.subtitle;
   refs.canvasSize.value=state.design.size; refs.accentColor.value=state.design.accent; refs.accentColorText.textContent=state.design.accent.toUpperCase();
   refs.showHours.checked=state.design.showHours; refs.showDetails.checked=state.design.showDetails; refs.showLegend.checked=state.design.showLegend;
+  refs.clockOptions.hidden=state.design.layout!=='clock';
+  refs.clockScale.value=state.design.clockScale; refs.clockScaleValue.textContent=`${Math.round(state.design.clockScale)}%`;
+  refs.clockHole.value=state.design.clockHole; refs.clockHoleValue.textContent=`${Math.round(state.design.clockHole)}%`;
+  refs.clockOffsetY.value=state.design.clockOffsetY; refs.clockOffsetYValue.textContent=`${state.design.clockOffsetY>0?'+':''}${Math.round(state.design.clockOffsetY)}%`;
+  refs.clockGap.value=state.design.clockGap; refs.clockGapValue.textContent=`${Number(state.design.clockGap).toFixed(1)}°`;
+  refs.clockShowLabels.checked=state.design.clockShowLabels;
+  refs.clockShowTrack.checked=state.design.clockShowTrack;
+  refs.clockLabelMin.value=state.design.clockLabelMinMinutes; refs.clockLabelMinValue.textContent=state.design.clockLabelMinMinutes===0?'모두 표시':`${Math.round(state.design.clockLabelMinMinutes)}분 미만`;
+  refs.clockLabelContent.value=state.design.clockLabelContent; refs.clockLabelOrientation.value=state.design.clockLabelOrientation;
+  refs.clockCenterMode.value=state.design.clockCenterMode; refs.legendPosition.value=state.design.legendPosition;
+  if(refs.clockSmartHint) {
+    const visible=getVisibleSchedules();
+    const shortCount=visible.filter(s=>durationMin(s.start,s.end)<state.design.clockLabelMinMinutes || s.hideClockLabel).length;
+    const sizeName=CANVAS_SIZES[state.design.size]?.label || '현재 비율';
+    let note=`${sizeName}에 맞춰 원형 위치·크기·범례를 자동 계산합니다.`;
+    if(state.design.clockShowLabels && state.design.clockHole>68) note+=' 내측 원이 커서 라벨 공간이 좁아질 수 있어요.';
+    if(state.design.clockShowLabels && shortCount) note+=` 현재 ${shortCount}개 일정 라벨은 짧은 시간/개별 설정으로 숨겨집니다.`;
+    refs.clockSmartHint.textContent=note;
+  }
   $$('#layoutPicker [data-layout]').forEach(b=>b.classList.toggle('is-active',b.dataset.layout===state.design.layout));
   $$('#presetGrid [data-preset]').forEach(b=>b.classList.toggle('is-active',b.dataset.preset===state.design.preset));
 }
@@ -566,7 +631,8 @@ function endStickerDrag(e) {
   if(dragInfo.moved) { historyPast.push(dragInfo.startSnapshot); if(historyPast.length>MAX_HISTORY)historyPast.shift(); historyFuture=[]; schedulePersist(); updateHistoryButtons(); }
   dragInfo=null; renderPreview();
 }
-function stickerTransform(st,w,h) { const x=st.x*w,y=st.y*h,s=st.size; return `translate(${x} ${y}) rotate(${st.rotation}) translate(${-s/2} ${-s/2})`; }
+function stickerRenderSize(st,w,h) { return st.size*clamp(Math.min(w,h)/1200,.78,1.25); }
+function stickerTransform(st,w,h,s=stickerRenderSize(st,w,h)) { const x=st.x*w,y=st.y*h; return `translate(${x} ${y}) rotate(${st.rotation}) translate(${-s/2} ${-s/2})`; }
 
 async function importSvgFile(e) {
   const file=e.target.files?.[0]; e.target.value=''; if(!file)return;
@@ -696,23 +762,145 @@ function renderHeader(w,h,p,{compact=false}={}) {
   return `<g font-family="${font}" text-anchor="middle"><text x="${w/2}" y="${y}" font-family="${titleFont}" font-size="${fs}" font-weight="850" fill="${p.text}" letter-spacing="-1.5">${title}</text><text x="${w/2}" y="${y+sub*1.7}" font-size="${sub}" font-weight="560" fill="${p.muted}">${subText}</text><g transform="translate(${w/2-44} ${y+sub*2.5})"><rect width="88" height="34" rx="${bubble?17:10}" fill="${p.accent}" opacity="${bubble?.18:.12}"/><text x="44" y="23" font-size="15" font-weight="800" fill="${p.accent}">${day}</text></g></g>`;
 }
 
+function readableOn(hex) {
+  const m=/^#([0-9a-f]{6})$/i.exec(hex || '');
+  if(!m) return '#ffffff';
+  const n=parseInt(m[1],16), r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+  const lum=(.2126*r+.7152*g+.0722*b)/255;
+  return lum>.62 ? '#18202b' : '#ffffff';
+}
+
+function getClockLegendPlacement(w,h,p,schedules) {
+  const d=state.design;
+  if(!d.showLegend) return {position:'none',opt:null};
+  const ratio=w/h;
+  const position=d.legendPosition==='auto' ? (ratio>=1.34?'right':'bottom') : d.legendPosition;
+  const margin=clamp(Math.min(w,h)*.05,42,82);
+  const headerBottom=Math.max(190,h*.145);
+  const rowH=['comic','brutal','pixel'].includes(p.pattern)?62:56;
+  if(position==='right') {
+    const width=clamp(w*.32,285,520);
+    const x=w-margin-width;
+    const y=headerBottom+18;
+    const maxRows=clamp(Math.floor((h-y-margin)/rowH),4,12);
+    return {position,opt:{x,y,width,maxRows},circleBounds:{left:margin,right:x-margin*.55,top:headerBottom,bottom:h-margin}};
+  }
+  const width=w-margin*2;
+  const cols=width>w*.6?2:1;
+  const maxItems=clamp(h/w>1.25?10:8,4,12);
+  const shown=Math.min(schedules.length,maxItems);
+  const rows=Math.max(1,Math.ceil(shown/cols));
+  const extra=schedules.length>shown?22:0;
+  const legendHeight=rows*rowH+extra;
+  const y=h-margin-legendHeight;
+  return {position:'bottom',opt:{x:margin,y,width,maxRows:maxItems},circleBounds:{left:margin,right:w-margin,top:headerBottom,bottom:y-margin*.45}};
+}
+
+function renderClockLabels(cx,cy,outerR,holeR,p,schedules) {
+  const d=state.design;
+  if(!d.clockShowLabels) return '';
+  const band=outerR-holeR;
+  const labelRadius=(outerR+holeR)/2;
+  let out='';
+  schedules.forEach((s,i)=>{
+    const dur=durationMin(s.start,s.end);
+    if(s.hideClockLabel || dur<d.clockLabelMinMinutes) return;
+    const mid=(timeToMin(s.start)+dur/2)%1440;
+    const angle=mid/1440*360-90;
+    const a=angle*Math.PI/180;
+    const x=cx+Math.cos(a)*labelRadius, y=cy+Math.sin(a)*labelRadius;
+    const arcLen=Math.max(0,2*Math.PI*labelRadius*dur/1440-labelRadius*(d.clockGap*Math.PI/180));
+    const rawTitle=String(s.title||'');
+    const targetChars=Math.min(Math.max(rawTitle.length,3),18);
+    const font=clamp(Math.min(band*.16,22,arcLen/Math.max(3,targetChars*.78)),9,22);
+    const maxChars=Math.min(20,Math.floor(arcLen/Math.max(7,font*.76)));
+    if(maxChars<3 || band<44) return;
+    const title=escapeXml(truncate(s.title,maxChars));
+    const c=scheduleColor(s,i,p), textColor=readableOn(c);
+    let rot=0;
+    if(d.clockLabelOrientation==='auto') {
+      rot=angle+90;
+      const nr=((rot%360)+360)%360;
+      if(nr>90 && nr<270) rot+=180;
+    }
+    let body='';
+    if(d.clockLabelContent==='iconTitle' && band>=72) {
+      const icon=getIcon(s.icon,state.customIcons);
+      const iconSize=clamp(font*1.05,12,21);
+      body=`<svg x="${-iconSize/2}" y="${-font*1.55}" width="${iconSize}" height="${iconSize}" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" stroke="${textColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg><text y="${font*.65}" text-anchor="middle" font-size="${font}" font-weight="850" fill="${textColor}">${title}</text>`;
+    } else if(d.clockLabelContent==='titleTime' && band>=76 && arcLen>font*5.2) {
+      body=`<text y="${-font*.16}" text-anchor="middle" font-size="${font}" font-weight="850" fill="${textColor}">${title}</text><text y="${font*.92}" text-anchor="middle" font-size="${Math.max(9,font*.66)}" font-weight="750" fill="${textColor}" opacity=".92">${s.start}–${s.end}</text>`;
+    } else {
+      body=`<text y="${font*.34}" text-anchor="middle" font-size="${font}" font-weight="850" fill="${textColor}">${title}</text>`;
+    }
+    out+=`<g transform="translate(${x} ${y}) rotate(${rot})" font-family="${posterFont(p)}" pointer-events="none">${body}</g>`;
+  });
+  return out;
+}
+
 function renderClockLayout(w,h,p,schedules) {
-  const header=renderHeader(w,h,p); const wide=w/h>1.45;
-  const cx=wide?w*.34:(p.pattern==='editorial'||p.pattern==='minimal'?w*.57:w*.5); const cy=wide?h*.57:clamp(h*.45,400,h*.50);
-  const r=wide?Math.min(h*.30,w*.21):Math.min(w*.30,h*.235);
-  const thin=['editorial','minimal','blueprint'].includes(p.pattern); const stroke=thin?Math.max(36,r*.17):Math.max(58,r*.27); const innerR=r-stroke*.5;
-  const circumference=2*Math.PI*r; const cap=p.ringCap||'butt'; const filter=(p.shadow==='glow')?' filter="url(#glow)"':'';
-  let ring=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.line}" stroke-opacity="${thin?.65:.48}" stroke-width="${stroke}"/>`;
-  schedules.forEach((s,i)=>{ const c=scheduleColor(s,i,p); const dur=durationMin(s.start,s.end), len=circumference*dur/1440, rot=timeToMin(s.start)/1440*360-90; ring+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${c}" stroke-width="${stroke}" stroke-linecap="${cap}" stroke-dasharray="${len} ${Math.max(0,circumference-len)}" transform="rotate(${rot} ${cx} ${cy})"${filter}/>`; });
-  if(['comic','brutal','pixel'].includes(p.pattern)) ring+=`<circle cx="${cx}" cy="${cy}" r="${r+stroke*.53}" fill="none" stroke="${p.text}" stroke-width="${p.pattern==='pixel'?5:7}"/><circle cx="${cx}" cy="${cy}" r="${Math.max(10,r-stroke*.53)}" fill="none" stroke="${p.text}" stroke-width="${p.pattern==='pixel'?5:7}"/>`;
-  let ticks=''; if(state.design.showHours){ for(let hour=0;hour<24;hour++){ const a=(hour/24*360-90)*Math.PI/180, major=hour%3===0; const r1=r+stroke*.62, r2=r1+(major?18:9); const x1=cx+Math.cos(a)*r1,y1=cy+Math.sin(a)*r1,x2=cx+Math.cos(a)*r2,y2=cy+Math.sin(a)*r2; ticks+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${p.text}" stroke-opacity="${major?.44:.20}" stroke-width="${major?3:2}"/>`; if(major && hour!==0){ const lr=r2+26; ticks+=`<text x="${cx+Math.cos(a)*lr}" y="${cy+Math.sin(a)*lr+6}" text-anchor="middle" font-family="${posterFont(p)}" font-size="15" font-weight="700" fill="${p.muted}">${String(hour).padStart(2,'0')}</text>`; } } }
-  const planned=schedules.reduce((sum,s)=>sum+durationMin(s.start,s.end),0); const centerFill=(p.pattern==='blueprint'||p.pattern==='chalk')?'transparent':p.surface; const centerFilter=['editorial','minimal','blueprint','chalk'].includes(p.pattern)?'':posterFilter(p);
-  let centerShape=`<circle cx="${cx}" cy="${cy}" r="${Math.max(30,innerR-10)}" fill="${centerFill}" ${centerFilter?`filter="${centerFilter}"`:''} stroke="${['comic','brutal','pixel'].includes(p.pattern)?p.text:p.line}" stroke-opacity="${['comic','brutal','pixel'].includes(p.pattern)?1:.32}" stroke-width="${['comic','brutal','pixel'].includes(p.pattern)?4:1}"/>`;
-  if(p.pattern==='brutal') centerShape=`<rect x="${cx-innerR*.66}" y="${cy-innerR*.42}" width="${innerR*1.32}" height="${innerR*.84}" fill="${p.surface}" stroke="${p.text}" stroke-width="5" filter="url(#hardShadow)"/>`;
-  if(p.pattern==='pixel') centerShape=`<rect x="${cx-innerR*.68}" y="${cy-innerR*.45}" width="${innerR*1.36}" height="${innerR*.90}" fill="${p.surface}" stroke="${p.accent}" stroke-width="5"/>`;
-  const center=`<g font-family="${posterFont(p)}" text-anchor="middle">${centerShape}<text x="${cx}" y="${cy-10}" font-family="${posterTitleFont(p)}" font-size="${clamp(r*.15,25,43)}" font-weight="850" fill="${p.text}">${DAY_NAME[state.ui.selectedDay]}</text><text x="${cx}" y="${cy+28}" font-size="${clamp(r*.072,13,20)}" font-weight="650" fill="${p.muted}">계획 ${escapeXml(durationText(planned))}</text></g>`;
-  const legend=state.design.showLegend?renderLegend(w,h,p,schedules,wide?{x:w*.61,y:h*.27,width:w*.33,maxRows:9}:{x:(p.pattern==='editorial'||p.pattern==='minimal'?w*.08:w*.11),y:cy+r+stroke*.75+52,width:(p.pattern==='editorial'||p.pattern==='minimal'?w*.84:w*.78),maxRows:8}):'';
-  return `${header}<g font-family="${posterFont(p)}">${ring}${ticks}${center}${legend}</g>`;
+  const header=renderHeader(w,h,p);
+  const d=state.design;
+  const placement=getClockLegendPlacement(w,h,p,schedules);
+  const margin=clamp(Math.min(w,h)*.045,36,72);
+  const headerBottom=Math.max(190,h*.145);
+  const bounds=placement.circleBounds || {left:margin,right:w-margin,top:headerBottom,bottom:h-margin};
+  const bw=Math.max(180,bounds.right-bounds.left), bh=Math.max(180,bounds.bottom-bounds.top);
+  const tickPad=d.showHours?clamp(Math.min(w,h)*.045,38,62):18;
+  const maxOuter=Math.max(86,Math.min(bw/2,bh/2)-tickPad);
+  const outerR=Math.max(72,Math.min(maxOuter*d.clockScale/100,maxOuter+tickPad*.35));
+  const holeR=clamp(outerR*d.clockHole/100,outerR*.24,outerR*.80);
+  const stroke=Math.max(18,outerR-holeR);
+  const r=(outerR+holeR)/2;
+  let cx=(bounds.left+bounds.right)/2;
+  const tallBottomLayout=(h/w>1.35 && placement.position==='bottom');
+  const autoCy=tallBottomLayout ? bounds.top+outerR+tickPad*.55+Math.min(54,h*.025) : (bounds.top+bounds.bottom)/2;
+  let cy=autoCy+(bounds.bottom-bounds.top)*(d.clockOffsetY/100);
+  const minCy=bounds.top+outerR+tickPad*.45, maxCy=bounds.bottom-outerR-tickPad*.45;
+  if(minCy<=maxCy) cy=clamp(cy,minCy,maxCy);
+  else cy=(bounds.top+bounds.bottom)/2;
+
+  const circumference=2*Math.PI*r, cap=p.ringCap||'butt';
+  const filter=(p.shadow==='glow')?' filter="url(#glow)"':'';
+  const thin=['editorial','minimal','blueprint'].includes(p.pattern);
+  let ring='';
+  if(d.clockShowTrack) ring+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.line}" stroke-opacity="${thin?.65:.48}" stroke-width="${stroke}"/>`;
+  const gapMinutes=d.clockGap*4;
+  schedules.forEach((s,i)=>{
+    const c=scheduleColor(s,i,p), dur=durationMin(s.start,s.end);
+    const drawDur=Math.max(0,dur-gapMinutes);
+    if(drawDur<=0) return;
+    const len=circumference*drawDur/1440;
+    const rot=((timeToMin(s.start)+gapMinutes/2)/1440*360)-90;
+    ring+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${c}" stroke-width="${stroke}" stroke-linecap="${cap}" stroke-dasharray="${len} ${Math.max(0,circumference-len)}" transform="rotate(${rot} ${cx} ${cy})"${filter}/>`;
+  });
+  if(['comic','brutal','pixel'].includes(p.pattern)) ring+=`<circle cx="${cx}" cy="${cy}" r="${outerR}" fill="none" stroke="${p.text}" stroke-width="${p.pattern==='pixel'?5:7}"/><circle cx="${cx}" cy="${cy}" r="${holeR}" fill="none" stroke="${p.text}" stroke-width="${p.pattern==='pixel'?5:7}"/>`;
+
+  let ticks='';
+  if(d.showHours){
+    for(let hour=0;hour<24;hour++){
+      const a=(hour/24*360-90)*Math.PI/180, major=hour%3===0;
+      const r1=outerR+(major?10:7), r2=r1+(major?18:9);
+      const x1=cx+Math.cos(a)*r1,y1=cy+Math.sin(a)*r1,x2=cx+Math.cos(a)*r2,y2=cy+Math.sin(a)*r2;
+      ticks+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${p.text}" stroke-opacity="${major?.44:.20}" stroke-width="${major?3:2}"/>`;
+      if(major && hour!==0){ const lr=r2+clamp(Math.min(w,h)*.018,18,28); ticks+=`<text x="${cx+Math.cos(a)*lr}" y="${cy+Math.sin(a)*lr+5}" text-anchor="middle" font-family="${posterFont(p)}" font-size="${clamp(Math.min(w,h)*.013,12,17)}" font-weight="700" fill="${p.muted}">${String(hour).padStart(2,'0')}</text>`; }
+    }
+  }
+
+  const planned=schedules.reduce((sum,s)=>sum+durationMin(s.start,s.end),0);
+  const centerFill=(p.pattern==='blueprint'||p.pattern==='chalk')?'transparent':p.surface;
+  const centerFilter=['editorial','minimal','blueprint','chalk'].includes(p.pattern)?'':posterFilter(p);
+  const centerRadius=Math.max(26,holeR-8);
+  let centerShape=`<circle cx="${cx}" cy="${cy}" r="${centerRadius}" fill="${centerFill}" ${centerFilter?`filter="${centerFilter}"`:''} stroke="${['comic','brutal','pixel'].includes(p.pattern)?p.text:p.line}" stroke-opacity="${['comic','brutal','pixel'].includes(p.pattern)?1:.32}" stroke-width="${['comic','brutal','pixel'].includes(p.pattern)?4:1}"/>`;
+  if(p.pattern==='brutal') centerShape=`<rect x="${cx-centerRadius*.69}" y="${cy-centerRadius*.45}" width="${centerRadius*1.38}" height="${centerRadius*.90}" fill="${p.surface}" stroke="${p.text}" stroke-width="5" filter="url(#hardShadow)"/>`;
+  if(p.pattern==='pixel') centerShape=`<rect x="${cx-centerRadius*.70}" y="${cy-centerRadius*.47}" width="${centerRadius*1.40}" height="${centerRadius*.94}" fill="${p.surface}" stroke="${p.accent}" stroke-width="5"/>`;
+  let centerText='';
+  if(d.clockCenterMode==='summary') centerText=`<text x="${cx}" y="${cy-10}" font-family="${posterTitleFont(p)}" font-size="${clamp(holeR*.17,22,43)}" font-weight="850" fill="${p.text}">${DAY_NAME[state.ui.selectedDay]}</text><text x="${cx}" y="${cy+28}" font-size="${clamp(holeR*.082,12,20)}" font-weight="650" fill="${p.muted}">계획 ${escapeXml(durationText(planned))}</text>`;
+  else if(d.clockCenterMode==='count') centerText=`<text x="${cx}" y="${cy-10}" font-family="${posterTitleFont(p)}" font-size="${clamp(holeR*.17,22,43)}" font-weight="850" fill="${p.text}">${DAY_NAME[state.ui.selectedDay]}</text><text x="${cx}" y="${cy+28}" font-size="${clamp(holeR*.082,12,20)}" font-weight="650" fill="${p.muted}">일정 ${schedules.length}개</text>`;
+  const center=`<g font-family="${posterFont(p)}" text-anchor="middle">${centerShape}${centerText}</g>`;
+  const labels=renderClockLabels(cx,cy,outerR,holeR,p,schedules);
+  const legend=placement.opt?renderLegend(w,h,p,schedules,placement.opt):'';
+  return `${header}<g font-family="${posterFont(p)}">${ring}${ticks}${labels}${center}${legend}</g>`;
 }
 
 function renderLegend(w,h,p,schedules,opt) {
@@ -740,9 +928,9 @@ function truncate(s,n){ s=String(s||''); return s.length>n?s.slice(0,n-1)+'…':
 
 function renderSticker(st,w,h,editor=false) {
   const icon=getIcon(st.icon,state.customIcons); if(!icon)return '';
-  const s=st.size, selected=editor && st.id===selectedStickerId;
+  const s=stickerRenderSize(st,w,h), selected=editor && st.id===selectedStickerId;
   const controls=selected?`<g class="sticker-controls"><rect class="sticker-selection" x="-12" y="-12" width="${s+24}" height="${s+24}" rx="14" fill="none" vector-effect="non-scaling-stroke"/><line class="sticker-rotate-line" x1="${s/2}" y1="-12" x2="${s/2}" y2="-48" vector-effect="non-scaling-stroke"/><circle data-sticker-handle="rotate" class="sticker-handle-hit" cx="${s/2}" cy="-50" r="24" fill="transparent"/><circle class="sticker-handle-visible rotate" cx="${s/2}" cy="-50" r="10" vector-effect="non-scaling-stroke"/><circle data-sticker-handle="resize" class="sticker-handle-hit" cx="${s+12}" cy="${s+12}" r="26" fill="transparent"/><circle class="sticker-handle-visible resize" cx="${s+12}" cy="${s+12}" r="11" vector-effect="non-scaling-stroke"/><path class="sticker-resize-glyph" d="M${s+7} ${s+12}h10M${s+12} ${s+7}v10" vector-effect="non-scaling-stroke"/></g>`:'';
-  return `<g data-sticker-id="${escapeXml(st.id)}" transform="${stickerTransform(st,w,h)}"><rect class="sticker-hit" x="-10" y="-10" width="${s+20}" height="${s+20}" rx="18" fill="transparent" stroke="transparent"/><svg x="0" y="0" width="${s}" height="${s}" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" color="${st.color}" stroke="${st.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg>${controls}</g>`;
+  return `<g data-sticker-id="${escapeXml(st.id)}" transform="${stickerTransform(st,w,h,s)}"><rect class="sticker-hit" x="-10" y="-10" width="${s+20}" height="${s+20}" rx="18" fill="transparent" stroke="transparent"/><svg x="0" y="0" width="${s}" height="${s}" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" color="${st.color}" stroke="${st.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg>${controls}</g>`;
 }
 
 function fitPreview() {
@@ -758,13 +946,13 @@ async function importJson(e) { const file=e.target.files?.[0]; e.target.value=''
 
 function csvEscape(v){ const s=String(v??''); return /[",\n]/.test(s)?`"${s.replace(/"/g,'""')}"`:s; }
 function exportCsv() {
-  const rows=[['요일','시작시간','종료시간','제목','내용','색상','아이콘'],...state.schedules.map(s=>[s.days.map(d=>DAY_NAME[d]).join('/'),s.start,s.end,s.title,s.detail,s.color,s.icon])];
+  const rows=[['요일','시작시간','종료시간','제목','내용','색상','아이콘','원형라벨숨김'],...state.schedules.map(s=>[s.days.map(d=>DAY_NAME[d]).join('/'),s.start,s.end,s.title,s.detail,s.color,s.icon,s.hideClockLabel?'예':'아니오'])];
   const csv='\ufeff'+rows.map(r=>r.map(csvEscape).join(',')).join('\r\n'); downloadBlob(new Blob([csv],{type:'text/csv;charset=utf-8'}),`${sanitizeFilename(state.document.title)}.csv`); toast('CSV를 저장했습니다.');
 }
 async function importCsv(e) {
   const file=e.target.files?.[0]; e.target.value=''; if(!file)return;
   try { const rows=parseCsv(await file.text()); if(rows.length<2)throw new Error(); const head=rows[0]; const idx=n=>head.indexOf(n); const mapDay={'매일':'all','공통':'all','월':'mon','화':'tue','수':'wed','목':'thu','금':'fri','토':'sat','일':'sun','월요일':'mon','화요일':'tue','수요일':'wed','목요일':'thu','금요일':'fri','토요일':'sat','일요일':'sun'};
-    const imported=rows.slice(1).filter(r=>r.some(Boolean)).map(r=>({id:uid('s'),days:String(r[idx('요일')]||'매일').split(/[\/·, ]+/).map(x=>mapDay[x]).filter(Boolean),start:r[idx('시작시간')]||'09:00',end:r[idx('종료시간')]||'10:00',title:r[idx('제목')]||'일정',detail:r[idx('내용')]||'',color:safeColor(r[idx('색상')],'#5b9df9'),icon:r[idx('아이콘')]||inferIcon(r[idx('제목')]||'')}));
+    const imported=rows.slice(1).filter(r=>r.some(Boolean)).map(r=>({id:uid('s'),days:String(r[idx('요일')]||'매일').split(/[\/·, ]+/).map(x=>mapDay[x]).filter(Boolean),start:r[idx('시작시간')]||'09:00',end:r[idx('종료시간')]||'10:00',title:r[idx('제목')]||'일정',detail:r[idx('내용')]||'',color:safeColor(r[idx('색상')],'#5b9df9'),icon:r[idx('아이콘')]||inferIcon(r[idx('제목')]||''),hideClockLabel:/^(예|yes|true|1)$/i.test(String(r[idx('원형라벨숨김')]||''))}));
     if(!imported.length)throw new Error(); mutate(s=>s.schedules=imported); toast(`${imported.length}개 일정을 불러왔습니다.`);
   } catch { toast('CSV 형식을 확인해주세요. DayCraft에서 내보낸 CSV가 가장 안전합니다.',true); }
 }
