@@ -77,7 +77,7 @@ function defaultState() {
     ],
     stickers: [],
     customIcons: [],
-    design: {preset:'playful', layout:'clock', size:'square', accent:'#5b67f1', showHours:true, showDetails:true, showLegend:true, legendPosition:'auto', clockScale:100, clockHole:58, clockOffsetY:0, clockGap:1.2, clockShowLabels:true, clockLabelMinMinutes:45, clockLabelSize:18, clockLabelContent:'titleTime', clockLabelOrientation:'auto', clockShowTrack:true, clockCenterMode:'summary'},
+    design: {preset:'playful', layout:'clock', size:'square', accent:'#5b67f1', showHours:true, showDetails:true, showLegend:true, legendPosition:'auto', clockScale:100, clockHole:58, clockOffsetY:0, clockGap:2, clockShowLabels:true, clockLabelMinMinutes:45, clockLabelSize:18, clockLabelContent:'titleTime', clockLabelOrientation:'auto', clockShowTrack:true, clockCenterMode:'summary'},
     ui: {selectedDay:'all', theme:'system'}
   };
 }
@@ -123,7 +123,7 @@ function normalizeState(raw) {
       clockScale:clamp(Number(r.design?.clockScale ?? base.design.clockScale),70,108),
       clockHole:clamp(Number(r.design?.clockHole ?? base.design.clockHole),28,76),
       clockOffsetY:clamp(Number(r.design?.clockOffsetY ?? base.design.clockOffsetY),-18,18),
-      clockGap:clamp(Number(r.design?.clockGap ?? base.design.clockGap),0,5),
+      clockGap:clamp(Number(r.design?.clockGap ?? base.design.clockGap),0,12),
       clockShowLabels:r.design?.clockShowLabels !== false,
       clockLabelMinMinutes:clamp(Number(r.design?.clockLabelMinMinutes ?? base.design.clockLabelMinMinutes),0,180),
       clockLabelSize:clamp(Number(r.design?.clockLabelSize ?? base.design.clockLabelSize),12,26),
@@ -502,10 +502,10 @@ function updateScheduleIconButton() { const icon=getIcon(scheduleIconId,state.cu
 
 function applyClockProfile(profile) {
   const profiles={
-    balanced:{clockScale:100,clockHole:58,clockOffsetY:0,clockGap:1.2,clockShowLabels:true,clockLabelMinMinutes:45,clockLabelSize:18,clockLabelContent:'titleTime',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:true,legendPosition:'auto'},
-    inside:{clockScale:100,clockHole:38,clockOffsetY:0,clockGap:1.4,clockShowLabels:true,clockLabelMinMinutes:60,clockLabelSize:18,clockLabelContent:'titleTime',clockLabelOrientation:'horizontal',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'},
+    balanced:{clockScale:100,clockHole:58,clockOffsetY:0,clockGap:2,clockShowLabels:true,clockLabelMinMinutes:45,clockLabelSize:18,clockLabelContent:'titleTime',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:true,legendPosition:'auto'},
+    inside:{clockScale:100,clockHole:38,clockOffsetY:0,clockGap:3,clockShowLabels:true,clockLabelMinMinutes:60,clockLabelSize:18,clockLabelContent:'titleTime',clockLabelOrientation:'horizontal',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'},
     minimal:{clockScale:94,clockHole:72,clockOffsetY:0,clockGap:1,clockShowLabels:false,clockLabelMinMinutes:60,clockLabelSize:16,clockLabelContent:'title',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'count',showLegend:true,legendPosition:'auto'},
-    poster:{clockScale:108,clockHole:52,clockOffsetY:0,clockGap:2,clockShowLabels:true,clockLabelMinMinutes:75,clockLabelSize:19,clockLabelContent:'title',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'}
+    poster:{clockScale:108,clockHole:52,clockOffsetY:0,clockGap:3,clockShowLabels:true,clockLabelMinMinutes:75,clockLabelSize:19,clockLabelContent:'title',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'}
   };
   const next=profiles[profile]; if(!next)return;
   mutate(s=>Object.assign(s.design,next));
@@ -520,7 +520,7 @@ function syncDesignControls() {
   refs.clockScale.value=state.design.clockScale; refs.clockScaleValue.textContent=`${Math.round(state.design.clockScale)}%`;
   refs.clockHole.value=state.design.clockHole; refs.clockHoleValue.textContent=`${Math.round(state.design.clockHole)}%`;
   refs.clockOffsetY.value=state.design.clockOffsetY; refs.clockOffsetYValue.textContent=`${state.design.clockOffsetY>0?'+':''}${Math.round(state.design.clockOffsetY)}%`;
-  refs.clockGap.value=state.design.clockGap; refs.clockGapValue.textContent=`${Number(state.design.clockGap).toFixed(1)}°`;
+  refs.clockGap.value=state.design.clockGap; refs.clockGapValue.textContent=`${Math.round(Number(state.design.clockGap)||0)}px`;
   refs.clockShowLabels.checked=state.design.clockShowLabels;
   refs.clockShowTrack.checked=state.design.clockShowTrack;
   refs.clockLabelMin.value=state.design.clockLabelMinMinutes; refs.clockLabelMinValue.textContent=state.design.clockLabelMinMinutes===0?'모두 표시':`${Math.round(state.design.clockLabelMinMinutes)}분 미만`;
@@ -822,12 +822,36 @@ function fullAnnulusPath(cx,cy,outerR,innerR) {
   return `M ${cx-outerR} ${cy} A ${outerR} ${outerR} 0 1 0 ${cx+outerR} ${cy} A ${outerR} ${outerR} 0 1 0 ${cx-outerR} ${cy} Z M ${cx-innerR} ${cy} A ${innerR} ${innerR} 0 1 1 ${cx+innerR} ${cy} A ${innerR} ${innerR} 0 1 1 ${cx-innerR} ${cy} Z`;
 }
 
-function clockSegmentGeometry(s,gapDeg=0) {
+function clockSegmentGeometry(s) {
   const startMin=timeToMin(s.start), dur=durationMin(s.start,s.end);
   const start=startMin/1440*360-90;
   const sweep=dur/1440*360;
-  const safeGap=Math.min(Math.max(0,gapDeg),Math.max(0,sweep*.38));
-  return {dur,start,end:start+sweep,drawStart:start+safeGap/2,drawEnd:start+sweep-safeGap/2,sweep};
+  // Strict geometry: schedule time owns its exact angular interval.
+  // Visual separators are drawn on top and never change start/end angles.
+  return {dur,start,end:start+sweep,sweep};
+}
+
+function renderClockSeparators(cx,cy,outerR,holeR,p,schedules) {
+  const width=clamp(Number(state.design.clockGap)||0,0,12);
+  if(width<=0) return '';
+  const seen=new Set();
+  let out='';
+  schedules.forEach((s)=>{
+    const geo=clockSegmentGeometry(s);
+    [geo.start,geo.end].forEach((deg)=>{
+      const key=((deg%360)+360)%360;
+      const rounded=Math.round(key*1000)/1000;
+      if(seen.has(rounded)) return;
+      seen.add(rounded);
+      const a=deg*Math.PI/180;
+      const x1=cx+Math.cos(a)*(holeR-1);
+      const y1=cy+Math.sin(a)*(holeR-1);
+      const x2=cx+Math.cos(a)*(outerR+1);
+      const y2=cy+Math.sin(a)*(outerR+1);
+      out+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${p.bg}" stroke-width="${width}" stroke-linecap="butt" vector-effect="non-scaling-stroke"/>`;
+    });
+  });
+  return out;
 }
 
 function renderClockLabels(cx,cy,outerR,holeR,p,schedules,w,h) {
@@ -839,12 +863,12 @@ function renderClockLabels(cx,cy,outerR,holeR,p,schedules,w,h) {
   const requested=clamp(d.clockLabelSize*canvasScale,10,26);
   let defs='', out='';
   schedules.forEach((s,i)=>{
-    const geo=clockSegmentGeometry(s,d.clockGap);
+    const geo=clockSegmentGeometry(s);
     if(s.hideClockLabel || geo.dur<d.clockLabelMinMinutes) return;
     const mid=(geo.start+geo.end)/2;
     const a=mid*Math.PI/180;
     const x=cx+Math.cos(a)*labelRadius, y=cy+Math.sin(a)*labelRadius;
-    const availableArc=Math.max(0,labelRadius*(geo.drawEnd-geo.drawStart)*Math.PI/180);
+    const availableArc=Math.max(0,labelRadius*(geo.end-geo.start)*Math.PI/180);
     const rawTitle=String(s.title||'');
     const lines=d.clockLabelContent==='titleTime'?2:1;
     const radialFit=band/(lines===2?2.55:1.55);
@@ -861,7 +885,7 @@ function renderClockLabels(cx,cy,outerR,holeR,p,schedules,w,h) {
       if(nr>90 && nr<270) rot+=180;
     }
     const clipId=`clockLabelClip${i}`;
-    const clipPath=annularSectorPath(cx,cy,Math.max(holeR+2,outerR-4),Math.min(outerR-2,holeR+4),geo.drawStart,geo.drawEnd);
+    const clipPath=annularSectorPath(cx,cy,Math.max(holeR+2,outerR-4),Math.min(outerR-2,holeR+4),geo.start,geo.end);
     defs+=`<clipPath id="${clipId}"><path d="${clipPath}" fill-rule="evenodd"/></clipPath>`;
     let body='';
     if(d.clockLabelContent==='iconTitle' && band>=font*2.4) {
@@ -899,16 +923,17 @@ function renderClockLayout(w,h,p,schedules) {
   const minCy=bounds.top+outerR+tickPad*.45, maxCy=bounds.bottom-outerR-tickPad*.45;
   if(minCy<=maxCy) cy=clamp(cy,minCy,maxCy); else cy=(bounds.top+bounds.bottom)/2;
 
-  const filter=(p.shadow==='glow')?' filter="url(#glow)"':'';
+  const filter=(p.shadow==='glow')?' filter="url(#glow)"':''; // reserved for non-segment decoration; segment fills stay exact
   const thin=['editorial','minimal','blueprint'].includes(p.pattern);
   let ring='';
   if(d.clockShowTrack) ring+=`<path d="${fullAnnulusPath(cx,cy,outerR,holeR)}" fill="${p.line}" fill-opacity="${thin?.40:.28}" fill-rule="evenodd"/>`;
   schedules.forEach((s,i)=>{
-    const geo=clockSegmentGeometry(s,d.clockGap);
-    if(geo.drawEnd<=geo.drawStart) return;
+    const geo=clockSegmentGeometry(s);
+    if(geo.end<=geo.start) return;
     const c=scheduleColor(s,i,p);
-    ring+=`<path d="${annularSectorPath(cx,cy,outerR,holeR,geo.drawStart,geo.drawEnd)}" fill="${c}" fill-rule="evenodd"${filter}/>`;
+    ring+=`<path d="${annularSectorPath(cx,cy,outerR,holeR,geo.start,geo.end)}" fill="${c}" fill-rule="evenodd"/>`;
   });
+  ring+=renderClockSeparators(cx,cy,outerR,holeR,p,schedules);
   if(['comic','brutal','pixel'].includes(p.pattern)) ring+=`<circle cx="${cx}" cy="${cy}" r="${outerR}" fill="none" stroke="${p.text}" stroke-width="${p.pattern==='pixel'?5:7}"/><circle cx="${cx}" cy="${cy}" r="${holeR}" fill="none" stroke="${p.text}" stroke-width="${p.pattern==='pixel'?5:7}"/>`;
 
   let ticks='';
