@@ -131,7 +131,7 @@
 
           <div class="control-section clock-options" id="clockOptions">
             <div class="section-title"><span>원형 시계</span><small>24시간 = 360°</small></div>
-            <p class="control-hint">각 일정은 시작·종료 시간을 각도로 환산해 자기 구간 안에서만 표시됩니다. <strong>내측 원 크기</strong>를 바꿔도 바깥 원과 시간 각도는 그대로 유지됩니다.</p>
+            <p class="control-hint">각 일정은 시작·종료 시간을 각도로 환산해 자기 구간 안에서만 표시됩니다. <strong>내측 원 크기</strong>를 바꿔도 바깥 원과 시간 각도는 그대로 유지됩니다. 둥근 모서리는 stroke cap이 아니라 <strong>R 기반 필렛</strong>으로 계산됩니다.</p>
             <div class="smart-layout-hint" id="clockSmartHint"></div>
             <div class="clock-profile-picker" id="clockProfilePicker" aria-label="원형 구성 빠른 설정">
               <button type="button" data-clock-profile="balanced"><strong>균형</strong><small>범례 + 원 안 라벨</small></button>
@@ -144,6 +144,7 @@
               <label class="range-control"><span class="range-head"><span class="field-label">안쪽 빈 원</span><output id="clockHoleValue">58%</output></span><input id="clockHole" type="range" min="28" max="76" step="1" /><small class="range-note">바깥 지름은 고정 · 안쪽 경계만 이동</small></label>
               <label class="range-control"><span class="range-head"><span class="field-label">세로 위치</span><output id="clockOffsetYValue">0%</output></span><input id="clockOffsetY" type="range" min="-18" max="18" step="1" /></label>
               <label class="range-control"><span class="range-head"><span class="field-label">경계선 두께</span><output id="clockGapValue">2px</output></span><input id="clockGap" type="range" min="0" max="12" step="1" /><small class="range-note">시간 각도는 그대로 · 색 경계만 시각적으로 분리</small></label>
+              <label class="range-control"><span class="range-head"><span class="field-label">모서리 R</span><output id="clockCornerValue">8%</output></span><input id="clockCorner" type="range" min="0" max="40" step="1" /><small class="range-note">띠 두께에 비례 · 짧은 일정은 각도 범위 안에서 자동 제한</small></label>
             </div>
             <div class="clock-select-grid">
               <label><span class="field-label">원 안 글 내용</span><select class="select-input" id="clockLabelContent"><option value="title">활동 이름</option><option value="titleTime">활동 이름 + 시간</option><option value="iconTitle">아이콘 + 활동 이름</option></select></label>

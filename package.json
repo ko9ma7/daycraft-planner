@@ -1,6 +1,6 @@
 {
   "name": "daycraft-planner",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "private": true,
   "type": "module",
   "description": "Kids-friendly daily schedule poster editor for GitHub Pages",

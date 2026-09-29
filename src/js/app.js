@@ -19,22 +19,22 @@ const CANVAS_SIZES = {
 };
 
 const PRESETS = {
-  playful: {name:'컬러 팝', desc:'통통 튀는 키즈 포스터', bg:'#fff8ea', surface:'#ffffff', text:'#27304a', muted:'#69708a', accent:'#5b67f1', line:'#e8dccb', palette:['#ff6f91','#5b9df9','#ffc857','#44c7b6','#9b7cf6','#ff8a5b'], pattern:'playful', font:"system-ui,'Noto Sans KR',sans-serif", titleFont:"'Arial Rounded MT Bold','Noto Sans KR',system-ui,sans-serif", header:'center', card:'soft', radius:20, border:1.5, shadow:'soft', ringCap:'butt', paletteMode:'schedule'},
-  kawaii: {name:'젤리 파스텔', desc:'말랑한 구름과 캔디', bg:'#fff4fb', surface:'#fffaff', text:'#4d3652', muted:'#8c708f', accent:'#ff78b5', line:'#f1d8e7', palette:['#ff8fbd','#90d7ff','#a9e7b3','#ffd86b','#c3a6ff','#ffad8f'], pattern:'kawaii', font:"'Trebuchet MS','Noto Sans KR',sans-serif", titleFont:"'Arial Rounded MT Bold','Noto Sans KR',sans-serif", header:'bubble', card:'jelly', radius:30, border:1.2, shadow:'soft', ringCap:'round', paletteMode:'preset'},
-  notebook: {name:'공책', desc:'줄노트와 손필기 감성', bg:'#fffdf6', surface:'#fffefa', text:'#334155', muted:'#7c8797', accent:'#3b82f6', line:'#dbe4ee', palette:['#60a5fa','#34d399','#fbbf24','#fb7185','#a78bfa','#38bdf8'], pattern:'notebook', font:"'Segoe Print','Noto Sans KR',cursive", titleFont:"'Segoe Print','Noto Sans KR',cursive", header:'left', card:'paper', radius:8, border:1.4, shadow:'paper', ringCap:'round', paletteMode:'schedule'},
-  scrapbook: {name:'스크랩북', desc:'종이·테이프·콜라주', bg:'#f5ead7', surface:'#fffaf0', text:'#40362d', muted:'#75685b', accent:'#ef7f65', line:'#d8c7ad', palette:['#ef7f65','#78a6a3','#e0b24f','#8f78a8','#d47f9d','#6e91bd'], pattern:'scrapbook', font:"'Trebuchet MS','Noto Sans KR',sans-serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'scrap', card:'paper', radius:4, border:1.8, shadow:'paper', ringCap:'butt', paletteMode:'preset'},
-  comic: {name:'코믹북', desc:'굵은 선과 하프톤', bg:'#fff24a', surface:'#fffef2', text:'#111111', muted:'#4d4d3d', accent:'#ff3b30', line:'#111111', palette:['#ff3b30','#2867ff','#00a66b','#ff9f0a','#af52de','#111111'], pattern:'comic', font:"'Arial Black','Noto Sans KR',sans-serif", titleFont:"Impact,'Arial Black','Noto Sans KR',sans-serif", header:'comic', card:'comic', radius:0, border:4, shadow:'hard', ringCap:'butt', paletteMode:'preset'},
-  arcade: {name:'네온 아케이드', desc:'사이버 그리드와 글로우', bg:'#09061a', surface:'#15102d', text:'#f8f5ff', muted:'#b5a8d4', accent:'#00f5ff', line:'#392c5c', palette:['#00f5ff','#ff45d4','#8d5bff','#00ff85','#ffe45e','#ff6b6b'], pattern:'arcade', font:"ui-monospace,'Noto Sans KR',monospace", titleFont:"'Arial Black','Noto Sans KR',sans-serif", header:'neon', card:'neon', radius:10, border:2, shadow:'glow', ringCap:'round', paletteMode:'preset'},
-  blueprint: {name:'블루프린트', desc:'도면 격자와 기술 문서', bg:'#0d4f86', surface:'#155f99', text:'#f2fbff', muted:'#b8d9ee', accent:'#7ee7ff', line:'#74b4da', palette:['#f2fbff','#7ee7ff','#ffdc73','#a8ffcf','#ff9bc8','#d7c5ff'], pattern:'blueprint', font:"ui-monospace,'Noto Sans KR',monospace", titleFont:"ui-monospace,'Noto Sans KR',monospace", header:'technical', card:'outline', radius:0, border:2, shadow:'none', ringCap:'butt', paletteMode:'preset'},
-  chalk: {name:'칠판', desc:'분필 낙서와 교실 감성', bg:'#173b32', surface:'#214c41', text:'#fff9e8', muted:'#c7d5c5', accent:'#ffd769', line:'#6f9186', palette:['#fff9e8','#ffd769','#8fe3c3','#ff9ca8','#9ec7ff','#d7b2ff'], pattern:'chalk', font:"'Segoe Print','Noto Sans KR',cursive", titleFont:"'Segoe Print','Noto Sans KR',cursive", header:'chalk', card:'chalk', radius:12, border:2, shadow:'none', ringCap:'round', paletteMode:'preset'},
-  editorial: {name:'에디토리얼', desc:'잡지처럼 절제된 타이포', bg:'#f7f3eb', surface:'#fbf8f1', text:'#171717', muted:'#6e6a63', accent:'#b33a2f', line:'#c9c2b5', palette:['#171717','#b33a2f','#486a63','#b58a3e','#5b587a','#777777'], pattern:'editorial', font:"Georgia,'Noto Serif KR',serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'editorial', card:'editorial', radius:0, border:1.2, shadow:'none', ringCap:'butt', paletteMode:'preset'},
-  brutal: {name:'브루탈', desc:'강한 대비와 블록 구조', bg:'#f3ff4b', surface:'#ffffff', text:'#0a0a0a', muted:'#3e3e31', accent:'#ff4d00', line:'#0a0a0a', palette:['#ff4d00','#006bff','#00a86b','#0a0a0a','#ff00a8','#7b2cff'], pattern:'brutal', font:"'Arial Black','Noto Sans KR',sans-serif", titleFont:"'Arial Black','Noto Sans KR',sans-serif", header:'brutal', card:'brutal', radius:0, border:5, shadow:'hard', ringCap:'butt', paletteMode:'preset'},
-  retro: {name:'70s 레트로', desc:'따뜻한 곡선과 빈티지', bg:'#f6d88b', surface:'#fff1c9', text:'#4b2e23', muted:'#7c5a4c', accent:'#d95d39', line:'#c79d64', palette:['#d95d39','#2f7e78','#d09a2d','#6e5596','#b84f6d','#4d79a6'], pattern:'retro', font:"'Trebuchet MS','Noto Sans KR',sans-serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'retro', card:'retro', radius:24, border:2, shadow:'paper', ringCap:'round', paletteMode:'preset'},
-  pixel: {name:'픽셀 게임', desc:'8비트 HUD와 타일', bg:'#20163b', surface:'#2e2050', text:'#fff6d8', muted:'#c7b7e7', accent:'#f6e05e', line:'#735aa5', palette:['#f6e05e','#5eead4','#fb7185','#60a5fa','#c084fc','#f97316'], pattern:'pixel', font:"ui-monospace,'Noto Sans KR',monospace", titleFont:"ui-monospace,'Noto Sans KR',monospace", header:'pixel', card:'pixel', radius:0, border:4, shadow:'hard', ringCap:'butt', paletteMode:'preset'},
-  glass: {name:'오로라 글래스', desc:'빛 번짐과 투명 레이어', bg:'#dbeafe', surface:'#f8fbff', text:'#18304d', muted:'#60758f', accent:'#3b82f6', line:'#bdd5ea', palette:['#3b82f6','#06b6d4','#22c55e','#a855f7','#f59e0b','#ef4444'], pattern:'glass', font:"system-ui,'Noto Sans KR',sans-serif", titleFont:"system-ui,'Noto Sans KR',sans-serif", header:'glass', card:'glass', radius:28, border:1, shadow:'soft', ringCap:'round', paletteMode:'preset'},
-  forest: {name:'보태니컬', desc:'잎사귀와 자연의 리듬', bg:'#eaf5e6', surface:'#f9fff6', text:'#254133', muted:'#667c6d', accent:'#3d8a5e', line:'#c5dbc0', palette:['#3d8a5e','#7bbd72','#d9a441','#5f8bb6','#b6789d','#8d7458'], pattern:'forest', font:"Georgia,'Noto Serif KR',serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'botanical', card:'soft', radius:24, border:1.2, shadow:'soft', ringCap:'round', paletteMode:'preset'},
-  minimal: {name:'스위스 미니멀', desc:'정렬·여백·선 중심', bg:'#f7f7f5', surface:'#ffffff', text:'#111111', muted:'#6b7280', accent:'#e62b1e', line:'#cfcfca', palette:['#111111','#e62b1e','#4b5563','#9ca3af','#1f2937','#6b7280'], pattern:'minimal', font:"Arial,'Noto Sans KR',sans-serif", titleFont:"Arial,'Noto Sans KR',sans-serif", header:'swiss', card:'editorial', radius:0, border:1.5, shadow:'none', ringCap:'butt', paletteMode:'preset'},
-  night: {name:'별자리 밤', desc:'별빛과 깊은 남색', bg:'#11162f', surface:'#1d2546', text:'#f7f8ff', muted:'#b8c0dc', accent:'#9ea7ff', line:'#36405f', palette:['#9ea7ff','#ff88b7','#65d7c4','#ffd36a','#8ed1fc','#c99cff'], pattern:'night', font:"system-ui,'Noto Sans KR',sans-serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'night', card:'night', radius:18, border:1.2, shadow:'soft', ringCap:'round', paletteMode:'preset'}
+  playful: {name:'컬러 팝', desc:'통통 튀는 키즈 포스터', bg:'#fff8ea', surface:'#ffffff', text:'#27304a', muted:'#69708a', accent:'#5b67f1', line:'#e8dccb', palette:['#ff6f91','#5b9df9','#ffc857','#44c7b6','#9b7cf6','#ff8a5b'], pattern:'playful', font:"system-ui,'Noto Sans KR',sans-serif", titleFont:"'Arial Rounded MT Bold','Noto Sans KR',system-ui,sans-serif", header:'center', card:'soft', radius:20, border:1.5, shadow:'soft', ringCap:'butt', corner:8, paletteMode:'schedule'},
+  kawaii: {name:'젤리 파스텔', desc:'말랑한 구름과 캔디', bg:'#fff4fb', surface:'#fffaff', text:'#4d3652', muted:'#8c708f', accent:'#ff78b5', line:'#f1d8e7', palette:['#ff8fbd','#90d7ff','#a9e7b3','#ffd86b','#c3a6ff','#ffad8f'], pattern:'kawaii', font:"'Trebuchet MS','Noto Sans KR',sans-serif", titleFont:"'Arial Rounded MT Bold','Noto Sans KR',sans-serif", header:'bubble', card:'jelly', radius:30, border:1.2, shadow:'soft', ringCap:'round', corner:18, paletteMode:'preset'},
+  notebook: {name:'공책', desc:'줄노트와 손필기 감성', bg:'#fffdf6', surface:'#fffefa', text:'#334155', muted:'#7c8797', accent:'#3b82f6', line:'#dbe4ee', palette:['#60a5fa','#34d399','#fbbf24','#fb7185','#a78bfa','#38bdf8'], pattern:'notebook', font:"'Segoe Print','Noto Sans KR',cursive", titleFont:"'Segoe Print','Noto Sans KR',cursive", header:'left', card:'paper', radius:8, border:1.4, shadow:'paper', ringCap:'round', corner:10, paletteMode:'schedule'},
+  scrapbook: {name:'스크랩북', desc:'종이·테이프·콜라주', bg:'#f5ead7', surface:'#fffaf0', text:'#40362d', muted:'#75685b', accent:'#ef7f65', line:'#d8c7ad', palette:['#ef7f65','#78a6a3','#e0b24f','#8f78a8','#d47f9d','#6e91bd'], pattern:'scrapbook', font:"'Trebuchet MS','Noto Sans KR',sans-serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'scrap', card:'paper', radius:4, border:1.8, shadow:'paper', ringCap:'butt', corner:6, paletteMode:'preset'},
+  comic: {name:'코믹북', desc:'굵은 선과 하프톤', bg:'#fff24a', surface:'#fffef2', text:'#111111', muted:'#4d4d3d', accent:'#ff3b30', line:'#111111', palette:['#ff3b30','#2867ff','#00a66b','#ff9f0a','#af52de','#111111'], pattern:'comic', font:"'Arial Black','Noto Sans KR',sans-serif", titleFont:"Impact,'Arial Black','Noto Sans KR',sans-serif", header:'comic', card:'comic', radius:0, border:4, shadow:'hard', ringCap:'butt', corner:0, paletteMode:'preset'},
+  arcade: {name:'네온 아케이드', desc:'사이버 그리드와 글로우', bg:'#09061a', surface:'#15102d', text:'#f8f5ff', muted:'#b5a8d4', accent:'#00f5ff', line:'#392c5c', palette:['#00f5ff','#ff45d4','#8d5bff','#00ff85','#ffe45e','#ff6b6b'], pattern:'arcade', font:"ui-monospace,'Noto Sans KR',monospace", titleFont:"'Arial Black','Noto Sans KR',sans-serif", header:'neon', card:'neon', radius:10, border:2, shadow:'glow', ringCap:'round', corner:14, paletteMode:'preset'},
+  blueprint: {name:'블루프린트', desc:'도면 격자와 기술 문서', bg:'#0d4f86', surface:'#155f99', text:'#f2fbff', muted:'#b8d9ee', accent:'#7ee7ff', line:'#74b4da', palette:['#f2fbff','#7ee7ff','#ffdc73','#a8ffcf','#ff9bc8','#d7c5ff'], pattern:'blueprint', font:"ui-monospace,'Noto Sans KR',monospace", titleFont:"ui-monospace,'Noto Sans KR',monospace", header:'technical', card:'outline', radius:0, border:2, shadow:'none', ringCap:'butt', corner:0, paletteMode:'preset'},
+  chalk: {name:'칠판', desc:'분필 낙서와 교실 감성', bg:'#173b32', surface:'#214c41', text:'#fff9e8', muted:'#c7d5c5', accent:'#ffd769', line:'#6f9186', palette:['#fff9e8','#ffd769','#8fe3c3','#ff9ca8','#9ec7ff','#d7b2ff'], pattern:'chalk', font:"'Segoe Print','Noto Sans KR',cursive", titleFont:"'Segoe Print','Noto Sans KR',cursive", header:'chalk', card:'chalk', radius:12, border:2, shadow:'none', ringCap:'round', corner:12, paletteMode:'preset'},
+  editorial: {name:'에디토리얼', desc:'잡지처럼 절제된 타이포', bg:'#f7f3eb', surface:'#fbf8f1', text:'#171717', muted:'#6e6a63', accent:'#b33a2f', line:'#c9c2b5', palette:['#171717','#b33a2f','#486a63','#b58a3e','#5b587a','#777777'], pattern:'editorial', font:"Georgia,'Noto Serif KR',serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'editorial', card:'editorial', radius:0, border:1.2, shadow:'none', ringCap:'butt', corner:0, paletteMode:'preset'},
+  brutal: {name:'브루탈', desc:'강한 대비와 블록 구조', bg:'#f3ff4b', surface:'#ffffff', text:'#0a0a0a', muted:'#3e3e31', accent:'#ff4d00', line:'#0a0a0a', palette:['#ff4d00','#006bff','#00a86b','#0a0a0a','#ff00a8','#7b2cff'], pattern:'brutal', font:"'Arial Black','Noto Sans KR',sans-serif", titleFont:"'Arial Black','Noto Sans KR',sans-serif", header:'brutal', card:'brutal', radius:0, border:5, shadow:'hard', ringCap:'butt', corner:0, paletteMode:'preset'},
+  retro: {name:'70s 레트로', desc:'따뜻한 곡선과 빈티지', bg:'#f6d88b', surface:'#fff1c9', text:'#4b2e23', muted:'#7c5a4c', accent:'#d95d39', line:'#c79d64', palette:['#d95d39','#2f7e78','#d09a2d','#6e5596','#b84f6d','#4d79a6'], pattern:'retro', font:"'Trebuchet MS','Noto Sans KR',sans-serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'retro', card:'retro', radius:24, border:2, shadow:'paper', ringCap:'round', corner:18, paletteMode:'preset'},
+  pixel: {name:'픽셀 게임', desc:'8비트 HUD와 타일', bg:'#20163b', surface:'#2e2050', text:'#fff6d8', muted:'#c7b7e7', accent:'#f6e05e', line:'#735aa5', palette:['#f6e05e','#5eead4','#fb7185','#60a5fa','#c084fc','#f97316'], pattern:'pixel', font:"ui-monospace,'Noto Sans KR',monospace", titleFont:"ui-monospace,'Noto Sans KR',monospace", header:'pixel', card:'pixel', radius:0, border:4, shadow:'hard', ringCap:'butt', corner:0, paletteMode:'preset'},
+  glass: {name:'오로라 글래스', desc:'빛 번짐과 투명 레이어', bg:'#dbeafe', surface:'#f8fbff', text:'#18304d', muted:'#60758f', accent:'#3b82f6', line:'#bdd5ea', palette:['#3b82f6','#06b6d4','#22c55e','#a855f7','#f59e0b','#ef4444'], pattern:'glass', font:"system-ui,'Noto Sans KR',sans-serif", titleFont:"system-ui,'Noto Sans KR',sans-serif", header:'glass', card:'glass', radius:28, border:1, shadow:'soft', ringCap:'round', corner:16, paletteMode:'preset'},
+  forest: {name:'보태니컬', desc:'잎사귀와 자연의 리듬', bg:'#eaf5e6', surface:'#f9fff6', text:'#254133', muted:'#667c6d', accent:'#3d8a5e', line:'#c5dbc0', palette:['#3d8a5e','#7bbd72','#d9a441','#5f8bb6','#b6789d','#8d7458'], pattern:'forest', font:"Georgia,'Noto Serif KR',serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'botanical', card:'soft', radius:24, border:1.2, shadow:'soft', ringCap:'round', corner:14, paletteMode:'preset'},
+  minimal: {name:'스위스 미니멀', desc:'정렬·여백·선 중심', bg:'#f7f7f5', surface:'#ffffff', text:'#111111', muted:'#6b7280', accent:'#e62b1e', line:'#cfcfca', palette:['#111111','#e62b1e','#4b5563','#9ca3af','#1f2937','#6b7280'], pattern:'minimal', font:"Arial,'Noto Sans KR',sans-serif", titleFont:"Arial,'Noto Sans KR',sans-serif", header:'swiss', card:'editorial', radius:0, border:1.5, shadow:'none', ringCap:'butt', corner:0, paletteMode:'preset'},
+  night: {name:'별자리 밤', desc:'별빛과 깊은 남색', bg:'#11162f', surface:'#1d2546', text:'#f7f8ff', muted:'#b8c0dc', accent:'#9ea7ff', line:'#36405f', palette:['#9ea7ff','#ff88b7','#65d7c4','#ffd36a','#8ed1fc','#c99cff'], pattern:'night', font:"system-ui,'Noto Sans KR',sans-serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'night', card:'night', radius:18, border:1.2, shadow:'soft', ringCap:'round', corner:14, paletteMode:'preset'}
 };
 const QUICK_ACTIVITIES = [
   {title:'기상 & 준비', icon:'sun', color:'#ffb84d'},
@@ -77,7 +77,7 @@ function defaultState() {
     ],
     stickers: [],
     customIcons: [],
-    design: {preset:'playful', layout:'clock', size:'square', accent:'#5b67f1', showHours:true, showDetails:true, showLegend:true, legendPosition:'auto', clockScale:100, clockHole:58, clockOffsetY:0, clockGap:2, clockShowLabels:true, clockLabelMinMinutes:45, clockLabelSize:18, clockLabelContent:'titleTime', clockLabelOrientation:'auto', clockShowTrack:true, clockCenterMode:'summary'},
+    design: {preset:'playful', layout:'clock', size:'square', accent:'#5b67f1', showHours:true, showDetails:true, showLegend:true, legendPosition:'auto', clockScale:100, clockHole:58, clockOffsetY:0, clockGap:2, clockCorner:8, clockShowLabels:true, clockLabelMinMinutes:45, clockLabelSize:18, clockLabelContent:'titleTime', clockLabelOrientation:'auto', clockShowTrack:true, clockCenterMode:'summary'},
     ui: {selectedDay:'all', theme:'system'}
   };
 }
@@ -124,6 +124,7 @@ function normalizeState(raw) {
       clockHole:clamp(Number(r.design?.clockHole ?? base.design.clockHole),28,76),
       clockOffsetY:clamp(Number(r.design?.clockOffsetY ?? base.design.clockOffsetY),-18,18),
       clockGap:clamp(Number(r.design?.clockGap ?? base.design.clockGap),0,12),
+      clockCorner:clamp(Number(r.design?.clockCorner ?? PRESETS[r.design?.preset]?.corner ?? base.design.clockCorner),0,40),
       clockShowLabels:r.design?.clockShowLabels !== false,
       clockLabelMinMinutes:clamp(Number(r.design?.clockLabelMinMinutes ?? base.design.clockLabelMinMinutes),0,180),
       clockLabelSize:clamp(Number(r.design?.clockLabelSize ?? base.design.clockLabelSize),12,26),
@@ -215,7 +216,7 @@ function cacheRefs() {
   const ids = [
     'undoBtn','redoBtn','saveStatus','themeBtn','shareBtn','exportBtn','mobileExportBtn','previewCanvas','previewStage',
     'scheduleList','scheduleSummary','dayPicker','addScheduleBtn','presetGrid','layoutPicker','docTitle','docSubtitle','canvasSize',
-    'accentColor','accentColorText','showHours','showDetails','showLegend','shuffleStyleBtn','clockOptions','clockSmartHint','clockProfilePicker','clockScale','clockScaleValue','clockHole','clockHoleValue','clockOffsetY','clockOffsetYValue','clockGap','clockGapValue','clockShowLabels','clockLabelMin','clockLabelMinValue','clockLabelSize','clockLabelSizeValue','clockLabelContent','clockLabelOrientation','clockShowTrack','clockCenterMode','legendPosition','iconGrid','iconSearch','svgFileInput','svgPaste','addPastedSvgBtn',
+    'accentColor','accentColorText','showHours','showDetails','showLegend','shuffleStyleBtn','clockOptions','clockSmartHint','clockProfilePicker','clockScale','clockScaleValue','clockHole','clockHoleValue','clockOffsetY','clockOffsetYValue','clockGap','clockGapValue','clockCorner','clockCornerValue','clockShowLabels','clockLabelMin','clockLabelMinValue','clockLabelSize','clockLabelSizeValue','clockLabelContent','clockLabelOrientation','clockShowTrack','clockCenterMode','legendPosition','iconGrid','iconSearch','svgFileInput','svgPaste','addPastedSvgBtn',
     'stickerInspector','stickerSize','stickerSizeValue','stickerRotation','stickerRotationValue','stickerColor','stickerActions','deleteStickerBtn','exportJsonBtn','importJsonInput','exportCsvBtn','importCsvInput','resetBtn',
     'zoomOutBtn','zoomInBtn','fitBtn','zoomLabel','scheduleDialog','scheduleForm','scheduleDialogTitle','quickActivity','formDayChecks','startTime','endTime',
     'scheduleTitle','scheduleDetail','scheduleColor','scheduleIconButton','scheduleIconPreview','scheduleIconName','scheduleHideClockLabel','scheduleError','saveScheduleBtn','cancelScheduleBtn',
@@ -256,7 +257,7 @@ function bindEvents() {
   refs.scheduleList.addEventListener('click', onScheduleListClick);
 
   refs.layoutPicker.addEventListener('click', e => { const b=e.target.closest('button[data-layout]'); if(b) mutate(s=>s.design.layout=b.dataset.layout); });
-  refs.presetGrid.addEventListener('click', e => { const b=e.target.closest('[data-preset]'); if(b) mutate(s=>{ s.design.preset=b.dataset.preset; s.design.accent=PRESETS[b.dataset.preset].accent; }); });
+  refs.presetGrid.addEventListener('click', e => { const b=e.target.closest('[data-preset]'); if(b) mutate(s=>{ s.design.preset=b.dataset.preset; s.design.accent=PRESETS[b.dataset.preset].accent; s.design.clockCorner=PRESETS[b.dataset.preset].corner ?? s.design.clockCorner; }); });
   refs.shuffleStyleBtn.addEventListener('click', shuffleStylePreset);
   refs.canvasSize.addEventListener('change', () => mutate(s=>s.design.size=refs.canvasSize.value));
   refs.showHours.addEventListener('change', () => mutate(s=>s.design.showHours=refs.showHours.checked));
@@ -273,6 +274,7 @@ function bindEvents() {
   bindDesignRange(refs.clockHole,'clockHole');
   bindDesignRange(refs.clockOffsetY,'clockOffsetY');
   bindDesignRange(refs.clockGap,'clockGap');
+  bindDesignRange(refs.clockCorner,'clockCorner');
   bindDesignRange(refs.clockLabelMin,'clockLabelMinMinutes');
   bindDesignRange(refs.clockLabelSize,'clockLabelSize');
   bindLiveField(refs.docTitle, (s,v)=>s.document.title=v, () => state.document.title);
@@ -502,10 +504,10 @@ function updateScheduleIconButton() { const icon=getIcon(scheduleIconId,state.cu
 
 function applyClockProfile(profile) {
   const profiles={
-    balanced:{clockScale:100,clockHole:58,clockOffsetY:0,clockGap:2,clockShowLabels:true,clockLabelMinMinutes:45,clockLabelSize:18,clockLabelContent:'titleTime',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:true,legendPosition:'auto'},
-    inside:{clockScale:100,clockHole:38,clockOffsetY:0,clockGap:3,clockShowLabels:true,clockLabelMinMinutes:60,clockLabelSize:18,clockLabelContent:'titleTime',clockLabelOrientation:'horizontal',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'},
-    minimal:{clockScale:94,clockHole:72,clockOffsetY:0,clockGap:1,clockShowLabels:false,clockLabelMinMinutes:60,clockLabelSize:16,clockLabelContent:'title',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'count',showLegend:true,legendPosition:'auto'},
-    poster:{clockScale:108,clockHole:52,clockOffsetY:0,clockGap:3,clockShowLabels:true,clockLabelMinMinutes:75,clockLabelSize:19,clockLabelContent:'title',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'}
+    balanced:{clockScale:100,clockHole:58,clockOffsetY:0,clockGap:2,clockCorner:8,clockShowLabels:true,clockLabelMinMinutes:45,clockLabelSize:18,clockLabelContent:'titleTime',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:true,legendPosition:'auto'},
+    inside:{clockScale:100,clockHole:38,clockOffsetY:0,clockGap:3,clockCorner:12,clockShowLabels:true,clockLabelMinMinutes:60,clockLabelSize:18,clockLabelContent:'titleTime',clockLabelOrientation:'horizontal',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'},
+    minimal:{clockScale:94,clockHole:72,clockOffsetY:0,clockGap:1,clockCorner:0,clockShowLabels:false,clockLabelMinMinutes:60,clockLabelSize:16,clockLabelContent:'title',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'count',showLegend:true,legendPosition:'auto'},
+    poster:{clockScale:108,clockHole:52,clockOffsetY:0,clockGap:3,clockCorner:10,clockShowLabels:true,clockLabelMinMinutes:75,clockLabelSize:19,clockLabelContent:'title',clockLabelOrientation:'auto',clockShowTrack:true,clockCenterMode:'summary',showLegend:false,legendPosition:'auto'}
   };
   const next=profiles[profile]; if(!next)return;
   mutate(s=>Object.assign(s.design,next));
@@ -521,6 +523,7 @@ function syncDesignControls() {
   refs.clockHole.value=state.design.clockHole; refs.clockHoleValue.textContent=`${Math.round(state.design.clockHole)}%`;
   refs.clockOffsetY.value=state.design.clockOffsetY; refs.clockOffsetYValue.textContent=`${state.design.clockOffsetY>0?'+':''}${Math.round(state.design.clockOffsetY)}%`;
   refs.clockGap.value=state.design.clockGap; refs.clockGapValue.textContent=`${Math.round(Number(state.design.clockGap)||0)}px`;
+  refs.clockCorner.value=state.design.clockCorner; refs.clockCornerValue.textContent=state.design.clockCorner===0?'각짐':`${Math.round(state.design.clockCorner)}%`;
   refs.clockShowLabels.checked=state.design.clockShowLabels;
   refs.clockShowTrack.checked=state.design.clockShowTrack;
   refs.clockLabelMin.value=state.design.clockLabelMinMinutes; refs.clockLabelMinValue.textContent=state.design.clockLabelMinMinutes===0?'모두 표시':`${Math.round(state.design.clockLabelMinMinutes)}분 미만`;
@@ -531,7 +534,7 @@ function syncDesignControls() {
     const visible=getVisibleSchedules();
     const shortCount=visible.filter(s=>durationMin(s.start,s.end)<state.design.clockLabelMinMinutes || s.hideClockLabel).length;
     const sizeName=CANVAS_SIZES[state.design.size]?.label || '현재 비율';
-    let note=`${sizeName}: 24시간을 360°로 나눠 각 일정이 자기 시간 각도 안에서만 표시됩니다. 바깥 원은 고정되고 내측 원만 조절됩니다.`;
+    let note=`${sizeName}: 24시간을 360°로 나눠 각 일정이 자기 시간 각도 안에서만 표시됩니다. 바깥 원은 고정되고 내측 원만 조절됩니다. 라운드 R은 띠 두께에 비례하며 각도 경계를 넘지 않도록 자동 제한됩니다.`;
     if(state.design.clockShowLabels && state.design.clockHole>68) note+=' 내측 원이 커지면 띠가 얇아져 라벨은 자동 축소·생략될 수 있어요.';
     if(state.design.clockShowLabels && shortCount) note+=` 현재 ${shortCount}개 일정 라벨은 짧은 시간/개별 설정으로 숨겨집니다.`;
     refs.clockSmartHint.textContent=note;
@@ -596,7 +599,7 @@ function onStickerAction(e) {
 function shuffleStylePreset() {
   const ids=Object.keys(PRESETS).filter(id=>id!==state.design.preset);
   const next=ids[Math.floor(Math.random()*ids.length)] || 'playful';
-  mutate(s=>{ s.design.preset=next; s.design.accent=PRESETS[next].accent; });
+  mutate(s=>{ s.design.preset=next; s.design.accent=PRESETS[next].accent; s.design.clockCorner=PRESETS[next].corner ?? s.design.clockCorner; });
   toast(`“${PRESETS[next].name}” 스타일로 바꿨습니다.`);
 }
 
@@ -822,6 +825,83 @@ function fullAnnulusPath(cx,cy,outerR,innerR) {
   return `M ${cx-outerR} ${cy} A ${outerR} ${outerR} 0 1 0 ${cx+outerR} ${cy} A ${outerR} ${outerR} 0 1 0 ${cx-outerR} ${cy} Z M ${cx-innerR} ${cy} A ${innerR} ${innerR} 0 1 1 ${cx+innerR} ${cy} A ${innerR} ${innerR} 0 1 1 ${cx-innerR} ${cy} Z`;
 }
 
+function smallArcSweepFlag(center,p1,p2) {
+  const a1=Math.atan2(p1.y-center.y,p1.x-center.x);
+  const a2=Math.atan2(p2.y-center.y,p2.x-center.x);
+  const clockwise=(a2-a1+Math.PI*2)%(Math.PI*2);
+  return clockwise<=Math.PI ? 1 : 0;
+}
+
+function fitSectorCornerRadius(outerR,innerR,sweepDeg,desired) {
+  const band=Math.max(0,outerR-innerR);
+  const sweepRad=Math.max(0,sweepDeg)*Math.PI/180;
+  let hi=Math.min(Math.max(0,desired),Math.max(0,band/2-.001));
+  if(hi<=.001 || sweepRad<=.001) return 0;
+  const fits=(r)=>{
+    if(r<=.001) return true;
+    const outerDen=outerR-r;
+    if(outerDen<=r) return false;
+    const outerTrim=Math.asin(clamp(r/outerDen,-1,1));
+    const innerTrim=Math.asin(clamp(r/(innerR+r),-1,1));
+    return 2*Math.max(outerTrim,innerTrim) <= sweepRad-.0001;
+  };
+  if(fits(hi)) return hi;
+  let lo=0;
+  for(let i=0;i<34;i++){
+    const mid=(lo+hi)/2;
+    if(fits(mid)) lo=mid; else hi=mid;
+  }
+  return lo;
+}
+
+function roundedAnnularSectorPath(cx,cy,outerR,innerR,startDeg,endDeg,cornerRadius) {
+  const sweep=endDeg-startDeg;
+  if(sweep<=0) return '';
+  if(sweep>=359.999) return fullAnnulusPath(cx,cy,outerR,innerR);
+  const r=fitSectorCornerRadius(outerR,innerR,sweep,cornerRadius);
+  if(r<.05) return annularSectorPath(cx,cy,outerR,innerR,startDeg,endDeg);
+
+  // Exact circular fillets. R is measured in canvas pixels and is always
+  // constrained by BOTH the ring thickness and this schedule's angular span.
+  // Therefore a rounded end can never cross the schedule's start/end rays.
+  const outerTrim=Math.asin(clamp(r/(outerR-r),-1,1))*180/Math.PI;
+  const innerTrim=Math.asin(clamp(r/(innerR+r),-1,1))*180/Math.PI;
+  const outerSideR=Math.sqrt(Math.max(0,outerR*outerR-2*outerR*r));
+  const innerSideR=Math.sqrt(Math.max(0,innerR*innerR+2*innerR*r));
+
+  const osArc=polarPoint(cx,cy,outerR,startDeg+outerTrim);
+  const oeArc=polarPoint(cx,cy,outerR,endDeg-outerTrim);
+  const oeSide=polarPoint(cx,cy,outerSideR,endDeg);
+  const ieSide=polarPoint(cx,cy,innerSideR,endDeg);
+  const ieArc=polarPoint(cx,cy,innerR,endDeg-innerTrim);
+  const isArc=polarPoint(cx,cy,innerR,startDeg+innerTrim);
+  const isSide=polarPoint(cx,cy,innerSideR,startDeg);
+  const osSide=polarPoint(cx,cy,outerSideR,startDeg);
+
+  const cOuterEnd=polarPoint(cx,cy,outerR-r,endDeg-outerTrim);
+  const cInnerEnd=polarPoint(cx,cy,innerR+r,endDeg-innerTrim);
+  const cInnerStart=polarPoint(cx,cy,innerR+r,startDeg+innerTrim);
+  const cOuterStart=polarPoint(cx,cy,outerR-r,startDeg+outerTrim);
+
+  const outerSpan=sweep-outerTrim*2;
+  const innerSpan=sweep-innerTrim*2;
+  const largeOuter=outerSpan>180?1:0;
+  const largeInner=innerSpan>180?1:0;
+
+  return [
+    `M ${osArc.x} ${osArc.y}`,
+    `A ${outerR} ${outerR} 0 ${largeOuter} 1 ${oeArc.x} ${oeArc.y}`,
+    `A ${r} ${r} 0 0 ${smallArcSweepFlag(cOuterEnd,oeArc,oeSide)} ${oeSide.x} ${oeSide.y}`,
+    `L ${ieSide.x} ${ieSide.y}`,
+    `A ${r} ${r} 0 0 ${smallArcSweepFlag(cInnerEnd,ieSide,ieArc)} ${ieArc.x} ${ieArc.y}`,
+    `A ${innerR} ${innerR} 0 ${largeInner} 0 ${isArc.x} ${isArc.y}`,
+    `A ${r} ${r} 0 0 ${smallArcSweepFlag(cInnerStart,isArc,isSide)} ${isSide.x} ${isSide.y}`,
+    `L ${osSide.x} ${osSide.y}`,
+    `A ${r} ${r} 0 0 ${smallArcSweepFlag(cOuterStart,osSide,osArc)} ${osArc.x} ${osArc.y}`,
+    'Z'
+  ].join(' ');
+}
+
 function clockSegmentGeometry(s) {
   const startMin=timeToMin(s.start), dur=durationMin(s.start,s.end);
   const start=startMin/1440*360-90;
@@ -931,7 +1011,8 @@ function renderClockLayout(w,h,p,schedules) {
     const geo=clockSegmentGeometry(s);
     if(geo.end<=geo.start) return;
     const c=scheduleColor(s,i,p);
-    ring+=`<path d="${annularSectorPath(cx,cy,outerR,holeR,geo.start,geo.end)}" fill="${c}" fill-rule="evenodd"/>`;
+    const desiredCorner=band*(clamp(Number(d.clockCorner)||0,0,40)/100);
+    ring+=`<path d="${roundedAnnularSectorPath(cx,cy,outerR,holeR,geo.start,geo.end,desiredCorner)}" fill="${c}" fill-rule="evenodd"/>`;
   });
   ring+=renderClockSeparators(cx,cy,outerR,holeR,p,schedules);
   if(['comic','brutal','pixel'].includes(p.pattern)) ring+=`<circle cx="${cx}" cy="${cy}" r="${outerR}" fill="none" stroke="${p.text}" stroke-width="${p.pattern==='pixel'?5:7}"/><circle cx="${cx}" cy="${cy}" r="${holeR}" fill="none" stroke="${p.text}" stroke-width="${p.pattern==='pixel'?5:7}"/>`;
