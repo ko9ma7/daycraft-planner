@@ -19,16 +19,23 @@ const CANVAS_SIZES = {
 };
 
 const PRESETS = {
-  playful: {name:'컬러 팝', desc:'밝고 신나는', bg:'#fff8ea', surface:'#ffffff', text:'#27304a', muted:'#69708a', accent:'#5b67f1', line:'#e8dccb', palette:['#ff7c95','#5b9df9','#ffc857','#5ad1c7','#9b7cf6','#ff9d5c'], pattern:'playful'},
-  notebook: {name:'공책', desc:'손글씨 느낌', bg:'#fffdf6', surface:'#fffefa', text:'#334155', muted:'#7c8797', accent:'#3b82f6', line:'#dbe4ee', palette:['#60a5fa','#34d399','#fbbf24','#fb7185','#a78bfa','#38bdf8'], pattern:'notebook'},
-  clay: {name:'클레이', desc:'말랑말랑한', bg:'#f7ecff', surface:'#fff9ff', text:'#4b3f59', muted:'#82738f', accent:'#d16ba5', line:'#ead8ee', palette:['#d16ba5','#86a8e7','#5ffbf1','#ffb199','#f8d86a','#8fd694'], pattern:'clay'},
-  glass: {name:'글래스', desc:'투명하고 시원한', bg:'#dcecff', surface:'#f8fbff', text:'#19304f', muted:'#60758f', accent:'#2f80ed', line:'#c4d8ed', palette:['#2f80ed','#56ccf2','#6fcf97','#bb6bd9','#f2c94c','#eb5757'], pattern:'glass'},
-  minimal: {name:'미니멀', desc:'깔끔하고 선명한', bg:'#f7f7f5', surface:'#ffffff', text:'#171717', muted:'#6b7280', accent:'#111827', line:'#d9d9d6', palette:['#111827','#4b5563','#6b7280','#9ca3af','#374151','#1f2937'], pattern:'minimal'},
-  night: {name:'별밤', desc:'차분한 밤', bg:'#141a33', surface:'#202846', text:'#f7f8ff', muted:'#b8c0dc', accent:'#9ea7ff', line:'#36405f', palette:['#9ea7ff','#ff88b7','#65d7c4','#ffd36a','#8ed1fc','#c99cff'], pattern:'night'},
-  retro: {name:'레트로', desc:'통통 튀는', bg:'#fff0bf', surface:'#fff9e8', text:'#4b3428', muted:'#806858', accent:'#e96b42', line:'#e8c98a', palette:['#e96b42','#3e8b89','#d9a441','#6b5ca5','#ca5277','#5e8ac6'], pattern:'retro'},
-  forest: {name:'숲속', desc:'편안하고 자연스러운', bg:'#eaf5e6', surface:'#f9fff6', text:'#254133', muted:'#667c6d', accent:'#3d8a5e', line:'#cfe0ca', palette:['#3d8a5e','#7bbd72','#d9a441','#5f8bb6','#b6789d','#8d7458'], pattern:'forest'}
+  playful: {name:'컬러 팝', desc:'통통 튀는 키즈 포스터', bg:'#fff8ea', surface:'#ffffff', text:'#27304a', muted:'#69708a', accent:'#5b67f1', line:'#e8dccb', palette:['#ff6f91','#5b9df9','#ffc857','#44c7b6','#9b7cf6','#ff8a5b'], pattern:'playful', font:"system-ui,'Noto Sans KR',sans-serif", titleFont:"'Arial Rounded MT Bold','Noto Sans KR',system-ui,sans-serif", header:'center', card:'soft', radius:20, border:1.5, shadow:'soft', ringCap:'butt', paletteMode:'schedule'},
+  kawaii: {name:'젤리 파스텔', desc:'말랑한 구름과 캔디', bg:'#fff4fb', surface:'#fffaff', text:'#4d3652', muted:'#8c708f', accent:'#ff78b5', line:'#f1d8e7', palette:['#ff8fbd','#90d7ff','#a9e7b3','#ffd86b','#c3a6ff','#ffad8f'], pattern:'kawaii', font:"'Trebuchet MS','Noto Sans KR',sans-serif", titleFont:"'Arial Rounded MT Bold','Noto Sans KR',sans-serif", header:'bubble', card:'jelly', radius:30, border:1.2, shadow:'soft', ringCap:'round', paletteMode:'preset'},
+  notebook: {name:'공책', desc:'줄노트와 손필기 감성', bg:'#fffdf6', surface:'#fffefa', text:'#334155', muted:'#7c8797', accent:'#3b82f6', line:'#dbe4ee', palette:['#60a5fa','#34d399','#fbbf24','#fb7185','#a78bfa','#38bdf8'], pattern:'notebook', font:"'Segoe Print','Noto Sans KR',cursive", titleFont:"'Segoe Print','Noto Sans KR',cursive", header:'left', card:'paper', radius:8, border:1.4, shadow:'paper', ringCap:'round', paletteMode:'schedule'},
+  scrapbook: {name:'스크랩북', desc:'종이·테이프·콜라주', bg:'#f5ead7', surface:'#fffaf0', text:'#40362d', muted:'#75685b', accent:'#ef7f65', line:'#d8c7ad', palette:['#ef7f65','#78a6a3','#e0b24f','#8f78a8','#d47f9d','#6e91bd'], pattern:'scrapbook', font:"'Trebuchet MS','Noto Sans KR',sans-serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'scrap', card:'paper', radius:4, border:1.8, shadow:'paper', ringCap:'butt', paletteMode:'preset'},
+  comic: {name:'코믹북', desc:'굵은 선과 하프톤', bg:'#fff24a', surface:'#fffef2', text:'#111111', muted:'#4d4d3d', accent:'#ff3b30', line:'#111111', palette:['#ff3b30','#2867ff','#00a66b','#ff9f0a','#af52de','#111111'], pattern:'comic', font:"'Arial Black','Noto Sans KR',sans-serif", titleFont:"Impact,'Arial Black','Noto Sans KR',sans-serif", header:'comic', card:'comic', radius:0, border:4, shadow:'hard', ringCap:'butt', paletteMode:'preset'},
+  arcade: {name:'네온 아케이드', desc:'사이버 그리드와 글로우', bg:'#09061a', surface:'#15102d', text:'#f8f5ff', muted:'#b5a8d4', accent:'#00f5ff', line:'#392c5c', palette:['#00f5ff','#ff45d4','#8d5bff','#00ff85','#ffe45e','#ff6b6b'], pattern:'arcade', font:"ui-monospace,'Noto Sans KR',monospace", titleFont:"'Arial Black','Noto Sans KR',sans-serif", header:'neon', card:'neon', radius:10, border:2, shadow:'glow', ringCap:'round', paletteMode:'preset'},
+  blueprint: {name:'블루프린트', desc:'도면 격자와 기술 문서', bg:'#0d4f86', surface:'#155f99', text:'#f2fbff', muted:'#b8d9ee', accent:'#7ee7ff', line:'#74b4da', palette:['#f2fbff','#7ee7ff','#ffdc73','#a8ffcf','#ff9bc8','#d7c5ff'], pattern:'blueprint', font:"ui-monospace,'Noto Sans KR',monospace", titleFont:"ui-monospace,'Noto Sans KR',monospace", header:'technical', card:'outline', radius:0, border:2, shadow:'none', ringCap:'butt', paletteMode:'preset'},
+  chalk: {name:'칠판', desc:'분필 낙서와 교실 감성', bg:'#173b32', surface:'#214c41', text:'#fff9e8', muted:'#c7d5c5', accent:'#ffd769', line:'#6f9186', palette:['#fff9e8','#ffd769','#8fe3c3','#ff9ca8','#9ec7ff','#d7b2ff'], pattern:'chalk', font:"'Segoe Print','Noto Sans KR',cursive", titleFont:"'Segoe Print','Noto Sans KR',cursive", header:'chalk', card:'chalk', radius:12, border:2, shadow:'none', ringCap:'round', paletteMode:'preset'},
+  editorial: {name:'에디토리얼', desc:'잡지처럼 절제된 타이포', bg:'#f7f3eb', surface:'#fbf8f1', text:'#171717', muted:'#6e6a63', accent:'#b33a2f', line:'#c9c2b5', palette:['#171717','#b33a2f','#486a63','#b58a3e','#5b587a','#777777'], pattern:'editorial', font:"Georgia,'Noto Serif KR',serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'editorial', card:'editorial', radius:0, border:1.2, shadow:'none', ringCap:'butt', paletteMode:'preset'},
+  brutal: {name:'브루탈', desc:'강한 대비와 블록 구조', bg:'#f3ff4b', surface:'#ffffff', text:'#0a0a0a', muted:'#3e3e31', accent:'#ff4d00', line:'#0a0a0a', palette:['#ff4d00','#006bff','#00a86b','#0a0a0a','#ff00a8','#7b2cff'], pattern:'brutal', font:"'Arial Black','Noto Sans KR',sans-serif", titleFont:"'Arial Black','Noto Sans KR',sans-serif", header:'brutal', card:'brutal', radius:0, border:5, shadow:'hard', ringCap:'butt', paletteMode:'preset'},
+  retro: {name:'70s 레트로', desc:'따뜻한 곡선과 빈티지', bg:'#f6d88b', surface:'#fff1c9', text:'#4b2e23', muted:'#7c5a4c', accent:'#d95d39', line:'#c79d64', palette:['#d95d39','#2f7e78','#d09a2d','#6e5596','#b84f6d','#4d79a6'], pattern:'retro', font:"'Trebuchet MS','Noto Sans KR',sans-serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'retro', card:'retro', radius:24, border:2, shadow:'paper', ringCap:'round', paletteMode:'preset'},
+  pixel: {name:'픽셀 게임', desc:'8비트 HUD와 타일', bg:'#20163b', surface:'#2e2050', text:'#fff6d8', muted:'#c7b7e7', accent:'#f6e05e', line:'#735aa5', palette:['#f6e05e','#5eead4','#fb7185','#60a5fa','#c084fc','#f97316'], pattern:'pixel', font:"ui-monospace,'Noto Sans KR',monospace", titleFont:"ui-monospace,'Noto Sans KR',monospace", header:'pixel', card:'pixel', radius:0, border:4, shadow:'hard', ringCap:'butt', paletteMode:'preset'},
+  glass: {name:'오로라 글래스', desc:'빛 번짐과 투명 레이어', bg:'#dbeafe', surface:'#f8fbff', text:'#18304d', muted:'#60758f', accent:'#3b82f6', line:'#bdd5ea', palette:['#3b82f6','#06b6d4','#22c55e','#a855f7','#f59e0b','#ef4444'], pattern:'glass', font:"system-ui,'Noto Sans KR',sans-serif", titleFont:"system-ui,'Noto Sans KR',sans-serif", header:'glass', card:'glass', radius:28, border:1, shadow:'soft', ringCap:'round', paletteMode:'preset'},
+  forest: {name:'보태니컬', desc:'잎사귀와 자연의 리듬', bg:'#eaf5e6', surface:'#f9fff6', text:'#254133', muted:'#667c6d', accent:'#3d8a5e', line:'#c5dbc0', palette:['#3d8a5e','#7bbd72','#d9a441','#5f8bb6','#b6789d','#8d7458'], pattern:'forest', font:"Georgia,'Noto Serif KR',serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'botanical', card:'soft', radius:24, border:1.2, shadow:'soft', ringCap:'round', paletteMode:'preset'},
+  minimal: {name:'스위스 미니멀', desc:'정렬·여백·선 중심', bg:'#f7f7f5', surface:'#ffffff', text:'#111111', muted:'#6b7280', accent:'#e62b1e', line:'#cfcfca', palette:['#111111','#e62b1e','#4b5563','#9ca3af','#1f2937','#6b7280'], pattern:'minimal', font:"Arial,'Noto Sans KR',sans-serif", titleFont:"Arial,'Noto Sans KR',sans-serif", header:'swiss', card:'editorial', radius:0, border:1.5, shadow:'none', ringCap:'butt', paletteMode:'preset'},
+  night: {name:'별자리 밤', desc:'별빛과 깊은 남색', bg:'#11162f', surface:'#1d2546', text:'#f7f8ff', muted:'#b8c0dc', accent:'#9ea7ff', line:'#36405f', palette:['#9ea7ff','#ff88b7','#65d7c4','#ffd36a','#8ed1fc','#c99cff'], pattern:'night', font:"system-ui,'Noto Sans KR',sans-serif", titleFont:"Georgia,'Noto Serif KR',serif", header:'night', card:'night', radius:18, border:1.2, shadow:'soft', ringCap:'round', paletteMode:'preset'}
 };
-
 const QUICK_ACTIVITIES = [
   {title:'기상 & 준비', icon:'sun', color:'#ffb84d'},
   {title:'아침 식사', icon:'meal', color:'#ff8f70'},
@@ -97,7 +104,7 @@ function normalizeState(raw) {
     stickers:Array.isArray(r.stickers) ? r.stickers.slice(0,60).map(st => ({
       id:String(st.id || uid('st')),
       icon:String(st.icon || 'star'), x:clamp(Number(st.x)||.5,0,1), y:clamp(Number(st.y)||.5,0,1),
-      size:clamp(Number(st.size)||90,20,260), rotation:clamp(Number(st.rotation)||0,-360,360), color:safeColor(st.color,'#5b67f1')
+      size:clamp(Number(st.size)||90,24,360), rotation:clamp(Number(st.rotation)||0,-360,360), color:safeColor(st.color,'#5b67f1')
     })) : [],
     customIcons:Array.isArray(r.customIcons) ? r.customIcons.slice(0,30).map(ci=>({
       id:String(ci.id || uid('custom')), name:String(ci.name || '내 아이콘').slice(0,40), keywords:String(ci.keywords || '내 아이콘').slice(0,100),
@@ -195,8 +202,8 @@ function cacheRefs() {
   const ids = [
     'undoBtn','redoBtn','saveStatus','themeBtn','shareBtn','exportBtn','mobileExportBtn','previewCanvas','previewStage',
     'scheduleList','scheduleSummary','dayPicker','addScheduleBtn','presetGrid','layoutPicker','docTitle','docSubtitle','canvasSize',
-    'accentColor','accentColorText','showHours','showDetails','showLegend','iconGrid','iconSearch','svgFileInput','svgPaste','addPastedSvgBtn',
-    'stickerInspector','stickerSize','stickerRotation','stickerColor','deleteStickerBtn','exportJsonBtn','importJsonInput','exportCsvBtn','importCsvInput','resetBtn',
+    'accentColor','accentColorText','showHours','showDetails','showLegend','shuffleStyleBtn','iconGrid','iconSearch','svgFileInput','svgPaste','addPastedSvgBtn',
+    'stickerInspector','stickerSize','stickerSizeValue','stickerRotation','stickerRotationValue','stickerColor','stickerActions','deleteStickerBtn','exportJsonBtn','importJsonInput','exportCsvBtn','importCsvInput','resetBtn',
     'zoomOutBtn','zoomInBtn','fitBtn','zoomLabel','scheduleDialog','scheduleForm','scheduleDialogTitle','quickActivity','formDayChecks','startTime','endTime',
     'scheduleTitle','scheduleDetail','scheduleColor','scheduleIconButton','scheduleIconPreview','scheduleIconName','scheduleError','saveScheduleBtn','cancelScheduleBtn',
     'iconChoiceDialog','scheduleIconSearch','scheduleIconGrid','closeIconChoice','shareDialog','shareLink','shareWarning','copyShareBtn','nativeShareBtn','closeShareBtn',
@@ -208,7 +215,7 @@ function cacheRefs() {
 function buildStaticUi() {
   refs.quickActivity.innerHTML = QUICK_ACTIVITIES.map(a => `<button type="button" class="quick-chip" data-quick="${escapeXml(a.title)}" data-icon="${a.icon}" data-color="${a.color}">${iconSvgMarkup(getIcon(a.icon),{size:15})}<span>${escapeXml(a.title)}</span></button>`).join('');
   refs.formDayChecks.innerHTML = DAYS.map(([id,label]) => `<label class="day-check"><input type="checkbox" value="${id}"><span>${label}</span></label>`).join('');
-  refs.presetGrid.innerHTML = Object.entries(PRESETS).map(([id,p]) => `<button type="button" class="preset-card" data-preset="${id}"><span class="preset-swatch" style="background:linear-gradient(135deg,${p.bg},${p.accent});"></span><strong>${p.name}</strong><small>${p.desc}</small></button>`).join('');
+  refs.presetGrid.innerHTML = Object.entries(PRESETS).map(([id,p]) => `<button type="button" class="preset-card" data-preset="${id}"><span class="preset-mini" data-pattern="${p.pattern}" style="--p-bg:${p.bg};--p-surface:${p.surface};--p-text:${p.text};--p-accent:${p.accent};--p-line:${p.line};--p-radius:${Math.min(18,p.radius||12)}px"><i class="mini-title"></i><i class="mini-ring"></i><i class="mini-card a"></i><i class="mini-card b"></i></span><span class="preset-copy"><strong>${p.name}</strong><small>${p.desc}</small></span></button>`).join('');
   renderIconGrid();
   renderScheduleIconGrid();
 }
@@ -237,6 +244,7 @@ function bindEvents() {
 
   refs.layoutPicker.addEventListener('click', e => { const b=e.target.closest('button[data-layout]'); if(b) mutate(s=>s.design.layout=b.dataset.layout); });
   refs.presetGrid.addEventListener('click', e => { const b=e.target.closest('[data-preset]'); if(b) mutate(s=>{ s.design.preset=b.dataset.preset; s.design.accent=PRESETS[b.dataset.preset].accent; }); });
+  refs.shuffleStyleBtn.addEventListener('click', shuffleStylePreset);
   refs.canvasSize.addEventListener('change', () => mutate(s=>s.design.size=refs.canvasSize.value));
   refs.showHours.addEventListener('change', () => mutate(s=>s.design.showHours=refs.showHours.checked));
   refs.showDetails.addEventListener('change', () => mutate(s=>s.design.showDetails=refs.showDetails.checked));
@@ -250,6 +258,7 @@ function bindEvents() {
   refs.svgFileInput.addEventListener('change', importSvgFile);
   refs.addPastedSvgBtn.addEventListener('click', () => addCustomSvg(refs.svgPaste.value, '붙여넣은 SVG'));
   refs.deleteStickerBtn.addEventListener('click', deleteSelectedSticker);
+  refs.stickerActions.addEventListener('click', onStickerAction);
   refs.stickerSize.addEventListener('input', () => updateStickerLive('size', Number(refs.stickerSize.value)));
   refs.stickerRotation.addEventListener('input', () => updateStickerLive('rotation', Number(refs.stickerRotation.value)));
   refs.stickerColor.addEventListener('input', () => updateStickerLive('color', refs.stickerColor.value));
@@ -481,19 +490,55 @@ function addSticker(iconId) {
 function updateStickerInspector() {
   const st=state.stickers.find(x=>x.id===selectedStickerId);
   refs.stickerInspector.hidden=!st;
-  if(st) { refs.stickerSize.value=st.size; refs.stickerRotation.value=st.rotation; refs.stickerColor.value=st.color; }
+  if(st) {
+    refs.stickerSize.value=st.size; refs.stickerRotation.value=st.rotation; refs.stickerColor.value=st.color;
+    refs.stickerSizeValue.textContent=`${Math.round(st.size)} px`;
+    refs.stickerRotationValue.textContent=`${Math.round(st.rotation)}°`;
+  }
 }
 function startStickerFieldHistory(){ if(selectedStickerId) fieldSnapshot=JSON.stringify(state); }
 function finishStickerFieldHistory(){ if(fieldSnapshot&&fieldSnapshot!==JSON.stringify(state)){historyPast.push(fieldSnapshot);historyFuture=[];updateHistoryButtons();schedulePersist();} fieldSnapshot=null; }
-function updateStickerLive(key,value) { const st=state.stickers.find(x=>x.id===selectedStickerId); if(!st)return; st[key]=key==='color'?safeColor(value,st.color):value; renderPreview(); schedulePersist(); }
+function updateStickerLive(key,value) {
+  const st=state.stickers.find(x=>x.id===selectedStickerId); if(!st)return;
+  if(key==='size') value=clamp(Number(value)||90,24,360);
+  if(key==='rotation') value=clamp(Number(value)||0,-180,180);
+  st[key]=key==='color'?safeColor(value,st.color):value;
+  updateStickerInspector(); renderPreview(); schedulePersist();
+}
 function deleteSelectedSticker() { if(!selectedStickerId)return; mutate(s=>s.stickers=s.stickers.filter(x=>x.id!==selectedStickerId)); selectedStickerId=null; updateStickerInspector(); }
+function onStickerAction(e) {
+  const btn=e.target.closest('[data-sticker-action]'); if(!btn || !selectedStickerId)return;
+  const action=btn.dataset.stickerAction;
+  if(action==='duplicate') {
+    mutate(s=>{ const idx=s.stickers.findIndex(x=>x.id===selectedStickerId); if(idx<0)return; const src=s.stickers[idx]; const copy={...src,id:uid('st'),x:clamp(src.x+.035,.04,.96),y:clamp(src.y+.035,.04,.96)}; s.stickers.splice(idx+1,0,copy); selectedStickerId=copy.id; });
+    toast('스티커를 복제했습니다.'); return;
+  }
+  mutate(s=>{
+    const idx=s.stickers.findIndex(x=>x.id===selectedStickerId); if(idx<0)return;
+    const st=s.stickers[idx];
+    if(action==='reset'){ st.size=90; st.rotation=0; }
+    if(action==='front'){ s.stickers.splice(idx,1); s.stickers.push(st); }
+    if(action==='back'){ s.stickers.splice(idx,1); s.stickers.unshift(st); }
+  });
+}
+function shuffleStylePreset() {
+  const ids=Object.keys(PRESETS).filter(id=>id!==state.design.preset);
+  const next=ids[Math.floor(Math.random()*ids.length)] || 'playful';
+  mutate(s=>{ s.design.preset=next; s.design.accent=PRESETS[next].accent; });
+  toast(`“${PRESETS[next].name}” 스타일로 바꿨습니다.`);
+}
 
 function startStickerDrag(e) {
   const g=e.target.closest?.('[data-sticker-id]'); if(!g)return;
   const id=g.dataset.stickerId; const st=state.stickers.find(x=>x.id===id); if(!st)return;
-  e.preventDefault(); selectedStickerId=id; updateStickerInspector();
-  refs.previewCanvas.querySelectorAll('[data-sticker-id]').forEach(el=>el.classList.toggle('sticker-selected',el.dataset.stickerId===id));
-  dragInfo={id,startSnapshot:JSON.stringify(state), moved:false, pointerId:e.pointerId};
+  const svg=refs.previewCanvas.querySelector('svg'); if(!svg)return;
+  const pt=pointInSvg(e); if(!pt)return;
+  const vb=svg.viewBox.baseVal; const cx=st.x*vb.width, cy=st.y*vb.height;
+  const handle=e.target.closest?.('[data-sticker-handle]')?.dataset.stickerHandle || 'move';
+  e.preventDefault(); selectedStickerId=id; updateStickerInspector(); renderPreview();
+  const startAngle=Math.atan2(pt.y-cy,pt.x-cx)*180/Math.PI;
+  const startDistance=Math.max(1,Math.hypot(pt.x-cx,pt.y-cy));
+  dragInfo={id,mode:handle,startSnapshot:JSON.stringify(state),moved:false,pointerId:e.pointerId,cx,cy,startAngle,startDistance,startSize:st.size,startRotation:st.rotation};
 }
 function pointInSvg(e) {
   const svg=refs.previewCanvas.querySelector('svg'); if(!svg)return null;
@@ -503,8 +548,18 @@ function moveStickerDrag(e) {
   if(!dragInfo || e.pointerId!==dragInfo.pointerId)return;
   const pt=pointInSvg(e); const svg=refs.previewCanvas.querySelector('svg'); if(!pt||!svg)return;
   const vb=svg.viewBox.baseVal; const st=state.stickers.find(x=>x.id===dragInfo.id); if(!st)return;
-  st.x=clamp(pt.x/vb.width,.02,.98); st.y=clamp(pt.y/vb.height,.02,.98); dragInfo.moved=true;
-  const g=refs.previewCanvas.querySelector(`[data-sticker-id="${CSS.escape(st.id)}"]`); if(g) g.setAttribute('transform',stickerTransform(st,vb.width,vb.height));
+  if(dragInfo.mode==='resize') {
+    const dist=Math.max(1,Math.hypot(pt.x-dragInfo.cx,pt.y-dragInfo.cy));
+    st.size=clamp(dragInfo.startSize*(dist/dragInfo.startDistance),24,360);
+  } else if(dragInfo.mode==='rotate') {
+    const angle=Math.atan2(pt.y-dragInfo.cy,pt.x-dragInfo.cx)*180/Math.PI;
+    let rotation=dragInfo.startRotation+(angle-dragInfo.startAngle);
+    if(e.shiftKey) rotation=Math.round(rotation/15)*15;
+    st.rotation=((rotation+180)%360+360)%360-180;
+  } else {
+    st.x=clamp(pt.x/vb.width,.02,.98); st.y=clamp(pt.y/vb.height,.02,.98);
+  }
+  dragInfo.moved=true; updateStickerInspector(); renderPreview();
 }
 function endStickerDrag(e) {
   if(!dragInfo || e.pointerId!==dragInfo.pointerId)return;
@@ -542,84 +597,152 @@ function sanitizeSvg(text) {
 }
 
 function renderPreview() {
-  refs.previewCanvas.innerHTML=buildPosterSvg();
-  refs.previewCanvas.querySelectorAll('[data-sticker-id]').forEach(el=>el.classList.toggle('sticker-selected',el.dataset.stickerId===selectedStickerId));
+  refs.previewCanvas.innerHTML=buildPosterSvg({editor:true});
 }
 
-function buildPosterSvg() {
+function posterFont(p) { return p.font || "system-ui,'Noto Sans KR',sans-serif"; }
+function posterTitleFont(p) { return p.titleFont || posterFont(p); }
+function scheduleColor(s,i,p) { return p.paletteMode==='preset' ? p.palette[i%p.palette.length] : s.color; }
+function posterFilter(p) {
+  if(p.shadow==='hard') return 'url(#hardShadow)';
+  if(p.shadow==='glow') return 'url(#glow)';
+  if(p.shadow==='paper') return 'url(#paperShadow)';
+  if(p.shadow==='none') return '';
+  return 'url(#shadow)';
+}
+function cardShell(x,y,w,h,p,color,extra='') {
+  const rx=Math.max(0,Math.min(p.radius ?? 16, h*.42));
+  const filter=posterFilter(p); const f=filter?` filter="${filter}"`:'';
+  if(p.card==='brutal') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${p.surface}" stroke="${p.text}" stroke-width="${p.border||5}"${f}/><rect x="${x}" y="${y}" width="${Math.max(10,w*.035)}" height="${h}" fill="${color}"/>`;
+  if(p.card==='comic') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${p.surface}" stroke="${p.text}" stroke-width="${p.border||4}"${f}/><path d="M${x+w*.76} ${y}h${w*.24}v${h*.28}" fill="${color}" stroke="${p.text}" stroke-width="3"/>`;
+  if(p.card==='pixel') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${p.surface}" stroke="${color}" stroke-width="${p.border||4}"${f}/><path d="M${x+8} ${y+8}h${w-16}M${x+8} ${y+h-8}h${w-16}" stroke="${p.line}" stroke-width="2"/>`;
+  if(p.card==='neon') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${p.surface}" stroke="${color}" stroke-width="${p.border||2}"${f}/><rect x="${x+5}" y="${y+5}" width="${w-10}" height="${h-10}" rx="${Math.max(0,rx-5)}" fill="none" stroke="${color}" stroke-opacity=".24"/>`;
+  if(p.card==='glass') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${p.surface}" fill-opacity=".72" stroke="#fff" stroke-opacity=".66" stroke-width="2"${f}/><path d="M${x+rx} ${y+2}h${Math.max(0,w-rx*2)}" stroke="#fff" stroke-opacity=".55" stroke-width="3"/>`;
+  if(p.card==='chalk') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${p.surface}" fill-opacity=".38" stroke="${color}" stroke-width="2" stroke-dasharray="9 7"/>`;
+  if(p.card==='outline') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${p.surface}" fill-opacity=".18" stroke="${p.text}" stroke-opacity=".76" stroke-width="${p.border||2}"/><path d="M${x} ${y+Math.min(18,h*.2)}h${w}" stroke="${color}" stroke-width="3"/>`;
+  if(p.card==='editorial') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${p.surface}" fill-opacity=".36"/><line x1="${x}" y1="${y+h}" x2="${x+w}" y2="${y+h}" stroke="${p.text}" stroke-width="${p.border||1.2}"/><rect x="${x}" y="${y}" width="${Math.max(5,w*.012)}" height="${h}" fill="${color}"/>`;
+  if(p.card==='paper') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${p.surface}" stroke="${p.line}" stroke-width="${p.border||1.5}"${f}/><rect x="${x+w*.39}" y="${y-5}" width="${w*.22}" height="10" rx="2" fill="${p.accent}" fill-opacity=".20"/>`;
+  if(p.card==='jelly') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${Math.min(h/2,rx)}" fill="${p.surface}" stroke="${color}" stroke-opacity=".28" stroke-width="2"${f}/><ellipse cx="${x+w*.75}" cy="${y+h*.22}" rx="${w*.12}" ry="${h*.10}" fill="#fff" opacity=".45"/>`;
+  if(p.card==='retro') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${p.surface}" stroke="${p.text}" stroke-opacity=".38" stroke-width="2"${f}/><path d="M${x+16} ${y+12}h${Math.max(0,w-32)}" stroke="${color}" stroke-width="7" stroke-linecap="round"/>`;
+  if(p.card==='night') return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${p.surface}" stroke="${color}" stroke-opacity=".42" stroke-width="1.5"${f}/>`;
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${p.surface}" stroke="${p.line}" stroke-width="${p.border||1.2}"${f}/>${extra}`;
+}
+
+function buildPosterSvg({editor=false}={}) {
   const {w,h}=CANVAS_SIZES[state.design.size]; const p={...PRESETS[state.design.preset],accent:state.design.accent};
   const schedules=getVisibleSchedules();
-  const defs=`<defs><filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#000" flood-opacity=".10"/></filter><filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="35"/></filter></defs>`;
-  const bg=renderPosterBackground(w,h,p);
+  const defs=`<defs>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#000" flood-opacity=".11"/></filter>
+    <filter id="paperShadow" x="-20%" y="-20%" width="150%" height="150%"><feDropShadow dx="5" dy="7" stdDeviation="4" flood-color="#513d2f" flood-opacity=".17"/></filter>
+    <filter id="hardShadow" x="-25%" y="-25%" width="155%" height="155%"><feDropShadow dx="9" dy="9" stdDeviation="0" flood-color="#000" flood-opacity=".92"/></filter>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="${p.accent}" flood-opacity=".45"/><feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="${p.accent}" flood-opacity=".9"/></filter>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="35"/></filter>
+  </defs>`;
+  const bg=renderPosterBackground(w,h,p); const frame=renderPosterFrame(w,h,p);
   let content='';
   if(state.design.layout==='timeline') content=renderTimelineLayout(w,h,p,schedules);
   else if(state.design.layout==='cards') content=renderCardsLayout(w,h,p,schedules);
   else content=renderClockLayout(w,h,p,schedules);
-  const stickers=state.stickers.map(st=>renderSticker(st,w,h)).join('');
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${escapeXml(state.document.title)}"><rect width="${w}" height="${h}" fill="${p.bg}"/>${defs}${bg}${content}<g id="stickers">${stickers}</g></svg>`;
+  const stickers=state.stickers.map(st=>renderSticker(st,w,h,editor)).join('');
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${escapeXml(state.document.title)}"><rect width="${w}" height="${h}" fill="${p.bg}"/>${defs}${bg}${frame}${content}<g id="stickers">${stickers}</g></svg>`;
+}
+
+function renderPosterFrame(w,h,p) {
+  if(p.pattern==='brutal') return `<rect x="18" y="18" width="${w-36}" height="${h-36}" fill="none" stroke="${p.text}" stroke-width="14"/><rect x="18" y="18" width="${w*.18}" height="28" fill="${p.accent}"/><rect x="${w-18-w*.12}" y="${h-46}" width="${w*.12}" height="28" fill="${p.accent}"/>`;
+  if(p.pattern==='comic') return `<rect x="15" y="15" width="${w-30}" height="${h-30}" fill="none" stroke="${p.text}" stroke-width="10"/>`;
+  if(p.pattern==='blueprint') return `<rect x="30" y="30" width="${w-60}" height="${h-60}" fill="none" stroke="${p.text}" stroke-opacity=".55" stroke-width="2"/><rect x="43" y="43" width="${w-86}" height="${h-86}" fill="none" stroke="${p.text}" stroke-opacity=".18" stroke-width="1"/>`;
+  if(p.pattern==='pixel') return `<path d="M24 60V24h36M${w-60} 24h36v36M24 ${h-60}v36h36M${w-60} ${h-24}h36v-36" fill="none" stroke="${p.accent}" stroke-width="10"/>`;
+  if(p.pattern==='editorial'||p.pattern==='minimal') return `<line x1="${w*.065}" y1="${h*.055}" x2="${w*.935}" y2="${h*.055}" stroke="${p.text}" stroke-width="2"/><line x1="${w*.065}" y1="${h*.945}" x2="${w*.935}" y2="${h*.945}" stroke="${p.text}" stroke-width="2"/>`;
+  if(p.pattern==='scrapbook') return `<rect x="20" y="20" width="${w-40}" height="${h-40}" fill="none" stroke="#8e7256" stroke-opacity=".18" stroke-width="3" stroke-dasharray="11 13"/>`;
+  if(p.pattern==='chalk') return `<rect x="24" y="24" width="${w-48}" height="${h-48}" rx="14" fill="none" stroke="${p.text}" stroke-opacity=".22" stroke-width="3" stroke-dasharray="18 12"/>`;
+  return '';
 }
 
 function renderPosterBackground(w,h,p) {
-  if(p.pattern==='notebook') {
-    let lines=''; for(let y=120;y<h;y+=48) lines+=`<line x1="0" y1="${y}" x2="${w}" y2="${y}" stroke="#b8d5ef" stroke-opacity=".38" stroke-width="2"/>`;
-    return `${lines}<line x1="${Math.round(w*.12)}" y1="0" x2="${Math.round(w*.12)}" y2="${h}" stroke="#f3a9a9" stroke-opacity=".52" stroke-width="3"/>`;
-  }
-  if(p.pattern==='night') {
-    let stars=''; for(let i=0;i<38;i++){ const x=(i*137)%w,y=(i*223)%h,r=(i%3)+1; stars+=`<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" opacity="${.18+(i%4)*.08}"/>`; } return stars;
-  }
-  if(p.pattern==='glass') return `<circle cx="${w*.15}" cy="${h*.2}" r="${Math.min(w,h)*.28}" fill="#75b9ff" opacity=".24" filter="url(#soft)"/><circle cx="${w*.88}" cy="${h*.78}" r="${Math.min(w,h)*.3}" fill="#9b7cf6" opacity=".22" filter="url(#soft)"/>`;
-  if(p.pattern==='clay') return `<circle cx="${w*.1}" cy="${h*.16}" r="${Math.min(w,h)*.17}" fill="#ffd9c8" opacity=".7"/><circle cx="${w*.9}" cy="${h*.2}" r="${Math.min(w,h)*.12}" fill="#c6f0e9" opacity=".8"/><circle cx="${w*.82}" cy="${h*.88}" r="${Math.min(w,h)*.2}" fill="#d9d1ff" opacity=".75"/>`;
-  if(p.pattern==='retro') return `<path d="M0 ${h*.16} Q ${w*.25} ${h*.1} ${w*.5} ${h*.16} T ${w} ${h*.16}" fill="none" stroke="#e96b42" stroke-opacity=".16" stroke-width="24"/><circle cx="${w*.9}" cy="${h*.1}" r="${Math.min(w,h)*.08}" fill="#3e8b89" opacity=".12"/>`;
-  if(p.pattern==='forest') return `<path d="M0 ${h*.82} Q ${w*.18} ${h*.75} ${w*.34} ${h*.86} T ${w*.7} ${h*.84} T ${w} ${h*.8}V${h}H0Z" fill="#3d8a5e" opacity=".08"/><circle cx="${w*.08}" cy="${h*.12}" r="${Math.min(w,h)*.08}" fill="#7bbd72" opacity=".12"/>`;
-  if(p.pattern==='minimal') return `<line x1="${w*.08}" y1="${h*.11}" x2="${w*.92}" y2="${h*.11}" stroke="${p.text}" stroke-width="3" opacity=".16"/>`;
-  return `<circle cx="${w*.08}" cy="${h*.1}" r="${Math.min(w,h)*.09}" fill="#ffcf5d" opacity=".28"/><circle cx="${w*.92}" cy="${h*.12}" r="${Math.min(w,h)*.11}" fill="#7ad8d2" opacity=".24"/><circle cx="${w*.9}" cy="${h*.88}" r="${Math.min(w,h)*.13}" fill="#cbb7ff" opacity=".25"/>`;
+  const m=Math.min(w,h);
+  if(p.pattern==='playful') return `<circle cx="${w*.08}" cy="${h*.10}" r="${m*.09}" fill="#ffcf5d" opacity=".30"/><circle cx="${w*.92}" cy="${h*.12}" r="${m*.11}" fill="#7ad8d2" opacity=".25"/><path d="M0 ${h*.88}Q${w*.18} ${h*.81} ${w*.36} ${h*.89}T${w*.72} ${h*.87}T${w} ${h*.84}V${h}H0Z" fill="${p.accent}" opacity=".07"/>`;
+  if(p.pattern==='kawaii') return `<circle cx="${w*.12}" cy="${h*.16}" r="${m*.12}" fill="#ffd8ec"/><circle cx="${w*.88}" cy="${h*.15}" r="${m*.08}" fill="#cdeeff"/><circle cx="${w*.86}" cy="${h*.86}" r="${m*.15}" fill="#e1d7ff"/><path d="M0 ${h*.88}Q${w*.08} ${h*.82} ${w*.16} ${h*.88}T${w*.32} ${h*.88}T${w*.48} ${h*.88}T${w*.64} ${h*.88}T${w*.80} ${h*.88}T${w} ${h*.88}V${h}H0Z" fill="#ffe0a8" opacity=".65"/>`;
+  if(p.pattern==='notebook') { let lines=''; for(let y=118;y<h;y+=46) lines+=`<line x1="0" y1="${y}" x2="${w}" y2="${y}" stroke="#9cc7e7" stroke-opacity=".32" stroke-width="2"/>`; return `${lines}<line x1="${Math.round(w*.12)}" y1="0" x2="${Math.round(w*.12)}" y2="${h}" stroke="#ec8f91" stroke-opacity=".52" stroke-width="3"/><circle cx="${w*.055}" cy="${h*.16}" r="8" fill="none" stroke="#b7b0a5" stroke-width="3"/><circle cx="${w*.055}" cy="${h*.31}" r="8" fill="none" stroke="#b7b0a5" stroke-width="3"/>`; }
+  if(p.pattern==='scrapbook') return `<path d="M${w*.03} ${h*.14}l${w*.21} -${h*.06}" stroke="#d04e49" stroke-opacity=".20" stroke-width="24"/><path d="M${w*.74} ${h*.84}l${w*.20} ${h*.04}" stroke="#5e8ac6" stroke-opacity=".19" stroke-width="22"/><circle cx="${w*.86}" cy="${h*.13}" r="${m*.07}" fill="#d8b760" opacity=".18"/><path d="M0 ${h*.98}L${w*.08} ${h*.94} ${w*.16} ${h*.99} ${w*.24} ${h*.95} ${w*.32} ${h*.99} ${w*.40} ${h*.96} ${w*.48} ${h*.99} ${w*.56} ${h*.95} ${w*.64} ${h*.99} ${w*.72} ${h*.96} ${w*.80} ${h*.99} ${w*.88} ${h*.95} ${w} ${h*.99}" fill="none" stroke="#8e7256" stroke-opacity=".24" stroke-width="3"/>`;
+  if(p.pattern==='comic') { let dots=''; for(let y=44;y<h;y+=34) for(let x=44;x<w;x+=34) if((x+y)%68===0) dots+=`<circle cx="${x}" cy="${y}" r="3" fill="${p.text}" opacity=".08"/>`; return `${dots}<path d="M${w*.86} 0L${w*.72} ${h*.18}L${w} ${h*.10}Z" fill="${p.accent}" opacity=".92"/><path d="M0 ${h*.82}L${w*.15} ${h*.72}L${w*.10} ${h}Z" fill="#2867ff" opacity=".86"/>`; }
+  if(p.pattern==='arcade') { let grid=''; for(let i=0;i<=12;i++){const x=w*i/12;grid+=`<line x1="${x}" y1="${h*.55}" x2="${w/2+(x-w/2)*2.1}" y2="${h}" stroke="#7b4cff" stroke-opacity=".18" stroke-width="2"/>`; } for(let i=0;i<8;i++){const y=h*.58+i*i*h*.008;grid+=`<line x1="0" y1="${y}" x2="${w}" y2="${y}" stroke="#00f5ff" stroke-opacity=".16" stroke-width="2"/>`; } return `<circle cx="${w*.18}" cy="${h*.17}" r="${m*.24}" fill="#7b2cff" opacity=".22" filter="url(#soft)"/><circle cx="${w*.83}" cy="${h*.28}" r="${m*.18}" fill="#00f5ff" opacity=".12" filter="url(#soft)"/>${grid}`; }
+  if(p.pattern==='blueprint') { let grid=''; for(let x=0;x<w;x+=48) grid+=`<line x1="${x}" y1="0" x2="${x}" y2="${h}" stroke="#dff6ff" stroke-opacity=".08"/>`; for(let y=0;y<h;y+=48) grid+=`<line x1="0" y1="${y}" x2="${w}" y2="${y}" stroke="#dff6ff" stroke-opacity=".08"/>`; return `${grid}<circle cx="${w*.83}" cy="${h*.18}" r="${m*.10}" fill="none" stroke="#dff6ff" stroke-opacity=".16" stroke-width="2"/><path d="M${w*.72} ${h*.18}h${w*.22}M${w*.83} ${h*.08}v${h*.20}" stroke="#dff6ff" stroke-opacity=".13" stroke-width="2"/>`; }
+  if(p.pattern==='chalk') { let marks=''; for(let i=0;i<26;i++){const x=(i*193)%w,y=(i*137)%h;marks+=`<path d="M${x} ${y}l${8+(i%4)*4} ${-5+(i%3)*5}" stroke="#fff" stroke-opacity=".045" stroke-width="3" stroke-linecap="round"/>`; } return `${marks}<path d="M${w*.07} ${h*.84}q${w*.12} -${h*.08} ${w*.23} 0t${w*.23} 0t${w*.23} 0" fill="none" stroke="#ffd769" stroke-opacity=".16" stroke-width="5" stroke-dasharray="14 12"/>`; }
+  if(p.pattern==='editorial') return `<rect x="0" y="0" width="${w*.20}" height="${h}" fill="#d8d0c3" opacity=".22"/><line x1="${w*.20}" y1="0" x2="${w*.20}" y2="${h}" stroke="${p.text}" stroke-opacity=".12"/><circle cx="${w*.90}" cy="${h*.10}" r="${m*.055}" fill="${p.accent}" opacity=".9"/>`;
+  if(p.pattern==='brutal') return `<rect x="${w*.72}" y="${h*.06}" width="${w*.22}" height="${h*.13}" fill="${p.accent}"/><circle cx="${w*.10}" cy="${h*.84}" r="${m*.085}" fill="#006bff"/><path d="M${w*.69} ${h*.78}l${w*.22} ${h*.12}" stroke="${p.text}" stroke-width="24"/>`;
+  if(p.pattern==='retro') return `<path d="M-${w*.03} ${h*.22}Q${w*.18} ${h*.08} ${w*.38} ${h*.22}T${w*.78} ${h*.22}T${w*1.08} ${h*.19}" fill="none" stroke="#d95d39" stroke-opacity=".18" stroke-width="44"/><path d="M-${w*.03} ${h*.27}Q${w*.18} ${h*.13} ${w*.38} ${h*.27}T${w*.78} ${h*.27}T${w*1.08} ${h*.24}" fill="none" stroke="#2f7e78" stroke-opacity=".16" stroke-width="28"/><circle cx="${w*.9}" cy="${h*.1}" r="${m*.08}" fill="#d09a2d" opacity=".22"/>`;
+  if(p.pattern==='pixel') { let px=''; for(let i=0;i<26;i++){const x=((i*73)%20)*w/20,y=((i*47)%24)*h/24;px+=`<rect x="${x}" y="${y}" width="${Math.max(8,w*.008)}" height="${Math.max(8,w*.008)}" fill="${i%2?p.accent:'#5eead4'}" opacity=".14"/>`; } return `${px}<path d="M0 ${h*.78}h${w*.12}v-${h*.05}h${w*.09}v${h*.09}h${w*.14}v-${h*.04}h${w*.12}v${h*.08}h${w*.15}v-${h*.06}h${w*.18}v${h*.09}H0Z" fill="#5eead4" opacity=".08"/>`; }
+  if(p.pattern==='glass') return `<circle cx="${w*.15}" cy="${h*.2}" r="${m*.28}" fill="#75b9ff" opacity=".24" filter="url(#soft)"/><circle cx="${w*.88}" cy="${h*.78}" r="${m*.30}" fill="#9b7cf6" opacity=".22" filter="url(#soft)"/><circle cx="${w*.72}" cy="${h*.14}" r="${m*.12}" fill="#7ef0d1" opacity=".18" filter="url(#soft)"/>`;
+  if(p.pattern==='forest') return `<path d="M0 ${h*.82}Q${w*.18} ${h*.75} ${w*.34} ${h*.86}T${w*.70} ${h*.84}T${w} ${h*.80}V${h}H0Z" fill="#3d8a5e" opacity=".09"/><g fill="none" stroke="#3d8a5e" stroke-opacity=".18" stroke-width="4"><path d="M${w*.08} ${h*.20}q${w*.03} -${h*.09} ${w*.09} -${h*.11}q-${w*.01} ${h*.08}-${w*.09} ${h*.11}Z"/><path d="M${w*.90} ${h*.18}q-${w*.03} -${h*.08}-${w*.09} -${h*.10}q${w*.01} ${h*.08} ${w*.09} ${h*.10}Z"/></g>`;
+  if(p.pattern==='minimal') return `<line x1="${w*.08}" y1="${h*.14}" x2="${w*.92}" y2="${h*.14}" stroke="${p.text}" stroke-width="1" opacity=".16"/><rect x="${w*.07}" y="${h*.78}" width="${w*.02}" height="${h*.11}" fill="${p.accent}"/>`;
+  if(p.pattern==='night') { let stars=''; for(let i=0;i<44;i++){ const x=(i*137)%w,y=(i*223)%h,r=(i%3)+1; stars+=`<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" opacity="${.16+(i%4)*.08}"/>`; } return `${stars}<path d="M${w*.82} ${h*.13}a${m*.065} ${m*.065} 0 1 0 ${m*.07} ${m*.10}a${m*.055} ${m*.055} 0 1 1-${m*.07}-${m*.10}Z" fill="#ffd36a" opacity=".18"/>`; }
+  return '';
 }
 
 function renderHeader(w,h,p,{compact=false}={}) {
-  const y=compact?70:Math.max(78,h*.06); const fs=clamp(w*.052,42,74); const sub=clamp(w*.018,17,26);
-  return `<g font-family="system-ui,'Noto Sans KR',sans-serif" text-anchor="middle"><text x="${w/2}" y="${y}" font-size="${fs}" font-weight="850" fill="${p.text}" letter-spacing="-1.8">${escapeXml(state.document.title)}</text><text x="${w/2}" y="${y+sub*1.7}" font-size="${sub}" font-weight="560" fill="${p.muted}">${escapeXml(state.document.subtitle)}</text><g transform="translate(${w/2-44} ${y+sub*2.5})"><rect width="88" height="34" rx="17" fill="${p.accent}" opacity=".12"/><text x="44" y="23" font-size="15" font-weight="800" fill="${p.accent}">${DAY_NAME[state.ui.selectedDay]}</text></g></g>`;
+  const font=posterFont(p), titleFont=posterTitleFont(p); const title=escapeXml(state.document.title), subText=escapeXml(state.document.subtitle), day=DAY_NAME[state.ui.selectedDay];
+  const fs=clamp(w*.052,42,74), sub=clamp(w*.018,17,26); const y=compact?70:Math.max(78,h*.065);
+  if(p.header==='left') return `<g font-family="${font}"><text x="${w*.16}" y="${y}" font-family="${titleFont}" font-size="${fs*.88}" font-weight="800" fill="${p.text}">${title}</text><text x="${w*.16}" y="${y+sub*1.65}" font-size="${sub}" fill="${p.muted}">${subText}</text><path d="M${w*.16} ${y+sub*2.45}h${w*.28}" stroke="${p.accent}" stroke-width="5" stroke-linecap="round"/><text x="${w*.46}" y="${y+sub*2.58}" font-size="14" font-weight="800" fill="${p.accent}">${day}</text></g>`;
+  if(p.header==='scrap') return `<g transform="translate(${w*.50} ${y}) rotate(-1.5) translate(${-w*.34} -${fs*.72})" font-family="${font}">${cardShell(0,0,w*.68,fs*1.55,p,p.accent)}<text x="${w*.34}" y="${fs*.72}" text-anchor="middle" font-family="${titleFont}" font-size="${fs*.78}" font-weight="800" fill="${p.text}">${title}</text><text x="${w*.34}" y="${fs*1.16}" text-anchor="middle" font-size="${sub*.88}" fill="${p.muted}">${subText}</text></g><text x="${w*.84}" y="${y+sub*1.8}" font-family="${font}" font-size="14" font-weight="800" fill="${p.accent}" transform="rotate(5 ${w*.84} ${y+sub*1.8})">${day}</text>`;
+  if(p.header==='comic') return `<g font-family="${font}"><path d="M${w*.09} ${y-fs*.74}H${w*.91}V${y+fs*.28}H${w*.61}l-${w*.035} ${fs*.34}l-${w*.02}-${fs*.34}H${w*.09}Z" fill="${p.surface}" stroke="${p.text}" stroke-width="5" filter="url(#hardShadow)"/><text x="${w*.50}" y="${y}" text-anchor="middle" font-family="${titleFont}" font-size="${fs*.74}" font-weight="900" fill="${p.text}">${title}</text><text x="${w*.50}" y="${y+sub*1.55}" text-anchor="middle" font-size="${sub*.84}" font-weight="800" fill="${p.text}">${subText}</text><circle cx="${w*.86}" cy="${y+sub*1.45}" r="24" fill="${p.accent}" stroke="${p.text}" stroke-width="4"/><text x="${w*.86}" y="${y+sub*1.65}" text-anchor="middle" font-size="12" font-weight="900" fill="#fff">${day}</text></g>`;
+  if(p.header==='brutal') return `<g font-family="${font}"><rect x="${w*.07}" y="${y-fs*.73}" width="${w*.70}" height="${fs*1.02}" fill="${p.text}"/><text x="${w*.09}" y="${y}" font-family="${titleFont}" font-size="${fs*.74}" font-weight="900" fill="${p.bg}">${title}</text><rect x="${w*.77}" y="${y-fs*.73}" width="${w*.16}" height="${fs*1.02}" fill="${p.accent}" stroke="${p.text}" stroke-width="5"/><text x="${w*.85}" y="${y-fs*.05}" text-anchor="middle" font-size="16" font-weight="900" fill="#fff">${day}</text><text x="${w*.08}" y="${y+sub*1.5}" font-size="${sub*.85}" font-weight="800" fill="${p.text}">${subText}</text></g>`;
+  if(p.header==='technical') return `<g font-family="${font}"><text x="${w*.075}" y="${y-fs*.12}" font-family="${titleFont}" font-size="${fs*.68}" font-weight="800" fill="${p.text}">${title}</text><line x1="${w*.075}" y1="${y+10}" x2="${w*.925}" y2="${y+10}" stroke="${p.text}" stroke-opacity=".55" stroke-width="2"/><text x="${w*.075}" y="${y+sub*1.75}" font-size="${sub*.75}" fill="${p.muted}">${subText}</text><text x="${w*.925}" y="${y+sub*1.75}" text-anchor="end" font-size="${sub*.72}" font-weight="800" fill="${p.accent}">DAY / ${day}</text></g>`;
+  if(p.header==='editorial'||p.header==='swiss') return `<g font-family="${font}"><text x="${w*.25}" y="${y}" font-family="${titleFont}" font-size="${fs*.82}" font-weight="${p.header==='swiss'?800:700}" fill="${p.text}">${title}</text><text x="${w*.25}" y="${y+sub*1.65}" font-size="${sub*.82}" fill="${p.muted}">${subText}</text><line x1="${w*.25}" y1="${y+sub*2.28}" x2="${w*.91}" y2="${y+sub*2.28}" stroke="${p.text}" stroke-width="2"/><text x="${w*.91}" y="${y+sub*2.05}" text-anchor="end" font-size="15" font-weight="800" fill="${p.accent}">${day}</text></g>`;
+  if(p.header==='neon'||p.header==='pixel') return `<g font-family="${font}" text-anchor="middle" filter="${p.header==='neon'?'url(#glow)':''}"><text x="${w/2}" y="${y}" font-family="${titleFont}" font-size="${fs*.80}" font-weight="900" fill="${p.text}" letter-spacing="${p.header==='pixel'?2:1}">${title}</text><text x="${w/2}" y="${y+sub*1.6}" font-size="${sub*.82}" font-weight="700" fill="${p.muted}">${subText}</text><rect x="${w/2-44}" y="${y+sub*2.05}" width="88" height="32" rx="${p.header==='pixel'?0:16}" fill="none" stroke="${p.accent}" stroke-width="2"/><text x="${w/2}" y="${y+sub*2.05+22}" font-size="13" font-weight="900" fill="${p.accent}">${day}</text></g>`;
+  if(p.header==='chalk') return `<g font-family="${font}" text-anchor="middle"><text x="${w/2}" y="${y}" font-family="${titleFont}" font-size="${fs*.82}" font-weight="800" fill="${p.text}" transform="rotate(-1 ${w/2} ${y})">${title}</text><path d="M${w*.30} ${y+15}q${w*.20} 18 ${w*.40} 0" fill="none" stroke="${p.accent}" stroke-width="4" stroke-linecap="round" stroke-dasharray="12 8"/><text x="${w/2}" y="${y+sub*2.0}" font-size="${sub*.86}" fill="${p.muted}">${subText} · ${day}</text></g>`;
+  if(p.header==='retro') return `<g font-family="${font}" text-anchor="middle"><text x="${w/2+5}" y="${y+5}" font-family="${titleFont}" font-size="${fs*.82}" font-weight="800" fill="#fff2c6" opacity=".7">${title}</text><text x="${w/2}" y="${y}" font-family="${titleFont}" font-size="${fs*.82}" font-weight="800" fill="${p.text}">${title}</text><text x="${w/2}" y="${y+sub*1.72}" font-size="${sub*.88}" font-weight="700" fill="${p.muted}">${subText}</text><path d="M${w*.42} ${y+sub*2.25}h${w*.16}" stroke="${p.accent}" stroke-width="8" stroke-linecap="round"/><text x="${w/2}" y="${y+sub*3.0}" font-size="14" font-weight="900" fill="${p.text}">${day}</text></g>`;
+  if(p.header==='botanical'||p.header==='night') return `<g font-family="${font}" text-anchor="middle"><text x="${w/2}" y="${y}" font-family="${titleFont}" font-size="${fs*.84}" font-weight="700" fill="${p.text}">${title}</text><text x="${w/2}" y="${y+sub*1.7}" font-size="${sub*.86}" fill="${p.muted}">${subText}</text><path d="M${w*.41} ${y+sub*2.30}q${w*.09} -12 ${w*.18} 0" fill="none" stroke="${p.accent}" stroke-width="3" stroke-linecap="round"/><text x="${w/2}" y="${y+sub*3.0}" font-size="14" font-weight="800" fill="${p.accent}">${day}</text></g>`;
+  const bubble=p.header==='bubble';
+  return `<g font-family="${font}" text-anchor="middle"><text x="${w/2}" y="${y}" font-family="${titleFont}" font-size="${fs}" font-weight="850" fill="${p.text}" letter-spacing="-1.5">${title}</text><text x="${w/2}" y="${y+sub*1.7}" font-size="${sub}" font-weight="560" fill="${p.muted}">${subText}</text><g transform="translate(${w/2-44} ${y+sub*2.5})"><rect width="88" height="34" rx="${bubble?17:10}" fill="${p.accent}" opacity="${bubble?.18:.12}"/><text x="44" y="23" font-size="15" font-weight="800" fill="${p.accent}">${day}</text></g></g>`;
 }
 
 function renderClockLayout(w,h,p,schedules) {
-  const header=renderHeader(w,h,p);
-  const wide=w/h>1.45;
-  const cx=wide?w*.34:w*.5; const cy=wide?h*.56:clamp(h*.43,390,h*.48); const r=wide?Math.min(h*.30,w*.21):Math.min(w*.31,h*.245); const stroke=Math.max(56,r*.26); const innerR=r-stroke*.5;
-  const circumference=2*Math.PI*r;
-  let ring=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.line}" stroke-opacity=".52" stroke-width="${stroke}"/>`;
-  schedules.forEach(s=>{ const dur=durationMin(s.start,s.end); const len=circumference*dur/1440; const rot=timeToMin(s.start)/1440*360-90; ring+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${s.color}" stroke-width="${stroke}" stroke-dasharray="${len} ${circumference-len}" transform="rotate(${rot} ${cx} ${cy})"/>`; });
-  let ticks=''; if(state.design.showHours){ for(let hour=0;hour<24;hour++){ const a=(hour/24*360-90)*Math.PI/180; const major=hour%3===0; const r1=r+stroke*.62, r2=r1+(major?18:9); const x1=cx+Math.cos(a)*r1,y1=cy+Math.sin(a)*r1,x2=cx+Math.cos(a)*r2,y2=cy+Math.sin(a)*r2; ticks+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${p.text}" stroke-opacity="${major?.42:.20}" stroke-width="${major?3:2}"/>`; if(major && hour!==0){ const lr=r2+26; ticks+=`<text x="${cx+Math.cos(a)*lr}" y="${cy+Math.sin(a)*lr+6}" text-anchor="middle" font-size="15" font-weight="700" fill="${p.muted}">${String(hour).padStart(2,'0')}</text>`; } } }
-  const planned=schedules.reduce((sum,s)=>sum+durationMin(s.start,s.end),0);
-  const center=`<g font-family="system-ui,'Noto Sans KR',sans-serif" text-anchor="middle"><circle cx="${cx}" cy="${cy}" r="${innerR-10}" fill="${p.surface}" filter="url(#shadow)"/><text x="${cx}" y="${cy-12}" font-size="${clamp(r*.16,26,44)}" font-weight="850" fill="${p.text}">${DAY_NAME[state.ui.selectedDay]}</text><text x="${cx}" y="${cy+28}" font-size="${clamp(r*.075,14,21)}" font-weight="650" fill="${p.muted}">계획 ${escapeXml(durationText(planned))}</text></g>`;
-  const legend=state.design.showLegend?renderLegend(w,h,p,schedules,wide?{x:w*.61,y:h*.27,width:w*.33,maxRows:9}:{x:w*.11,y:cy+r+stroke*.75+55,width:w*.78,maxRows:8}):'';
-  return `${header}<g font-family="system-ui,'Noto Sans KR',sans-serif">${ring}${ticks}${center}${legend}</g>`;
+  const header=renderHeader(w,h,p); const wide=w/h>1.45;
+  const cx=wide?w*.34:(p.pattern==='editorial'||p.pattern==='minimal'?w*.57:w*.5); const cy=wide?h*.57:clamp(h*.45,400,h*.50);
+  const r=wide?Math.min(h*.30,w*.21):Math.min(w*.30,h*.235);
+  const thin=['editorial','minimal','blueprint'].includes(p.pattern); const stroke=thin?Math.max(36,r*.17):Math.max(58,r*.27); const innerR=r-stroke*.5;
+  const circumference=2*Math.PI*r; const cap=p.ringCap||'butt'; const filter=(p.shadow==='glow')?' filter="url(#glow)"':'';
+  let ring=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.line}" stroke-opacity="${thin?.65:.48}" stroke-width="${stroke}"/>`;
+  schedules.forEach((s,i)=>{ const c=scheduleColor(s,i,p); const dur=durationMin(s.start,s.end), len=circumference*dur/1440, rot=timeToMin(s.start)/1440*360-90; ring+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${c}" stroke-width="${stroke}" stroke-linecap="${cap}" stroke-dasharray="${len} ${Math.max(0,circumference-len)}" transform="rotate(${rot} ${cx} ${cy})"${filter}/>`; });
+  if(['comic','brutal','pixel'].includes(p.pattern)) ring+=`<circle cx="${cx}" cy="${cy}" r="${r+stroke*.53}" fill="none" stroke="${p.text}" stroke-width="${p.pattern==='pixel'?5:7}"/><circle cx="${cx}" cy="${cy}" r="${Math.max(10,r-stroke*.53)}" fill="none" stroke="${p.text}" stroke-width="${p.pattern==='pixel'?5:7}"/>`;
+  let ticks=''; if(state.design.showHours){ for(let hour=0;hour<24;hour++){ const a=(hour/24*360-90)*Math.PI/180, major=hour%3===0; const r1=r+stroke*.62, r2=r1+(major?18:9); const x1=cx+Math.cos(a)*r1,y1=cy+Math.sin(a)*r1,x2=cx+Math.cos(a)*r2,y2=cy+Math.sin(a)*r2; ticks+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${p.text}" stroke-opacity="${major?.44:.20}" stroke-width="${major?3:2}"/>`; if(major && hour!==0){ const lr=r2+26; ticks+=`<text x="${cx+Math.cos(a)*lr}" y="${cy+Math.sin(a)*lr+6}" text-anchor="middle" font-family="${posterFont(p)}" font-size="15" font-weight="700" fill="${p.muted}">${String(hour).padStart(2,'0')}</text>`; } } }
+  const planned=schedules.reduce((sum,s)=>sum+durationMin(s.start,s.end),0); const centerFill=(p.pattern==='blueprint'||p.pattern==='chalk')?'transparent':p.surface; const centerFilter=['editorial','minimal','blueprint','chalk'].includes(p.pattern)?'':posterFilter(p);
+  let centerShape=`<circle cx="${cx}" cy="${cy}" r="${Math.max(30,innerR-10)}" fill="${centerFill}" ${centerFilter?`filter="${centerFilter}"`:''} stroke="${['comic','brutal','pixel'].includes(p.pattern)?p.text:p.line}" stroke-opacity="${['comic','brutal','pixel'].includes(p.pattern)?1:.32}" stroke-width="${['comic','brutal','pixel'].includes(p.pattern)?4:1}"/>`;
+  if(p.pattern==='brutal') centerShape=`<rect x="${cx-innerR*.66}" y="${cy-innerR*.42}" width="${innerR*1.32}" height="${innerR*.84}" fill="${p.surface}" stroke="${p.text}" stroke-width="5" filter="url(#hardShadow)"/>`;
+  if(p.pattern==='pixel') centerShape=`<rect x="${cx-innerR*.68}" y="${cy-innerR*.45}" width="${innerR*1.36}" height="${innerR*.90}" fill="${p.surface}" stroke="${p.accent}" stroke-width="5"/>`;
+  const center=`<g font-family="${posterFont(p)}" text-anchor="middle">${centerShape}<text x="${cx}" y="${cy-10}" font-family="${posterTitleFont(p)}" font-size="${clamp(r*.15,25,43)}" font-weight="850" fill="${p.text}">${DAY_NAME[state.ui.selectedDay]}</text><text x="${cx}" y="${cy+28}" font-size="${clamp(r*.072,13,20)}" font-weight="650" fill="${p.muted}">계획 ${escapeXml(durationText(planned))}</text></g>`;
+  const legend=state.design.showLegend?renderLegend(w,h,p,schedules,wide?{x:w*.61,y:h*.27,width:w*.33,maxRows:9}:{x:(p.pattern==='editorial'||p.pattern==='minimal'?w*.08:w*.11),y:cy+r+stroke*.75+52,width:(p.pattern==='editorial'||p.pattern==='minimal'?w*.84:w*.78),maxRows:8}):'';
+  return `${header}<g font-family="${posterFont(p)}">${ring}${ticks}${center}${legend}</g>`;
 }
 
 function renderLegend(w,h,p,schedules,opt) {
-  const items=schedules.slice(0,opt.maxRows); const cols=opt.width>w*.6?2:1; const colW=opt.width/cols; const rowH=55; let out='';
-  items.forEach((s,i)=>{ const col=i%cols,row=Math.floor(i/cols),x=opt.x+col*colW,y=opt.y+row*rowH; const icon=getIcon(s.icon,state.customIcons); out+=`<g transform="translate(${x} ${y})"><rect width="${colW-14}" height="46" rx="15" fill="${p.surface}" opacity="${p.pattern==='glass'?.78:1}" stroke="${p.line}" stroke-opacity=".75"/><circle cx="24" cy="23" r="14" fill="${s.color}" opacity=".14"/><svg x="13" y="12" width="22" height="22" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" stroke="${s.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg><text x="48" y="19" font-size="14" font-weight="800" fill="${p.text}">${escapeXml(truncate(s.title,16))}</text><text x="48" y="35" font-size="11" font-weight="600" fill="${p.muted}">${s.start}–${s.end}</text></g>`; });
-  if(schedules.length>items.length){ const rows=Math.ceil(items.length/cols); out+=`<text x="${opt.x}" y="${opt.y+rows*rowH+18}" font-size="12" font-weight="700" fill="${p.muted}">+ ${schedules.length-items.length}개 일정 더 있음</text>`; }
+  const items=schedules.slice(0,opt.maxRows); const cols=opt.width>w*.6?2:1, colW=opt.width/cols; const rowH=['comic','brutal','pixel'].includes(p.pattern)?62:56; let out='';
+  items.forEach((s,i)=>{ const col=i%cols,row=Math.floor(i/cols),x=opt.x+col*colW,y=opt.y+row*rowH,c=scheduleColor(s,i,p),icon=getIcon(s.icon,state.customIcons),cw=colW-14,ch=rowH-10; out+=`<g font-family="${posterFont(p)}">${cardShell(x,y,cw,ch,p,c)}<circle cx="${x+25}" cy="${y+ch/2}" r="${p.card==='brutal'||p.card==='comic'||p.card==='pixel'?15:14}" fill="${c}" opacity="${(p.card==='brutal'||p.card==='comic') ? .95 : .16}"/>`; if(p.card==='brutal'||p.card==='comic') out+=`<svg x="${x+14}" y="${y+ch/2-11}" width="22" height="22" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg>`; else out+=`<svg x="${x+14}" y="${y+ch/2-11}" width="22" height="22" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" stroke="${c}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg>`; out+=`<text x="${x+49}" y="${y+ch/2-2}" font-size="14" font-weight="800" fill="${p.text}">${escapeXml(truncate(s.title,16))}</text><text x="${x+49}" y="${y+ch/2+15}" font-size="11" font-weight="650" fill="${p.muted}">${s.start}–${s.end}</text></g>`; });
+  if(schedules.length>items.length){ const rows=Math.ceil(items.length/cols); out+=`<text x="${opt.x}" y="${opt.y+rows*rowH+18}" font-family="${posterFont(p)}" font-size="12" font-weight="700" fill="${p.muted}">+ ${schedules.length-items.length}개 일정 더 있음</text>`; }
   return out;
 }
 
 function renderTimelineLayout(w,h,p,schedules) {
-  const header=renderHeader(w,h,p); const top=Math.max(190,h*.16), bottom=70; const avail=h-top-bottom; const count=Math.max(1,schedules.length); const rowH=clamp(avail/count,58,120); const axisX=Math.max(100,w*.13); let out=`<line x1="${axisX}" y1="${top}" x2="${axisX}" y2="${Math.min(h-bottom,top+rowH*count)}" stroke="${p.line}" stroke-width="5" stroke-linecap="round"/>`;
+  const header=renderHeader(w,h,p); const top=Math.max(210,h*.18), bottom=70, avail=h-top-bottom, count=Math.max(1,schedules.length), rowH=clamp(avail/count,60,122), axisX=Math.max(100,w*.14); let out=`<line x1="${axisX}" y1="${top}" x2="${axisX}" y2="${Math.min(h-bottom,top+rowH*count)}" stroke="${p.pattern==='brutal'||p.pattern==='comic'?p.text:p.line}" stroke-width="${p.pattern==='brutal'?8:5}" stroke-linecap="${p.pattern==='pixel'?'square':'round'}"/>`;
   if(!schedules.length) return `${header}${renderEmptyPoster(w,h,p,'일정을 추가하면 타임라인이 만들어져요')}`;
-  schedules.forEach((s,i)=>{ const y=top+i*rowH; const icon=getIcon(s.icon,state.customIcons); const cardX=axisX+42, cardW=w-cardX-w*.08, cardH=rowH-12; out+=`<g font-family="system-ui,'Noto Sans KR',sans-serif"><circle cx="${axisX}" cy="${y+cardH/2}" r="9" fill="${s.color}"/><text x="${axisX-20}" y="${y+cardH/2-2}" text-anchor="end" font-size="${clamp(w*.014,14,20)}" font-weight="850" fill="${p.text}">${s.start}</text><text x="${axisX-20}" y="${y+cardH/2+17}" text-anchor="end" font-size="${clamp(w*.009,10,14)}" font-weight="650" fill="${p.muted}">${s.end}</text><rect x="${cardX}" y="${y}" width="${cardW}" height="${cardH}" rx="${Math.min(26,cardH*.26)}" fill="${p.surface}" stroke="${p.line}" filter="url(#shadow)" opacity="${p.pattern==='glass'?.86:1}"/><rect x="${cardX}" y="${y}" width="9" height="${cardH}" rx="5" fill="${s.color}"/><circle cx="${cardX+42}" cy="${y+cardH/2}" r="24" fill="${s.color}" opacity=".12"/><svg x="${cardX+28}" y="${y+cardH/2-14}" width="28" height="28" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" stroke="${s.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg><text x="${cardX+78}" y="${y+cardH/2+(state.design.showDetails?-5:7)}" font-size="${clamp(w*.018,18,28)}" font-weight="850" fill="${p.text}">${escapeXml(truncate(s.title,30))}</text>${state.design.showDetails&&s.detail?`<text x="${cardX+78}" y="${y+cardH/2+22}" font-size="${clamp(w*.011,11,16)}" font-weight="560" fill="${p.muted}">${escapeXml(truncate(s.detail,48))}</text>`:''}</g>`; });
+  schedules.forEach((s,i)=>{ const y=top+i*rowH, icon=getIcon(s.icon,state.customIcons), c=scheduleColor(s,i,p), cardX=axisX+44, cardW=w-cardX-w*.075, cardH=rowH-12; out+=`<g font-family="${posterFont(p)}"><circle cx="${axisX}" cy="${y+cardH/2}" r="${p.pattern==='brutal'?12:9}" fill="${c}" stroke="${p.pattern==='brutal'||p.pattern==='comic'?p.text:'none'}" stroke-width="3"/><text x="${axisX-20}" y="${y+cardH/2-3}" text-anchor="end" font-size="${clamp(w*.014,14,20)}" font-weight="850" fill="${p.text}">${s.start}</text><text x="${axisX-20}" y="${y+cardH/2+16}" text-anchor="end" font-size="${clamp(w*.009,10,14)}" font-weight="650" fill="${p.muted}">${s.end}</text>${cardShell(cardX,y,cardW,cardH,p,c)}<circle cx="${cardX+43}" cy="${y+cardH/2}" r="24" fill="${c}" opacity="${(p.card==='brutal'||p.card==='comic') ? .95 : .14}"/><svg x="${cardX+29}" y="${y+cardH/2-14}" width="28" height="28" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" stroke="${p.card==='brutal'||p.card==='comic'?'#fff':c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg><text x="${cardX+80}" y="${y+cardH/2+(state.design.showDetails?-5:7)}" font-family="${posterTitleFont(p)}" font-size="${clamp(w*.018,18,28)}" font-weight="850" fill="${p.text}">${escapeXml(truncate(s.title,30))}</text>${state.design.showDetails&&s.detail?`<text x="${cardX+80}" y="${y+cardH/2+22}" font-size="${clamp(w*.011,11,16)}" font-weight="560" fill="${p.muted}">${escapeXml(truncate(s.detail,48))}</text>`:''}</g>`; });
   return `${header}${out}`;
 }
 
 function renderCardsLayout(w,h,p,schedules) {
-  const header=renderHeader(w,h,p); const top=Math.max(190,h*.17), pad=w*.07, gap=Math.max(18,w*.018); const cols=w/h>1.35?3:2; const cardW=(w-pad*2-gap*(cols-1))/cols; const rows=Math.ceil(Math.max(1,schedules.length)/cols); const avail=h-top-60; const cardH=clamp((avail-gap*Math.max(0,rows-1))/Math.max(1,rows),100,220);
+  const header=renderHeader(w,h,p); const top=Math.max(220,h*.19), pad=(p.pattern==='editorial'||p.pattern==='minimal')?w*.08:w*.07, gap=Math.max(18,w*.018), cols=w/h>1.35?3:2, cardW=(w-pad*2-gap*(cols-1))/cols, rows=Math.ceil(Math.max(1,schedules.length)/cols), avail=h-top-60, cardH=clamp((avail-gap*Math.max(0,rows-1))/Math.max(1,rows),105,230);
   if(!schedules.length) return `${header}${renderEmptyPoster(w,h,p,'일정을 추가하면 카드가 차곡차곡 생겨요')}`;
-  let out=''; schedules.forEach((s,i)=>{ const col=i%cols,row=Math.floor(i/cols),x=pad+col*(cardW+gap),y=top+row*(cardH+gap); if(y+cardH>h-30)return; const icon=getIcon(s.icon,state.customIcons); out+=`<g font-family="system-ui,'Noto Sans KR',sans-serif"><rect x="${x}" y="${y}" width="${cardW}" height="${cardH}" rx="${Math.min(30,cardH*.18)}" fill="${p.surface}" stroke="${p.line}" filter="url(#shadow)" opacity="${p.pattern==='glass'?.84:1}"/><rect x="${x+18}" y="${y+18}" width="${cardW-36}" height="8" rx="4" fill="${s.color}" opacity=".82"/><circle cx="${x+45}" cy="${y+58}" r="23" fill="${s.color}" opacity=".14"/><svg x="${x+31}" y="${y+44}" width="28" height="28" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" stroke="${s.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg><text x="${x+78}" y="${y+57}" font-size="${clamp(w*.014,16,23)}" font-weight="850" fill="${p.text}">${escapeXml(truncate(s.title,20))}</text><text x="${x+78}" y="${y+78}" font-size="${clamp(w*.009,10,14)}" font-weight="700" fill="${p.muted}">${s.start} – ${s.end}</text>${state.design.showDetails&&s.detail?`<text x="${x+22}" y="${y+cardH-25}" font-size="${clamp(w*.009,10,14)}" font-weight="560" fill="${p.muted}">${escapeXml(truncate(s.detail,34))}</text>`:''}</g>`; });
+  let out=''; schedules.forEach((s,i)=>{ const col=i%cols,row=Math.floor(i/cols),x=pad+col*(cardW+gap),y=top+row*(cardH+gap); if(y+cardH>h-30)return; const icon=getIcon(s.icon,state.customIcons), c=scheduleColor(s,i,p); out+=`<g font-family="${posterFont(p)}">${cardShell(x,y,cardW,cardH,p,c)}<circle cx="${x+45}" cy="${y+60}" r="25" fill="${c}" opacity="${(p.card==='brutal'||p.card==='comic') ? .95 : .15}"/><svg x="${x+31}" y="${y+46}" width="28" height="28" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" stroke="${p.card==='brutal'||p.card==='comic'?'#fff':c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg><text x="${x+80}" y="${y+58}" font-family="${posterTitleFont(p)}" font-size="${clamp(w*.014,16,23)}" font-weight="850" fill="${p.text}">${escapeXml(truncate(s.title,20))}</text><text x="${x+80}" y="${y+80}" font-size="${clamp(w*.009,10,14)}" font-weight="700" fill="${p.muted}">${s.start} – ${s.end}</text>${state.design.showDetails&&s.detail?`<text x="${x+22}" y="${y+cardH-25}" font-size="${clamp(w*.009,10,14)}" font-weight="560" fill="${p.muted}">${escapeXml(truncate(s.detail,34))}</text>`:''}</g>`; });
   return `${header}${out}`;
 }
-function renderEmptyPoster(w,h,p,msg) { return `<g font-family="system-ui,'Noto Sans KR',sans-serif" text-anchor="middle"><circle cx="${w/2}" cy="${h*.5}" r="72" fill="${p.accent}" opacity=".1"/><text x="${w/2}" y="${h*.5+8}" font-size="54" fill="${p.accent}">+</text><text x="${w/2}" y="${h*.5+115}" font-size="22" font-weight="750" fill="${p.muted}">${escapeXml(msg)}</text></g>`; }
+function renderEmptyPoster(w,h,p,msg) { return `<g font-family="${posterFont(p)}" text-anchor="middle"><circle cx="${w/2}" cy="${h*.5}" r="72" fill="${p.accent}" opacity=".12"/><text x="${w/2}" y="${h*.5+8}" font-size="54" fill="${p.accent}">+</text><text x="${w/2}" y="${h*.5+115}" font-size="22" font-weight="750" fill="${p.muted}">${escapeXml(msg)}</text></g>`; }
 function truncate(s,n){ s=String(s||''); return s.length>n?s.slice(0,n-1)+'…':s; }
 
-function renderSticker(st,w,h) {
+function renderSticker(st,w,h,editor=false) {
   const icon=getIcon(st.icon,state.customIcons); if(!icon)return '';
-  const s=st.size; return `<g data-sticker-id="${escapeXml(st.id)}" transform="${stickerTransform(st,w,h)}"><rect class="sticker-hit" x="-8" y="-8" width="${s+16}" height="${s+16}" rx="18" fill="transparent" stroke="transparent"/><svg x="0" y="0" width="${s}" height="${s}" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" stroke="${st.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg></g>`;
+  const s=st.size, selected=editor && st.id===selectedStickerId;
+  const controls=selected?`<g class="sticker-controls"><rect class="sticker-selection" x="-12" y="-12" width="${s+24}" height="${s+24}" rx="14" fill="none" vector-effect="non-scaling-stroke"/><line class="sticker-rotate-line" x1="${s/2}" y1="-12" x2="${s/2}" y2="-48" vector-effect="non-scaling-stroke"/><circle data-sticker-handle="rotate" class="sticker-handle-hit" cx="${s/2}" cy="-50" r="24" fill="transparent"/><circle class="sticker-handle-visible rotate" cx="${s/2}" cy="-50" r="10" vector-effect="non-scaling-stroke"/><circle data-sticker-handle="resize" class="sticker-handle-hit" cx="${s+12}" cy="${s+12}" r="26" fill="transparent"/><circle class="sticker-handle-visible resize" cx="${s+12}" cy="${s+12}" r="11" vector-effect="non-scaling-stroke"/><path class="sticker-resize-glyph" d="M${s+7} ${s+12}h10M${s+12} ${s+7}v10" vector-effect="non-scaling-stroke"/></g>`:'';
+  return `<g data-sticker-id="${escapeXml(st.id)}" transform="${stickerTransform(st,w,h)}"><rect class="sticker-hit" x="-10" y="-10" width="${s+20}" height="${s+20}" rx="18" fill="transparent" stroke="transparent"/><svg x="0" y="0" width="${s}" height="${s}" viewBox="${escapeXml(icon.viewBox||'0 0 24 24')}" fill="none" color="${st.color}" stroke="${st.color}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icon.body}</svg>${controls}</g>`;
 }
 
 function fitPreview() {

@@ -113,7 +113,8 @@
           </div>
 
           <div class="control-section">
-            <div class="section-title"><span>스타일 프리셋</span><small>8가지</small></div>
+            <div class="section-title"><span>스타일 프리셋</span><span class="section-title-actions"><small>16가지</small><button id="shuffleStyleBtn" type="button" class="mini-action">랜덤</button></span></div>
+            <p class="control-hint">색만 바꾸는 테마가 아니라 타이포·배경·카드·시계 표현까지 함께 바뀝니다.</p>
             <div class="preset-grid" id="presetGrid"></div>
           </div>
 
@@ -145,9 +146,16 @@
           </div>
           <div id="stickerInspector" class="sticker-inspector" hidden>
             <div class="section-title"><span>선택한 스티커</span><button id="deleteStickerBtn" type="button" class="text-danger">삭제</button></div>
-            <label><span class="field-label">크기</span><input id="stickerSize" type="range" min="30" max="220" step="2" /></label>
-            <label><span class="field-label">회전</span><input id="stickerRotation" type="range" min="-180" max="180" step="1" /></label>
+            <div class="sticker-tip">미리보기의 모서리 핸들을 드래그하면 크기, 위쪽 원형 핸들을 드래그하면 각도를 바로 바꿀 수 있어요.</div>
+            <label><span class="range-head"><span class="field-label">크기</span><output id="stickerSizeValue">90 px</output></span><input id="stickerSize" type="range" min="24" max="360" step="2" /></label>
+            <label><span class="range-head"><span class="field-label">회전</span><output id="stickerRotationValue">0°</output></span><input id="stickerRotation" type="range" min="-180" max="180" step="1" /></label>
             <label><span class="field-label">색상</span><input id="stickerColor" type="color" /></label>
+            <div class="sticker-actions" id="stickerActions">
+              <button type="button" data-sticker-action="duplicate">복제</button>
+              <button type="button" data-sticker-action="reset">크기·각도 초기화</button>
+              <button type="button" data-sticker-action="back">맨 뒤로</button>
+              <button type="button" data-sticker-action="front">맨 앞으로</button>
+            </div>
           </div>
         </section>
 
@@ -172,7 +180,7 @@
             <button id="fitBtn" class="zoom-value" type="button" title="화면에 맞추기"><span id="zoomLabel">맞춤</span></button>
             <button id="zoomInBtn" class="icon-btn" type="button" aria-label="확대"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></svg></button>
           </div>
-          <div class="workspace-help">스티커는 미리보기에서 드래그해 옮길 수 있어요.</div>
+          <div class="workspace-help">스티커를 선택하면 이동 · 크기 · 회전 핸들이 나타나요.</div>
         </div>
         <div class="preview-stage" id="previewStage" tabindex="0">
           <div class="preview-canvas" id="previewCanvas" aria-label="생활계획표 포스터 미리보기"></div>

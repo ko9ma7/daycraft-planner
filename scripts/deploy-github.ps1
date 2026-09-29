@@ -179,11 +179,29 @@ try {
         }
     }
 
+    # If the remote main branch already has commits (for example, an earlier
+    # DayCraft deployment), attach this local working tree to that history
+    # before creating the next commit. `reset --mixed` moves only HEAD/index;
+    # it deliberately preserves the current v2.1 files in the working tree.
+    # This avoids non-fast-forward push errors without force-pushing.
+    $oldEap = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    $remoteMain = & $Git ls-remote --heads origin refs/heads/main 2>$null
+    $remoteMainExists = ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace(($remoteMain -join "")))
+    $ErrorActionPreference = $oldEap
+
+    if ($remoteMainExists) {
+        Write-Step "Synchronizing with existing remote main history"
+        Run $Git fetch origin main
+        Run $Git reset --mixed origin/main
+        Write-Ok "Remote main history attached; current DayCraft files were preserved"
+    }
+
     Write-Step "Creating commit"
-    Run $Git add -A
+    Run $Git add --all
     & $Git diff --cached --quiet
     if ($LASTEXITCODE -ne 0) {
-        Run $Git commit -m "feat: launch DayCraft planner studio"
+        Run $Git commit -m "feat: upgrade DayCraft planner studio"
         Write-Ok "Commit created"
     } else {
         Write-Ok "No new changes to commit"
