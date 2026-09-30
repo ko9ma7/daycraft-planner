@@ -1,5 +1,5 @@
-const CACHE='daycraft-v2.6.0';
-const CORE=['./','./index.html','./css/app.css?v=2.6.0','./js/app.js?v=2.6.0','./js/icons.js?v=2.6.0','./manifest.webmanifest?v=2.6.0','./assets/favicon.svg','./assets/icon-192.png','./assets/icon-512.png'];
+const CACHE='daycraft-v2.6.1';
+const CORE=['./','./index.html','./css/app.css?v=2.6.1','./js/app.js?v=2.6.1','./js/icons.js?v=2.6.1','./manifest.webmanifest?v=2.6.1','./assets/favicon.svg','./assets/icon-192.png','./assets/icon-512.png'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting()));
 });

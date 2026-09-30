@@ -1,4 +1,4 @@
-import { BUILTIN_ICONS, getIcon, iconSvgMarkup } from './icons.js?v=2.6.0';
+import { BUILTIN_ICONS, getIcon, iconSvgMarkup } from './icons.js?v=2.6.1';
 
 const STORAGE_KEY = 'daycraft.planner.v2';
 const LEGACY_KEY = 'summerVacationSchedules';
@@ -1174,15 +1174,48 @@ async function nativeShare(){ if(!navigator.share)return; try{await navigator.sh
 
 function openExportDialog(){ refs.exportName.value=sanitizeFilename(state.document.title); refs.exportDialog.showModal(); }
 async function handleExport(type) {
-  const name=sanitizeFilename(refs.exportName.value); const scale=Number(refs.exportScale.value)||2;
+  const name=sanitizeFilename(refs.exportName.value) || 'daycraft-planner'; const scale=Number(refs.exportScale.value)||2;
   try {
-    if(type==='svg') downloadBlob(new Blob([`<?xml version="1.0" encoding="UTF-8"?>\n${buildPosterSvg()}`],{type:'image/svg+xml;charset=utf-8'}),`${name}.svg`);
+    if(type==='svg') {
+      const result=await exportSvg(name);
+      if(result==='cancelled') return;
+    }
     else if(type==='print') printPoster();
     else if(type==='pdf') await exportPdf(name,scale);
     else await exportRaster(type,name,scale);
     if(type!=='print') toast(`${type.toUpperCase()} 파일을 저장했습니다.`);
     refs.exportDialog.close();
-  } catch(err){ console.error(err); toast('내보내기 중 문제가 발생했습니다. 다시 시도해주세요.',true); }
+  } catch(err){
+    console.error('DayCraft export failed:',err);
+    const detail=err?.message ? ` (${err.message})` : '';
+    toast(`내보내기 중 문제가 발생했습니다.${detail}`,true);
+  }
+}
+async function exportSvg(name){
+  const filename=`${name}.svg`;
+  const source=`<?xml version="1.0" encoding="UTF-8"?>\n${buildPosterSvg()}`;
+  const blob=new Blob([source],{type:'image/svg+xml;charset=utf-8'});
+
+  // Chromium/Edge desktop: use the native save picker when a user gesture is active.
+  // This avoids intermittent blob-URL download failures seen on some PWA/GitHub Pages setups.
+  if(window.isSecureContext && typeof window.showSaveFilePicker==='function' && (!navigator.userActivation || navigator.userActivation.isActive)){
+    try{
+      const handle=await window.showSaveFilePicker({
+        suggestedName:filename,
+        types:[{description:'SVG vector image',accept:{'image/svg+xml':['.svg']}}]
+      });
+      const writable=await handle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+      return 'saved';
+    }catch(err){
+      if(err?.name==='AbortError') return 'cancelled';
+      console.warn('Native SVG save picker unavailable; falling back to browser download.',err);
+    }
+  }
+
+  downloadBlob(blob,filename,{keepAliveMs:120000});
+  return 'download-started';
 }
 async function svgToCanvas(scale=2, format='png') {
   const {w,h}=CANVAS_SIZES[state.design.size]; const maxSide=6000; const actualScale=Math.min(scale,maxSide/Math.max(w,h));
@@ -1209,13 +1242,36 @@ function buildPdfWithJpeg(jpegBytes,pw,ph){
   return new Blob(parts,{type:'application/pdf'});
 }
 function printPoster(){ const win=window.open('','_blank','noopener,noreferrer'); if(!win){toast('팝업이 차단되었습니다. 팝업을 허용한 뒤 다시 시도해주세요.',true);return;} const svg=buildPosterSvg(); win.document.write(`<!doctype html><html><head><title>${escapeXml(state.document.title)}</title><style>@page{margin:0}html,body{margin:0;min-height:100%;display:grid;place-items:center;background:white}svg{width:100vw;height:100vh;object-fit:contain}</style></head><body>${svg}<script>onload=()=>setTimeout(()=>print(),250)<\/script></body></html>`); win.document.close(); }
-function downloadBlob(blob,name){ const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000); }
+const downloadObjectUrls=new Set();
+function releaseDownloadUrl(url){
+  if(!downloadObjectUrls.has(url))return;
+  downloadObjectUrls.delete(url);
+  try{URL.revokeObjectURL(url);}catch{}
+}
+function downloadBlob(blob,name,{keepAliveMs=120000}={}){
+  if(!(blob instanceof Blob) || blob.size===0) throw new Error('저장할 파일 데이터가 비어 있습니다.');
+  const filename=String(name||'daycraft-file').trim() || 'daycraft-file';
+  const url=URL.createObjectURL(blob);
+  downloadObjectUrls.add(url);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=filename;
+  a.rel='noopener';
+  a.style.display='none';
+  document.body.appendChild(a);
+  a.click();
+  // Keep both the anchor and Blob URL alive long enough for Chrome/Edge/PWA download managers
+  // to take ownership of the stream. Revoking after 1s caused intermittent SVG failures.
+  setTimeout(()=>a.remove(),1500);
+  setTimeout(()=>releaseDownloadUrl(url),Math.max(30000,keepAliveMs));
+}
+window.addEventListener('pagehide',()=>{ for(const url of [...downloadObjectUrls]) releaseDownloadUrl(url); });
 
 function toast(message,error=false){ if(!refs.toastRegion)return; const el=document.createElement('div'); el.className=`toast${error?' is-error':''}`; el.textContent=message; refs.toastRegion.appendChild(el); setTimeout(()=>el.remove(),3200); }
 
 function registerServiceWorker(){
   if(!('serviceWorker' in navigator) || !location.protocol.startsWith('http')) return;
-  navigator.serviceWorker.register('./sw.js?v=2.6.0').then(reg=>{
+  navigator.serviceWorker.register('./sw.js?v=2.6.1').then(reg=>{
     reg.update().catch(()=>{});
   }).catch(()=>{});
 }
